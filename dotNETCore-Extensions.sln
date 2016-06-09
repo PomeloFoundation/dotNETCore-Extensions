@@ -24,7 +24,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Extension
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Mvc.Testing", "src\Pomelo.AspNetCore.Mvc.Testing\Pomelo.AspNetCore.Mvc.Testing.xproj", "{B18AB021-2E3D-4306-96CF-132FA5F567DE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNetCore.Testing", "src\Microsoft.AspNetCore.Testing\Microsoft.AspNetCore.Testing.xproj", "{09BE5203-8042-4338-9713-E44169342E72}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Testing", "src\Pomelo.AspNetCore.Testing\Pomelo.AspNetCore.Testing.xproj", "{09BE5203-8042-4338-9713-E44169342E72}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Marked", "src\Pomelo.Marked\Pomelo.Marked.xproj", "{392BCACF-A74D-48D8-933B-83EFBE47A624}"
 EndProject

@@ -11,7 +11,7 @@
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <RootNamespace>Microsoft.AspNetCore.Testing</RootNamespace>
+    <RootNamespace>Pomelo.AspNetCore.Testing</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
