@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pomelo.AspNetCore.Localization
+namespace Pomelo.AspNetCore.Extensions.Localization
 {
     public interface ILocalizationStringCollection
     {

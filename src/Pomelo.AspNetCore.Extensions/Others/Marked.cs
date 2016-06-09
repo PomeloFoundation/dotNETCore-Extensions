@@ -16,7 +16,7 @@ namespace Pomelo.AspNetCore.Extensions.Others
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
-    public static class HttpContextAccessorExtensions
+    public static class MarkedExtensions
     {
         public static HtmlString Marked(this IHtmlHelper self, string Content)
         {

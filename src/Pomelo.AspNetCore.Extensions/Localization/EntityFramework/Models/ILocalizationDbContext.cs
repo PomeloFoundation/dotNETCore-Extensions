@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Pomelo.AspNetCore.Localization.EntityFramework
+namespace Pomelo.AspNetCore.Extensions.Localization.EntityFramework
 {
     public interface ILocalizationDbContext<TKey>
         where TKey : IEquatable<TKey>

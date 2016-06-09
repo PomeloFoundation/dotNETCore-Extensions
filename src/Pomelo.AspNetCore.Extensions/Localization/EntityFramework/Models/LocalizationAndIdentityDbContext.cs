@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Pomelo.AspNetCore.Localization.EntityFramework
+namespace Pomelo.AspNetCore.Extensions.Localization.EntityFramework
 {
     public class LocalizationAndIdentityDbContext<TUser, TRole, TKey> : IdentityDbContext<TUser, TRole, TKey>, ILocalizationDbContext<TKey>
         where TKey : IEquatable<TKey>

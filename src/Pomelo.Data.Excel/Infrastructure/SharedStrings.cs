@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace CodeComb.Data.Excel.Infrastructure
+namespace Pomelo.Data.Excel.Infrastructure
 {
     public class SharedStrings : IList<string>, IDisposable
     {

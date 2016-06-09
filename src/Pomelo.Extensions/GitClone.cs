@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace CodeComb.Package
+namespace Pomelo.Package
 {
     public class GitCloneResult
     {

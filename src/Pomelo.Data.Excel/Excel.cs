@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
-using CodeComb.Data.Excel.Infrastructure;
+using Pomelo.Data.Excel.Infrastructure;
 
-namespace CodeComb.Data.Excel
+namespace Pomelo.Data.Excel
 {
     public class ExcelStream : IDisposable
     {

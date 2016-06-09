@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-namespace CodeComb.Package
+namespace Pomelo.Package
 {
     public static class Zip
     {

@@ -16,7 +16,7 @@ namespace System
         /// <param name="extension">扩展名（如.png）</param>
         public Image(byte[] bytes, string extension)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + extension;
             System.IO.File.WriteAllBytes(fname, bytes);
             _Source = fname;
             var info = MediaHelper.GetImageInfo(fname);
@@ -51,7 +51,7 @@ namespace System
         /// <returns></returns>
         public Image Convert(string Extension)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
             if (!MediaHelper.ImageFormatConvert(_Source, fname))
                 return null;
             var ret = new Image(fname);
@@ -73,7 +73,7 @@ namespace System
         /// <returns></returns>
         public Image Convert(string Extension, int Width, int Height)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Width, Height))
                 return null;
             var ret = new Image(fname);
@@ -94,7 +94,7 @@ namespace System
         /// <returns></returns>
         public Image ConvertByWidth(string Extension, int Width)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Width, Width * this.Height / this.Width))
                 return null;
             var ret = new Image(fname);
@@ -115,7 +115,7 @@ namespace System
         /// <returns></returns>
         public Image ConvertByHeight(string Extension, int Height)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Extension;
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Height * this.Width / this.Height, Height))
                 return null;
             var ret = new Image(fname);
@@ -136,7 +136,7 @@ namespace System
         /// <returns></returns>
         public Image Resize(int Width, int Height)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Width, Height))
                 return null;
             var ret = new Image(fname);
@@ -156,7 +156,7 @@ namespace System
         /// <returns></returns>
         public Image ResizeByWidth(int Width)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Width, Width * this.Height / this.Width))
                 return null;
             var ret = new Image(fname);
@@ -176,7 +176,7 @@ namespace System
         /// <returns></returns>
         public Image ResizeByHeight(int Height)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.ImageFormatConvert(_Source, fname, Height * this.Width / this.Height, Height))
                 return null;
             var ret = new Image(fname);

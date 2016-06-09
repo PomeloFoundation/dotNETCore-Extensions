@@ -34,11 +34,11 @@ var __page = 1;
 var __lock = false;
 var __pageCount = 1;
 var __paramsCache = {};
-var __CodeCombAjaxEvents = {};
-__CodeCombAjaxEvents['All'] = {};
-// __CodeCombAjaxEvents['Home/Index'].onLoading = function () {};
-// __CodeCombAjaxEvents['Home/Index'].onLoaded = function () {};
-// __CodeCombAjaxEvents['Home/Index'].onNoMore = function () {};
+var __PomeloAjaxEvents = {};
+__PomeloAjaxEvents['All'] = {};
+// __PomeloAjaxEvents['Home/Index'].onLoading = function () {};
+// __PomeloAjaxEvents['Home/Index'].onLoaded = function () {};
+// __PomeloAjaxEvents['Home/Index'].onNoMore = function () {};
 
 function __movePage(page) {
     if (__page > __pageCount || __page < 1) return;
@@ -50,8 +50,8 @@ function __movePage(page) {
 function __Load(sender) {
     if (__lock) return;
     __lock = true;
-    try { __CodeCombAjaxEvents['All'].onLoading(); } catch (e) { };
-    try { __CodeCombAjaxEvents['Home/Index'].onLoading(); } catch (e) { };
+    try { __PomeloAjaxEvents['All'].onLoading(); } catch (e) { };
+    try { __PomeloAjaxEvents['Home/Index'].onLoading(); } catch (e) { };
     var __pagerInfoParams;
     if (typeof (sender) == 'undefined') {
         __paramsCache = $(__formSelector).serializeObject();
@@ -78,21 +78,21 @@ function __Load(sender) {
         if (__performance == 1)
             $.get(__url, __paramsCache, function (html) {
                 $(__contentSelector).html(html);
-                try { __CodeCombAjaxEvents['All'].onLoaded(); } catch (e) { };
-                try { __CodeCombAjaxEvents['Home/Index'].onLoaded(); } catch (e) { };
+                try { __PomeloAjaxEvents['All'].onLoaded(); } catch (e) { };
+                try { __PomeloAjaxEvents['Home/Index'].onLoaded(); } catch (e) { };
                 __lock = false;
             });
         else
             $.get(__url, __paramsCache, function (html) {
                 $(__contentSelector).append(html);
-                try { __CodeCombAjaxEvents['All'].onLoaded(); } catch (e) { };
-                try { __CodeCombAjaxEvents['Home/Index'].onLoaded(); } catch (e) { };
+                try { __PomeloAjaxEvents['All'].onLoaded(); } catch (e) { };
+                try { __PomeloAjaxEvents['Home/Index'].onLoaded(); } catch (e) { };
                 __lock = false;
                 __page++;
                 if (__page > __pageCount) {
                     __lock = true;
-                    try { __CodeCombAjaxEvents['All'].onNoMore(); } catch (e) { };
-                    try { __CodeCombAjaxEvents['Home/Index'].onNoMore(); } catch (e) { };
+                    try { __PomeloAjaxEvents['All'].onNoMore(); } catch (e) { };
+                    try { __PomeloAjaxEvents['Home/Index'].onNoMore(); } catch (e) { };
                 }
             });
     });

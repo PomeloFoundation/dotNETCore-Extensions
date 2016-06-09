@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Pomelo.AspNetCore.Localization
+namespace Pomelo.AspNetCore.Extensions.Localization
 {
     public class CookieRequestCultureProvider : IRequestCultureProvider
     {
@@ -12,15 +12,15 @@ namespace Pomelo.AspNetCore.Localization
 
         public string CookieField { get; set; }
 
-        public CookieRequestCultureProvider(IHttpContextAccessor httpContextAccessor, string CookieField = "ASPNET_LANG")
+        public CookieRequestCultureProvider(IHttpContextAccessor accessor, string CookieField = "ASPNET_LANG")
         {
             this.CookieField = CookieField;
-            HttpContext = httpContextAccessor.HttpContext;
+            HttpContext = accessor.HttpContext;
         }
 
         public string[] DetermineRequestCulture()
         {
-            if (string.IsNullOrEmpty(HttpContext.Request.Cookies[CookieField]))
+            if (HttpContext.Request.Cookies == null || string.IsNullOrEmpty(HttpContext.Request.Cookies[CookieField]))
             {
                 var ret = new List<string>();
                 var tmp = HttpContext.Request.Headers["Accept-Language"].FirstOrDefault();

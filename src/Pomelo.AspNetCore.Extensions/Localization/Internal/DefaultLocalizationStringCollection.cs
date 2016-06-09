@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Pomelo.AspNetCore.Localization;
+using Pomelo.AspNetCore.Extensions.Localization;
 
-namespace Pomelo.AspNetCore.Localization.Internal
+namespace Pomelo.AspNetCore.Extensions.Localization.Internal
 {
     public class DefaultLocalizationStringCollection : LocalizationStringCollection
     {

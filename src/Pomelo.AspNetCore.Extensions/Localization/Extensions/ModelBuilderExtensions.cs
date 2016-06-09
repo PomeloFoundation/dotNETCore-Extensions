@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Pomelo.AspNetCore.Localization.EntityFramework;
+using Pomelo.AspNetCore.Extensions.Localization.EntityFramework;
 
 namespace Microsoft.EntityFrameworkCore
 {

@@ -4,13 +4,13 @@ using System.Net.Http;
 using System.IO;
 using System.IO.Compression;
 
-namespace CodeComb.Package
+namespace Pomelo.Package
 {
     public static class Download
     {
         public async static Task DownloadAndExtractAll(string uri, string dest)
         {
-            var tmpFile = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString() + ".zip";
+            var tmpFile = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString() + ".zip";
             Console.WriteLine("Downloading from " + uri);
             using (var webClient = new HttpClient() { Timeout = new TimeSpan(1, 0, 0), MaxResponseContentBufferSize = 1024 * 1024 * 50 })
             {
@@ -41,7 +41,7 @@ namespace CodeComb.Package
             string uri,
             params Tuple<string, string>[] files)
         {
-            var tmpFile = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString() + ".zip";
+            var tmpFile = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString() + ".zip";
             Console.WriteLine("Downloading from " + uri);
             using (var webClient = new HttpClient() { Timeout = new TimeSpan(1, 0, 0), MaxResponseContentBufferSize = 1024 * 1024 * 50 })
             {

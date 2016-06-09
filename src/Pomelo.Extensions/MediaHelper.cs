@@ -7,7 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using CodeComb.Package;
+using Pomelo.Package;
 
 namespace System
 {
@@ -31,7 +31,7 @@ namespace System
                 FfmpegPath = TmpPath + @"ffmpeg.exe";
                 if (!File.Exists(FfmpegPath))
                 {
-                    Download.DownloadAndExtract("https://github.com/CodeCombResources/Ffmpeg/archive/windows.zip",
+                    Download.DownloadAndExtract("https://github.com/PomeloResources/Ffmpeg/archive/windows.zip",
                         Tuple.Create("Ffmpeg-windows/ffmpeg.exe", FfmpegPath)).Wait();
                 }
             }
@@ -40,7 +40,7 @@ namespace System
                 FfmpegPath = TmpPath + @"ffmpeg";
                 if (!File.Exists(FfmpegPath))
                 {
-                    Download.DownloadAndExtract("https://github.com/CodeCombResources/Ffmpeg/archive/osx.zip",
+                    Download.DownloadAndExtract("https://github.com/PomeloResources/Ffmpeg/archive/osx.zip",
                         Tuple.Create("Ffmpeg-osx/ffmpeg", FfmpegPath)).Wait();
                 }
             }
@@ -49,7 +49,7 @@ namespace System
                 FfmpegPath = TmpPath + @"ffmpeg";
                 if (!File.Exists(FfmpegPath))
                 {
-                    Download.DownloadAndExtract("https://github.com/CodeCombResources/Ffmpeg/archive/linux.zip",
+                    Download.DownloadAndExtract("https://github.com/PomeloResources/Ffmpeg/archive/linux.zip",
                         Tuple.Create("Ffmpeg-linux/ffmpeg", FfmpegPath)).Wait();
                 }
             }
@@ -199,7 +199,7 @@ namespace System
             }
             var _timeoff = timeoff.ToString("0.000");
             System.Diagnostics.ProcessStartInfo FilestartInfo = new System.Diagnostics.ProcessStartInfo(FfmpegPath);
-            var PictureName = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+            var PictureName = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
             FilestartInfo.Arguments = String.Format("-i \"{0}\" -y -f image2 -ss {1} -t 0.001 -s {2}x{3} '{4}'", src, _timeoff, width, height, PictureName);
             var proc = System.Diagnostics.Process.Start(FilestartInfo);
             proc.WaitForExit();
@@ -232,7 +232,7 @@ namespace System
             }
             var _timeoff = timeoff.ToString("0.000");
             System.Diagnostics.ProcessStartInfo FilestartInfo = new System.Diagnostics.ProcessStartInfo(FfmpegPath);
-            var PictureName = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+            var PictureName = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
             FilestartInfo.Arguments = String.Format("-i \"{0}\" -ss {1} -t 0.001 -f image2 \"{2}\"", src, _timeoff, PictureName);
             var proc = System.Diagnostics.Process.Start(FilestartInfo);
             proc.WaitForExit();
@@ -361,7 +361,7 @@ namespace System
             foreach (var s in src)
             {
                 var flag = false;
-                var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".ts";
+                var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".ts";
                 try
                 {
                     flag = FormatConvert(s, fname, Quality);

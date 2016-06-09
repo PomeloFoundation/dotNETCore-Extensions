@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Pomelo.AspNetCore.Localization.EntityFramework
+namespace Pomelo.AspNetCore.Extensions.Localization.EntityFramework
 {
     [Table("AspNetLocalizationCulture")]
     public class Culture<TKey>

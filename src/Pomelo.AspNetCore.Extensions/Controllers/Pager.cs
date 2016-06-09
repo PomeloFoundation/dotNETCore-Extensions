@@ -83,7 +83,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                 ret.AppendLine("    var __pagerSelector = '#" + self.ViewContext.ViewData["__PagerDomId"] + "';");
                 ret.AppendLine("    var __formSelector = '" + self.ViewContext.ViewData["__FormSelector"] + "';");
                 ret.AppendLine("    var __url = '" + self.ViewContext.HttpContext.Request.Path.Value + "';");
-                ret.AppendLine("    __CodeCombAjaxEvents[__url] = {};");
+                ret.AppendLine("    __PomeloAjaxEvents[__url] = {};");
                 ret.AppendLine("</script>");
             }
             else if (self.ViewContext.ViewData["__Performance"] != null && Convert.ToInt32(self.ViewContext.ViewData["__Performance"]) == 0)
@@ -94,7 +94,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                 ret.AppendLine("    var __pagerSelector = '#" + self.ViewContext.ViewData["__PagerDomId"] + "';");
                 ret.AppendLine("    var __formSelector = '" + self.ViewContext.ViewData["__FormSelector"] + "';");
                 ret.AppendLine("    var __url = '" + self.ViewContext.HttpContext.Request.Path.Value + "';");
-                ret.AppendLine("    __CodeCombAjaxEvents[__url] = {};");
+                ret.AppendLine("    __PomeloAjaxEvents[__url] = {};");
                 ret.AppendLine("</script>");
             }
             else

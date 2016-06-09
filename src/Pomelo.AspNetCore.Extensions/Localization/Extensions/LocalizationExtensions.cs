@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.PlatformAbstractions;
-using Pomelo.AspNetCore.Localization;
-using Pomelo.AspNetCore.Localization.EntityFramework;
-using Pomelo.AspNetCore.Localization.Json;
+using Pomelo.AspNetCore.Extensions.Localization;
+using Pomelo.AspNetCore.Extensions.Localization.EntityFramework;
+using Pomelo.AspNetCore.Extensions.Localization.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddJsonLocalization(this IServiceCollection self, string resourcePath = "/Localization")
         {
+            self.AddHttpContextAccessor();
             return self.AddSingleton<ILocalizationStringCollection>(x => new JsonCollection(resourcePath, x.GetRequiredService<IRequestCultureProvider>(), x.GetRequiredService<IHostingEnvironment>()));
         }
 
@@ -23,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TKey:IEquatable<TKey>
             where TContext : class, ILocalizationDbContext<TKey>
         {
+            self.AddHttpContextAccessor();
             return self
                 .AddScoped<ILocalizationDbContext<TKey>, TContext>()
                 .AddScoped<EFLocalizationManager<TKey>>()

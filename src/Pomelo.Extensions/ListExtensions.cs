@@ -10,7 +10,7 @@ namespace System
     public static class ListExtensions
     {
         /// <summary>
-        /// 将CodeComb文件组整体转移
+        /// 将Pomelo文件组整体转移
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>

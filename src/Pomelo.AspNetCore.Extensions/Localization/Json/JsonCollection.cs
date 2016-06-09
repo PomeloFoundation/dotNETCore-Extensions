@@ -8,7 +8,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 
-namespace Pomelo.AspNetCore.Localization.Json
+namespace Pomelo.AspNetCore.Extensions.Localization.Json
 {
     public class JsonCollection : LocalizationStringCollection
     {

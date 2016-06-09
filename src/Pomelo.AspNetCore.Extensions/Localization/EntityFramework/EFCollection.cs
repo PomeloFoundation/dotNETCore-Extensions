@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.AspNetCore.Localization.EntityFramework;
+using Pomelo.AspNetCore.Extensions.Localization.EntityFramework;
 
-namespace Pomelo.AspNetCore.Localization.EntityFramework
+namespace Pomelo.AspNetCore.Extensions.Localization.EntityFramework
 {
     public class EFCollection<TKey> : LocalizationStringCollection
         where TKey : IEquatable<TKey>

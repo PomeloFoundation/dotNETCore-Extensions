@@ -25,7 +25,7 @@ namespace System
         /// <param name="extension">扩展名（如.png）</param>
         public Video(byte[] bytes, string extension)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + extension;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + extension;
             System.IO.File.WriteAllBytes(fname, bytes);
             _Source = fname;
             Info = MediaHelper.GetImageInfo(fname);
@@ -50,7 +50,7 @@ namespace System
         /// <returns></returns>
         public Image GetFrame(double timeoff = 1.0)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             System.IO.File.WriteAllBytes((string)fname, MediaHelper.GetFrame((string)base._Source, timeoff));
             var ret = new Image(fname);
             ret.IsTemp = true;
@@ -71,7 +71,7 @@ namespace System
         /// <returns></returns>
         public Image GetFrame(int width, int height, double timeoff = 1.0)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             System.IO.File.WriteAllBytes((string)fname, MediaHelper.GetFrame((string)base._Source, width, height, timeoff));
             var ret = new Image(fname);
             ret.IsTemp = true;
@@ -95,7 +95,7 @@ namespace System
             {
                 try
                 {
-                    var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+                    var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
                     System.IO.File.WriteAllBytes(fname, MediaHelper.GetFrame(_Source, i));
                     var frame = new Image(fname);
                     frame.IsTemp = true;
@@ -127,7 +127,7 @@ namespace System
             var result = new List<Image>();
             for (var i = 0; i <= Info.Duration.TotalSeconds; i += timeoff)
             {
-                var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+                var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
                 System.IO.File.WriteAllBytes(fname, MediaHelper.GetFrame(_Source, width, height, i));
                 var frame = new Image(fname);
                 frame.IsTemp = true;
@@ -155,7 +155,7 @@ namespace System
             {
                 try
                 {
-                    var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+                    var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
                     System.IO.File.WriteAllBytes(fname, MediaHelper.GetFrame(_Source, i));
                     var frame = new Image(fname);
                     frame.IsTemp = true;
@@ -191,7 +191,7 @@ namespace System
             {
                 try
                 {
-                    var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
+                    var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + ".jpg";
                     System.IO.File.WriteAllBytes(fname, MediaHelper.GetFrame(_Source, width, height, i));
                     var frame = new Image(fname);
                     frame.IsTemp = true;
@@ -229,7 +229,7 @@ namespace System
             var src = new List<string>();
             src.Add(_Source);
             src.Add(file._Source);
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             try
             {
                 MediaHelper.Concat(src, fname, Quality);
@@ -258,7 +258,7 @@ namespace System
             var src = new List<string>();
             src.Add(file._Source);
             src.Add(_Source);
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             try
             {
                 MediaHelper.Concat(src, fname, Quality);
@@ -287,7 +287,7 @@ namespace System
         {
             if (Begin + Length.TotalSeconds > Info.Duration.TotalSeconds)
                 throw new Exception("超出了影片长度");
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             var flag = false;
             try
             {
@@ -324,7 +324,7 @@ namespace System
                 {
                     Interval = Interval - new TimeSpan(0, 0, System.Convert.ToInt32(TotalSeconds));
                 }
-                var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+                var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
                 var tmp = MediaHelper.Intercept(_Source, fname, Begin, Interval, Quality);
                 if (tmp)
                 {
@@ -350,7 +350,7 @@ namespace System
         /// <returns></returns>
         public Video Convert(string format, Quality Quality)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + format;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + format;
             if (!MediaHelper.FormatConvert(Source, fname, Quality))
                 return null;
             var ret = new Video(fname);
@@ -372,7 +372,7 @@ namespace System
         /// <returns></returns>
         public Video Convert(string format, int width, int height, Quality Quality)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + format;
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + format;
             if (!MediaHelper.FormatConvert(Source, fname, width, height, Quality))
                 return null;
             var ret = new Video(fname);
@@ -393,7 +393,7 @@ namespace System
         /// <returns></returns>
         public Video Compress(int width, int height, Quality Quality)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, width, height, Quality))
                 return null;
             var ret = new Video(fname);
@@ -412,7 +412,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo240P()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 240 / Info.Height), 240, Quality.Smallest))
                 return null;
             var ret = new Video(fname);
@@ -432,7 +432,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo360P()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 360 / Info.Height), 360, Quality.Smallest))
                 return null;
             var ret = new Video(fname);
@@ -451,7 +451,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo480P()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 480 / Info.Height), 480, Quality.Smallest))
                 return null;
             var ret = new Video(fname);
@@ -470,7 +470,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo720P()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 720 / Info.Height), 720, Quality.Medium))
                 return null;
             var ret = new Video(fname);
@@ -489,7 +489,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo1080P()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 1080 / Info.Height), 1080, Quality.Best))
                 return null;
             var ret = new Video(fname);
@@ -508,7 +508,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo2K()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 1440 / Info.Height), 1440, Quality.Best))
                 return null;
             var ret = new Video(fname);
@@ -527,7 +527,7 @@ namespace System
         /// <returns></returns>
         public Video ExportTo4K()
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.FormatConvert(Source, fname, System.Convert.ToInt32(Info.Width * 2160 / Info.Height), 2160, Quality.Best))
                 return null;
             var ret = new Video(fname);
@@ -548,7 +548,7 @@ namespace System
         /// <returns></returns>
         public Video Intercept(int Begin, TimeSpan Length, Quality Quality)
         {
-            var fname = Path.GetTempPath() + "codecomb_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
+            var fname = Path.GetTempPath() + "pomelo_" + Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(_Source);
             if (!MediaHelper.Intercept(Source, fname, Begin, Length, Quality))
                 return null;
             var ret = new Video(fname);

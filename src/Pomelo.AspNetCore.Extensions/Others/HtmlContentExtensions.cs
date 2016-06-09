@@ -4,7 +4,7 @@ using System.Text.Encodings.Web;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
-    internal class CodeCombHtmlEncoder : HtmlEncoder
+    internal class PomeloHtmlEncoder : HtmlEncoder
     {
         public override int MaxOutputCharactersPerInputCharacter
         {
@@ -97,7 +97,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
         {
             using (var writer = new StringWriter())
             {
-                self.WriteTo(writer, new CodeCombHtmlEncoder());
+                self.WriteTo(writer, new PomeloHtmlEncoder());
                 return writer.ToString();
             }
         }
