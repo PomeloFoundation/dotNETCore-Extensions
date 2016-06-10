@@ -6,17 +6,19 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.AspNetCore.Extensions.BlobStorage;
+using Pomelo.AspNetCore.Extensions.BlobStorage.Models;
 using Pomelo.AspNetCore.Extensions.BlobStorage.Middlewares;
 
 namespace Microsoft.AspNetCore.Builder
 {
     public static class BlobStorage
     {
-        public static IApplicationBuilder UseBlobStorage(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName="file", string controller = "file", string downloadAction = "download", string uploadAction="upload", string uploadRouteName="FileUpload", string downloadRouteName = "FileDownload")
+        public static IApplicationBuilder UseBlobStorage<TModel>(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName="file", string controller = "file", string downloadAction = "download", string uploadAction="upload", string uploadRouteName="FileUpload", string downloadRouteName = "FileDownload")
+            where TModel : Blob
         {
             #region Download
             var endpoint1 = new DelegateRouteEndpoint(async context => {
-                var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider>();
+                var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
                 var id = Guid.Parse(context.RouteData.Values["id"].ToString());
                 var blob = bs.Get(id);
                 var auth = context.HttpContext.RequestServices.GetService<IBlobAccessAuthorizationProvider>();
@@ -51,7 +53,7 @@ namespace Microsoft.AspNetCore.Builder
                 }
                 else if (context.HttpContext.Request.Method == "POST")
                 {
-                    var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider>();
+                    var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
                     var file = context.HttpContext.Request.Form.Files["file"];
                     if (file != null)
                     {
@@ -76,7 +78,7 @@ namespace Microsoft.AspNetCore.Builder
                     else
                     {
                         var img = new Base64StringImage(context.HttpContext.Request.Form["file"]);
-                        var f = new Pomelo.AspNetCore.Extensions.BlobStorage.Models.Blob
+                        var f = new Blob
                         {
                             Time = DateTime.Now,
                             ContentType = img.ContentType,
@@ -813,6 +815,10 @@ namespace Microsoft.AspNetCore.Builder
             #endregion
             return self.UseRouter(routeBuilder1.Build())
                 .UseRouter(routeBuilder2.Build());
+        }
+        public static IApplicationBuilder UseBlobStorage(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName = "file", string controller = "file", string downloadAction = "download", string uploadAction = "upload", string uploadRouteName = "FileUpload", string downloadRouteName = "FileDownload")
+        {
+            return self.UseBlobStorage<Blob>();
         }
     }
 }
