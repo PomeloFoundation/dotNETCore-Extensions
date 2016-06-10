@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Mvc
 {
     public abstract partial class BaseController : Controller
     {
-        public string AppRoot { get { return HttpContext.RequestServices?.GetService<ApplicationEnvironment>().ApplicationBasePath; } }
+        public string AppRoot { get { return HttpContext.RequestServices?.GetService<IHostingEnvironment>().ContentRootPath; } }
 
         public string WebRoot { get { return HttpContext.RequestServices?.GetService<IHostingEnvironment>().WebRootPath; } }
 
@@ -23,6 +23,8 @@ namespace Microsoft.AspNetCore.Mvc
         public TemplateManager TemplateManager { get { return HttpContext.RequestServices?.GetService<TemplateManager>(); } }
 
         public Pomelo.AspNetCore.Extensions.Others.Marked Marked { get; set; } = new Pomelo.AspNetCore.Extensions.Others.Marked();
+
+        public Pomelo.AspNetCore.Extensions.Localization.ILocalizationStringCollection SR { get { return HttpContext.RequestServices?.GetService<Pomelo.AspNetCore.Extensions.Localization.ILocalizationStringCollection>(); } }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {

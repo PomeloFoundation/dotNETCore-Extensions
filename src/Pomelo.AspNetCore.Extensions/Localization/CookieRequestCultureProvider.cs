@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Pomelo.AspNetCore.Extensions.Localization
 {
@@ -10,17 +11,20 @@ namespace Pomelo.AspNetCore.Extensions.Localization
     {
         public HttpContext HttpContext { get; set; }
 
+        public IServiceProvider Services { get; set; }
+
         public string CookieField { get; set; }
 
-        public CookieRequestCultureProvider(IHttpContextAccessor accessor, string CookieField = "ASPNET_LANG")
+        public CookieRequestCultureProvider(IServiceProvider provider, string CookieField = "ASPNET_LANG")
         {
             this.CookieField = CookieField;
-            HttpContext = accessor.HttpContext;
+            Services = provider;
         }
 
         public string[] DetermineRequestCulture()
         {
-            if (HttpContext.Request.Cookies == null || string.IsNullOrEmpty(HttpContext.Request.Cookies[CookieField]))
+            HttpContext = Services.GetRequiredService<IHttpContextAccessor>().HttpContext;
+            if (string.IsNullOrEmpty(HttpContext.Request.Cookies[CookieField]))
             {
                 var ret = new List<string>();
                 var tmp = HttpContext.Request.Headers["Accept-Language"].FirstOrDefault();

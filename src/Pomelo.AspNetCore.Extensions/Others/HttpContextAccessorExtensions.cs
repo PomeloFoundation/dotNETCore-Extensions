@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -7,8 +8,13 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddHttpContextAccessor(this IServiceCollection self)
         {
-            return self.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
-                .AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            if (self.Count(x => x.ServiceType == typeof(IHttpContextAccessor)) == 0)
+                self.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            if (self.Count(x => x.ServiceType == typeof(IActionContextAccessor)) == 0)
+                self.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            return self;
         }
     }
 }

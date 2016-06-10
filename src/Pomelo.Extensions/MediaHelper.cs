@@ -95,7 +95,7 @@ namespace System
                 var proc = System.Diagnostics.Process.Start(FilestartInfo);
                 proc.WaitForExit();
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -119,7 +119,7 @@ namespace System
                 var proc = System.Diagnostics.Process.Start(FilestartInfo);
                 proc.WaitForExit();
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -148,7 +148,7 @@ namespace System
                 var proc = System.Diagnostics.Process.Start(FilestartInfo);
                 proc.WaitForExit();
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -172,7 +172,7 @@ namespace System
                 var proc = System.Diagnostics.Process.Start(FilestartInfo);
                 proc.WaitForExit();
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
@@ -386,7 +386,7 @@ namespace System
                 var proc = System.Diagnostics.Process.Start(FilestartInfo);
                 proc.WaitForExit();
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }

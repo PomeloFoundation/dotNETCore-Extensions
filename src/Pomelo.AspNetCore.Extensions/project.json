@@ -25,7 +25,6 @@
       "imports": [
         "dotnet5.6",
         "dnxcore50",
-        "netstandard1.3",
         "portable-net45+win8"
       ]
     }

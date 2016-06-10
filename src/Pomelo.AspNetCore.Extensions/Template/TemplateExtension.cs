@@ -28,13 +28,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IMvcBuilder AddQueryStringTemplateProvider(this IMvcBuilder self, string QueryField = "template")
         {
-            self.Services.AddScoped<IRequestTemplateProvider>(x => new QueryStringRequestTemplateProvider(x.GetRequiredService<IHttpContextAccessor>(), QueryField));
+            self.Services.AddScoped<IRequestTemplateProvider>(x => new QueryStringRequestTemplateProvider(x, QueryField));
             return self;
         }
 
         public static IMvcBuilder AddCookieTemplateProvider(this IMvcBuilder self, string CookieField = "ASPNET_TEMPLATE")
         {
-            self.Services.AddScoped<IRequestTemplateProvider>(x => new CookieRequestTemplateProvider(x.GetRequiredService<IHttpContextAccessor>(), CookieField));
+            self.Services.AddScoped<IRequestTemplateProvider>(x => new CookieRequestTemplateProvider(x, CookieField));
             return self;
         }
     }

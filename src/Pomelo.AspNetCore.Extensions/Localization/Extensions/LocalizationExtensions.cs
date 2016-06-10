@@ -16,16 +16,17 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddJsonLocalization(this IServiceCollection self, string resourcePath = "/Localization")
         {
-            self.AddHttpContextAccessor();
-            return self.AddSingleton<ILocalizationStringCollection>(x => new JsonCollection(resourcePath, x.GetRequiredService<IRequestCultureProvider>(), x.GetRequiredService<IHostingEnvironment>()));
+            return self
+                .AddHttpContextAccessor()
+                .AddSingleton<ILocalizationStringCollection>(x => new JsonCollection(resourcePath, x.GetRequiredService<IRequestCultureProvider>(), x.GetRequiredService<IHostingEnvironment>()));
         }
 
         public static IServiceCollection AddEFLocalization<TContext, TKey>(this IServiceCollection self)
             where TKey:IEquatable<TKey>
             where TContext : class, ILocalizationDbContext<TKey>
         {
-            self.AddHttpContextAccessor();
             return self
+                .AddHttpContextAccessor()
                 .AddScoped<ILocalizationDbContext<TKey>, TContext>()
                 .AddScoped<EFLocalizationManager<TKey>>()
                 .AddSingleton<ILocalizationStringCollection, EFCollection<TKey>>();
@@ -33,17 +34,17 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddCookieCulture(this IServiceCollection self, string cookieField = "ASPNET_LANG")
         {
-            return self.AddScoped<IRequestCultureProvider>(x => new CookieRequestCultureProvider(x.GetService<IHttpContextAccessor>(), cookieField));
+            return self.AddScoped<IRequestCultureProvider>(x => new CookieRequestCultureProvider(x, cookieField));
         }
 
         public static IServiceCollection AddQueryCulture(this IServiceCollection self, string queryField = "lang")
         {
-            return self.AddScoped<IRequestCultureProvider>(x => new QueryStringRequestCultureProvider(x.GetService<IHttpContextAccessor>(), queryField));
+            return self.AddScoped<IRequestCultureProvider>(x => new QueryStringRequestCultureProvider(x, queryField));
         }
 
         public static IServiceCollection AddRouteCulture(this IServiceCollection self, string routeField = "lang")
         {
-            return self.AddScoped<IRequestCultureProvider>(x => new RouteRequestCultureProvider(x.GetService<IActionContextAccessor>(), routeField));
+            return self.AddScoped<IRequestCultureProvider>(x => new RouteRequestCultureProvider(x, routeField));
         }
     }
 }

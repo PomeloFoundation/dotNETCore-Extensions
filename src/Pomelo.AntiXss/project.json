@@ -2,7 +2,7 @@
   "version": "1.0.0-rc2-final",
 
   "dependencies": {
-    "Pomelo.HtmlAgilityPack": "1.0.0-rc2-24027"
+    "Pomelo.HtmlAgilityPack": "1.0.0-rc2-final"
   },
 
   "frameworks": {
