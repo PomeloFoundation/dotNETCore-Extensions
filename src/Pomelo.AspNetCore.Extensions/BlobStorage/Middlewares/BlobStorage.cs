@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Builder
     public static class BlobStorage
     {
         public static IApplicationBuilder UseBlobStorage<TModel>(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName="file", string controller = "file", string downloadAction = "download", string uploadAction="upload", string uploadRouteName="FileUpload", string downloadRouteName = "FileDownload")
-            where TModel : Blob
+            where TModel : Blob, new()
         {
             #region Download
             var endpoint1 = new DelegateRouteEndpoint(async context => {
@@ -57,7 +57,7 @@ namespace Microsoft.AspNetCore.Builder
                     var file = context.HttpContext.Request.Form.Files["file"];
                     if (file != null)
                     {
-                        var f = new Pomelo.AspNetCore.Extensions.BlobStorage.Models.Blob
+                        var f = new TModel
                         {
                             Time = DateTime.Now,
                             ContentType = file.ContentType,
@@ -78,7 +78,7 @@ namespace Microsoft.AspNetCore.Builder
                     else
                     {
                         var img = new Base64StringImage(context.HttpContext.Request.Form["file"]);
-                        var f = new Blob
+                        var f = new TModel
                         {
                             Time = DateTime.Now,
                             ContentType = img.ContentType,
