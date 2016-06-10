@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Builder
                     context.HttpContext.Response.StatusCode = 404;
                     await context.HttpContext.Response.WriteAsync("Not Found");
                 }
-                else if (auth.IsAbleToDownload(blob.Id))
+                else if (auth == null || auth.IsAbleToDownload(blob.Id))
                 {
                     context.HttpContext.Response.ContentType = blob.ContentType;
                     context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
