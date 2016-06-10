@@ -19,16 +19,22 @@ namespace Microsoft.AspNetCore.Builder
                 var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider>();
                 var id = Guid.Parse(context.RouteData.Values["id"].ToString());
                 var blob = bs.Get(id);
+                var auth = context.HttpContext.RequestServices.GetService<IBlobAccessAuthorizationProvider>();
                 if (blob == null)
                 {
                     context.HttpContext.Response.StatusCode = 404;
                     await context.HttpContext.Response.WriteAsync("Not Found");
                 }
-                else
+                else if (auth.IsAbleToDownload(blob.Id))
                 {
                     context.HttpContext.Response.ContentType = blob.ContentType;
                     context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
                     context.HttpContext.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
+                }
+                else
+                {
+                    context.HttpContext.Response.StatusCode = 403;
+                    await context.HttpContext.Response.WriteAsync("Forbidden");
                 }
             });
             var routeBuilder1 = new RouteBuilder(self);
@@ -37,7 +43,7 @@ namespace Microsoft.AspNetCore.Builder
             #endregion
             #region Upload
             var endpoint2 = new DelegateRouteEndpoint(async context => {
-                var auth = context.HttpContext.RequestServices.GetService<IUploadAuthorizationProvider>();
+                var auth = context.HttpContext.RequestServices.GetService<IBlobUploadAuthorizationProvider>();
                 if (auth != null && !auth.IsAbleToUpload())
                 {
                     context.HttpContext.Response.StatusCode = 403;

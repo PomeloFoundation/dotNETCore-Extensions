@@ -4,7 +4,7 @@ using Pomelo.AspNetCore.Extensions.BlobStorage;
 
 namespace Pomelo.AspNetCore.Extensions.BlobStorage
 {
-    public class SignedUserUploadAuthorizationProvider : IUploadAuthorizationProvider
+    public class SignedUserUploadAuthorizationProvider : IBlobUploadAuthorizationProvider
     {
         protected HttpContext httpContext { get; set; }
 
@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IBlobStorageBuilder AddSignedUserUploadAuthorization(this IBlobStorageBuilder self)
         {
-            self.Services.AddSingleton<IUploadAuthorizationProvider, SignedUserUploadAuthorizationProvider>();
+            self.Services.AddSingleton<IBlobUploadAuthorizationProvider, SignedUserUploadAuthorizationProvider>();
             return self;
         }
     }

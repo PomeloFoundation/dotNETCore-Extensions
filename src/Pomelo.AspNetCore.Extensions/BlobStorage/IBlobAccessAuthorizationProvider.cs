@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Pomelo.AspNetCore.Extensions.BlobStorage
 {
-    public interface IUploadAuthorizationProvider
+    public interface IBlobAccessAuthorizationProvider
     {
-        bool IsAbleToUpload();
+        bool IsAbleToDownload(Guid BlobId);
     }
 }
