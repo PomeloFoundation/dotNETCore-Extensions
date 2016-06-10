@@ -2,10 +2,15 @@
 
 namespace Pomelo.AspNetCore.Extensions.BlobStorage
 {
-    public interface IBlobStorageProvider
+    public interface IBlobStorageProvider<TModel>
+        where TModel : Models.Blob
     {
-        Models.Blob Get(Guid id);
+        TModel Get(Guid id);
         void Delete(Guid id);
-        Guid Set(Models.Blob blob);
+        Guid Set(TModel blob);
+    }
+
+    public interface IBlobStorageProvider : IBlobStorageProvider<Models.Blob>
+    {
     }
 }

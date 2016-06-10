@@ -2,9 +2,14 @@
 
 namespace Microsoft.EntityFrameworkCore
 {
-    public interface IBlobStorageDbContext
+    public interface IBlobStorageDbContext<TModel>
+        where TModel : Blob
     {
-        DbSet<Blob> Blobs { get; set; }
+        DbSet<TModel> Blobs { get; set; }
         int SaveChanges();
+    }
+
+    public interface IBlobStorageDbContext : IBlobStorageDbContext<Blob>
+    {
     }
 }

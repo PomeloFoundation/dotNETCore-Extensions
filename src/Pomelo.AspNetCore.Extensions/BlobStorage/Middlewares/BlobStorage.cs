@@ -773,27 +773,20 @@ namespace Microsoft.AspNetCore.Builder
 })(jQuery);
 
 (function($) {
-    $.fn.dragDropOrPaste = function(postData, onUploading, onUploaded) {
+    $.fn.dragDropOrPaste = function(onUploading, onUploaded) {
         var obj = this;
         this.dropper({
             action: '/"+controller+"/"+uploadAction+ @"',
             maxQueue: 1,
-            postData: postData || {}
+            postData: {}
         })
         .on('fileStart.dropper', function (file) {
-            var pos = obj.getCursorPosition();
-            var str = obj.val();
-            if (pos == 0 && !obj.is(':focus'))
-                pos = str.length;
             if (onUploading)
-                onUploading();
-            obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
+                onUploading(obj);
         })
         .on('fileComplete.dropper', function (file, res, ret) {
-                var content = obj.val().replace('![Upload](Uploading...)', '![' + res.name + '](/" + controller + "/" + downloadAction + @"/' + res.id + ')');
-            obj.val(content);
             if (onUploaded)
-                onUploaded();
+                onUploaded(obj, res);
         });
         
         this.pastableTextarea();
@@ -801,11 +794,10 @@ namespace Microsoft.AspNetCore.Builder
             var pos = obj.getCursorPosition();
             var str = obj.val();
             if (onUploading)
-                onUploading();
-            obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
+                onUploading(obj);
             $.post('/" + controller + "/" + uploadAction + @"', { file: data.dataURL }, function (result) {
-                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/"+ downloadAction + @"/' + result.id + ')');
-                obj.val(content);
+                if (onUploaded)
+                    onUploaded(obj, result);
             }, 'json');
         });
     }
