@@ -91,14 +91,7 @@ namespace Microsoft.AspNetCore.Builder
                         if (handler != null)
                             f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
                         var id = bs.Set(f);
-                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
-                        {
-                            id = id,
-                            name = f.FileName,
-                            type = f.ContentType,
-                            length = f.ContentLength,
-                            time = f.Time
-                        }));
+                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
                     }
                 }
                 else

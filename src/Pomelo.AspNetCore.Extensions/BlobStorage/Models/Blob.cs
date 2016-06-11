@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pomelo.AspNetCore.Extensions.BlobStorage.Models
 {
@@ -17,6 +18,7 @@ namespace Pomelo.AspNetCore.Extensions.BlobStorage.Models
 
         public DateTime Time { get; set; }
 
+        [JsonIgnore]
         public byte[] Bytes { get; set; }
     }
 }
