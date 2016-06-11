@@ -793,7 +793,7 @@ namespace Microsoft.AspNetCore.Builder
         })
         .on('fileComplete.dropper', function (file, res, ret) {
             if (onUploaded)
-                onUploaded(obj, res);
+                onUploaded(obj, ret);
         });
         
         this.pastableTextarea();
