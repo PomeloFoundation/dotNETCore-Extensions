@@ -45,6 +45,7 @@ namespace Microsoft.AspNetCore.Builder
             #region Upload
             var endpoint2 = new DelegateRouteEndpoint(async context => {
                 var auth = context.HttpContext.RequestServices.GetService<IBlobUploadAuthorizationProvider>();
+                var handler = context.HttpContext.RequestServices.GetService<IBlobHandler<TModel>>();
                 if (auth != null && !auth.IsAbleToUpload())
                 {
                     context.HttpContext.Response.StatusCode = 403;
@@ -64,6 +65,8 @@ namespace Microsoft.AspNetCore.Builder
                             FileName = file.GetFileName(),
                             Bytes = file.ReadAllBytes()
                         };
+                        if (handler != null)
+                            f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
                         var id = bs.Set(f);
                         await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
                         {
@@ -76,15 +79,17 @@ namespace Microsoft.AspNetCore.Builder
                     }
                     else
                     {
-                        var img = new Base64StringImage(context.HttpContext.Request.Form["file"]);
+                        var blob = new Base64StringFile(context.HttpContext.Request.Form["file"]);
                         var f = new TModel
                         {
                             Time = DateTime.Now,
-                            ContentType = img.ContentType,
-                            ContentLength = img.ImageString.Length,
+                            ContentType = blob.ContentType,
+                            ContentLength = blob.Base64String.Length,
                             FileName = "file",
-                            Bytes = img.AllBytes
+                            Bytes = blob.AllBytes
                         };
+                        if (handler != null)
+                            f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
                         var id = bs.Set(f);
                         await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
                         {
@@ -780,20 +785,20 @@ namespace Microsoft.AspNetCore.Builder
 })(jQuery);
 
 (function($) {
-    $.fn.dragDropOrPaste = function(onUploading, onUploaded) {
+    $.fn.dragDropOrPaste = function(onUploading, onUploaded, postData) {
         var obj = this;
         this.dropper({
             action: '/" + controller + "/" + uploadAction + @"',
             maxQueue: 1,
-            postData: {}
+            postData: postData || {}
         })
         .on('fileStart.dropper', function (file) {
             if (onUploading)
-                onUploading(obj);
+                onUploading();
         })
         .on('fileComplete.dropper', function (file, res, ret) {
             if (onUploaded)
-                onUploaded(obj, ret);
+                onUploaded(ret);
         });
         
         this.pastableTextarea();
@@ -801,10 +806,14 @@ namespace Microsoft.AspNetCore.Builder
             var pos = obj.getCursorPosition();
             var str = obj.val();
             if (onUploading)
-                onUploading(obj);
-            $.post('/" + controller + "/" + uploadAction + @"', { file: data.dataURL }, function (result) {
+                onUploading();
+            var postargs = { };
+            for (var x in postData)
+                postargs[x] = postData[x];
+            postargs.file = data.dataURL;
+            $.post('/" + controller + "/" + uploadAction + @"', postargs, function (result) {
                 if (onUploaded)
-                    onUploaded(obj, result);
+                    onUploaded(result);
             }, 'json');
         });
     }
