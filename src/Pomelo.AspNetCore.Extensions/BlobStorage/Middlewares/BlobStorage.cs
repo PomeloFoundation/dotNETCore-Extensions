@@ -68,14 +68,7 @@ namespace Microsoft.AspNetCore.Builder
                         if (handler != null)
                             f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
                         var id = bs.Set(f);
-                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
-                        {
-                            id = id,
-                            name = f.FileName,
-                            type = f.ContentType,
-                            length = f.ContentLength,
-                            time = f.Time
-                        }));
+                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
                     }
                     else
                     {
@@ -362,18 +355,22 @@ namespace Microsoft.AspNetCore.Builder
 
         data.queue = newQueue;
 
-        for (var j in data.queue) {
+                for (var j in data.queue) {
             if (data.queue.hasOwnProperty(j)) {
                 if (!data.queue[j].started) {
-                    var formData = new FormData();
-
-                    formData.append(data.postKey, data.queue[j].file);
-
-                    for (var k in data.postData) {
-                        if (data.postData.hasOwnProperty(k)) {
-                            formData.append(k, data.postData[k]);
+                    var formData = function () {
+                        var fd = new FormData();
+                        fd.append(data.postKey, data.queue[j].file);
+                        if (!data.postData)
+                            return fd;
+                        var pd = data.postData();
+                        for (var k in pd) {
+                            if (pd.hasOwnProperty(k)) {
+                                fd.append(k, pd[k]);
+                            }
                         }
-                    }
+                        return fd;
+                    };
 
                     _uploadFile(data, data.queue[j], formData);
                 }
@@ -415,7 +412,7 @@ namespace Microsoft.AspNetCore.Builder
             file.started = true;
             file.transfer = $.ajax({
                 url: data.action,
-                data: formData,
+                data: formData(),
                 type: 'POST',
                 dataType: 'json',
                 contentType: false,
@@ -783,9 +780,17 @@ namespace Microsoft.AspNetCore.Builder
         this.dropper({
             action: '/" + controller + "/" + uploadAction + @"',
             maxQueue: 1,
-            postData: postData || {}
+            postData: postData || null
         })
         .on('fileStart.dropper', function (file) {
+            var postargs = { };
+            if (postData)
+            {
+                var pd = postData();
+                for (var x in pd)
+                    postargs[x] = pd[x];
+            }
+
             if (onUploading)
                 onUploading();
         })
@@ -798,11 +803,15 @@ namespace Microsoft.AspNetCore.Builder
         this.on('pasteImage', function (ev, data) {
             var pos = obj.getCursorPosition();
             var str = obj.val();
+            var postargs = { };
+            if (postData)
+            {
+                var pd = postData();
+                for (var x in pd)
+                    postargs[x] = pd[x];
+            }
             if (onUploading)
                 onUploading();
-            var postargs = { };
-            for (var x in postData)
-                postargs[x] = postData[x];
             postargs.file = data.dataURL;
             $.post('/" + controller + "/" + uploadAction + @"', postargs, function (result) {
                 if (onUploaded)
