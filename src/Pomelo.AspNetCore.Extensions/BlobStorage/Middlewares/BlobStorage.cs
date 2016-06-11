@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.AspNetCore.Extensions.BlobStorage;
 using Pomelo.AspNetCore.Extensions.BlobStorage.Models;
@@ -17,6 +15,7 @@ namespace Microsoft.AspNetCore.Builder
             where TModel : Blob, new()
         {
             #region Download
+
             var endpoint1 = new DelegateRouteEndpoint(async context => {
                 var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
                 var id = Guid.Parse(context.RouteData.Values["id"].ToString());
@@ -784,7 +783,7 @@ namespace Microsoft.AspNetCore.Builder
     $.fn.dragDropOrPaste = function(onUploading, onUploaded) {
         var obj = this;
         this.dropper({
-            action: '/"+controller+"/"+uploadAction+ @"',
+            action: '/" + controller + "/" + uploadAction + @"',
             maxQueue: 1,
             postData: {}
         })
@@ -813,12 +812,13 @@ namespace Microsoft.AspNetCore.Builder
                 });
             });
             #endregion
+
             return self.UseRouter(routeBuilder1.Build())
                 .UseRouter(routeBuilder2.Build());
         }
         public static IApplicationBuilder UseBlobStorage(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName = "file", string controller = "file", string downloadAction = "download", string uploadAction = "upload", string uploadRouteName = "FileUpload", string downloadRouteName = "FileDownload")
         {
-            return self.UseBlobStorage<Blob>();
+            return self.UseBlobStorage<Blob>(path, fileFormName, controller, downloadAction, uploadAction, uploadRouteName, downloadRouteName);
         }
     }
 }
