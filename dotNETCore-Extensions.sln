@@ -42,6 +42,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Algorithm.Geography"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.ReverseProxy", "src\Pomelo.AspNetCore.ReverseProxy\Pomelo.AspNetCore.ReverseProxy.xproj", "{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.TimedJob", "src\Pomelo.AspNetCore.TimedJob\Pomelo.AspNetCore.TimedJob.xproj", "{343BDEB6-9852-481F-9617-00293FCCAF26}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TimeJobSite", "test\WebSites\TimeJobSite\TimeJobSite.xproj", "{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +108,14 @@ Global
 		{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{343BDEB6-9852-481F-9617-00293FCCAF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{343BDEB6-9852-481F-9617-00293FCCAF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{343BDEB6-9852-481F-9617-00293FCCAF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{343BDEB6-9852-481F-9617-00293FCCAF26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,5 +136,7 @@ Global
 		{785A8FDC-9BF5-462D-8560-200CDB84397B} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{CD0CC8E5-4E99-4187-9ED0-F29FFCED89E1} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{EDDDEBB6-19D6-45F5-AA84-2F38096E9263} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
+		{343BDEB6-9852-481F-9617-00293FCCAF26} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
+		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 	EndGlobalSection
 EndGlobal
