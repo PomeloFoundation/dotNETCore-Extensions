@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Pomelo.AspNetCore.TimedJob.Jobs;
 
 namespace Pomelo.AspNetCore.TimedJob
@@ -13,7 +16,13 @@ namespace Pomelo.AspNetCore.TimedJob
 
         private IServiceProvider services { get; set; }
 
+        private IDynamicTimedJobProvider dynamicJobs { get; set; }
+
+        private ILogger logger { get; set; }
+
         public Dictionary<string, bool> JobStatus { get; private set; } = new Dictionary<string, bool>();
+
+        public Dictionary<string, Timer> JobTimers { get; private set; } = new Dictionary<string, Timer>();
 
         private List<TypeInfo> JobTypeCollection { get; set; } = new List<TypeInfo>();
 
@@ -23,38 +32,111 @@ namespace Pomelo.AspNetCore.TimedJob
         {
             this.services = services;
             this.locator = locator;
+            this.logger = services.GetService<ILogger>();
+            this.dynamicJobs = services.GetService<IDynamicTimedJobProvider>();
             var asm = locator.GetAssemblies();
-            var intervals = new List<int>();
-            foreach(var x in asm)
+            foreach (var x in asm)
             {
                 // 查找基类为Job的类
                 var types = x.DefinedTypes.Where(y => y.BaseType == typeof(Job)).ToList();
                 foreach (var y in types)
                 {
                     JobTypeCollection.Add(y);
-                    // 遍历类中public方法
-                    foreach (var z in y.DeclaredMethods)
-                    {
-                        if (z.GetCustomAttribute<NonJobAttribute>() == null)
-                        {
-                            JobStatus.Add(y.FullName + '.' + z.Name, false);
-                            var invoke = z.GetCustomAttribute<InvokeAttribute>();
-                            if (invoke != null)
-                            {
-                                intervals.Add(invoke.Interval);
-                            }
-                        }
-                    }
                 }
             }
+            StartHardTimers();
+            if (dynamicJobs != null)
+                StartDynamicTimers();
+        }
+
+        private void StartHardTimers()
+        {
+            foreach (var x in JobTypeCollection)
+            {
+                foreach (var y in x.DeclaredMethods)
+                {
+                    if (y.GetCustomAttribute<NonJobAttribute>() == null)
+                        {
+                            JobStatus.Add(x.FullName + '.' + y.Name, false);
+                            var invoke = y.GetCustomAttribute<InvokeAttribute>();
+                            if (invoke != null)
+                            {
+                                int delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds) % invoke.Interval;
+                                if (delta < 0) delta += invoke.Interval;
+                                Task.Factory.StartNew(() =>
+                                {
+                                    var timer = new Timer(t => {
+                                        Execute(x.FullName + '.' + y.Name);
+                                    }, null, delta, invoke.Interval);
+                                    JobTimers.Add(x.FullName + '.' + y.Name, timer);
+                                });
+                            }
+                        }
+                }
+            }
+        }
+
+        private void StartDynamicTimers()
+        {
+            var jobs = dynamicJobs.GetJobs();
+            foreach(var x in jobs)
+            {
+                // 如果Hard Timer已经启动则注销实例
+                if (JobTimers.ContainsKey(x.Id))
+                {
+                    JobTimers[x.Id].Dispose();
+                    JobStatus[x.Id] = false;
+                    JobTimers.Remove(x.Id);
+                    JobStatus.Remove(x.Id);
+                }
+                int delta = Convert.ToInt32((x.Begin - DateTime.Now).TotalMilliseconds) % x.Interval;
+                if (delta < 0) delta += x.Interval;
+                Task.Factory.StartNew(() =>
+                {
+                    var timer = new Timer(t => {
+                        Execute(x.Id);
+                    }, null, delta, x.Interval);
+                    JobTimers.Add(x.Id, timer);
+                });
+            }
+        }
+
+        public void RestartDynamicTimers()
+        {
+            var jobs = dynamicJobs.GetJobs();
+            foreach(var x in jobs)
+            {
+                if (JobTimers.ContainsKey(x.Id))
+                {
+                    JobTimers[x.Id].Dispose();
+                    JobStatus[x.Id] = false;
+                    JobTimers.Remove(x.Id);
+                    JobStatus.Remove(x.Id);
+                }
+            }
+            StartDynamicTimers();
         }
 
         public bool Execute(string identifier)
         {
             var typename = identifier.Substring(0, identifier.LastIndexOf('.'));
-            var function = identifier.Substring(identifier.LastIndexOf('.'));
-            var type = JobTypeCollection.Single(x => x.FullName == typename);
-            var argtypes = type.GetConstructors().First().GetGenericArguments().Select(x => services.GetService(x)).ToArray();
+            var function = identifier.Substring(identifier.LastIndexOf('.') + 1);
+            var type = JobTypeCollection.SingleOrDefault(x => x.FullName == typename);
+            if (type == null)
+            {
+                throw new NotImplementedException(typename + "." + function);
+            }
+            var argtypes = type.GetConstructors()
+                .First()
+                .GetParameters()
+                .Select(x => 
+                {
+                    if (x.ParameterType == typeof(IServiceProvider))
+                        return services;
+                    else
+                        return services.GetService(x.ParameterType);
+                })
+                .ToArray();
             var job = Activator.CreateInstance(type.AsType(), argtypes);
             var method = type.GetMethod(function);
             var paramtypes = method.GetParameters().Select(x => services.GetService(x.ParameterType)).ToArray();
@@ -65,9 +147,35 @@ namespace Pomelo.AspNetCore.TimedJob
                     return false;
                 JobStatus[identifier] = true;
             }
-            method.Invoke(job, paramtypes);
+            try
+            {
+                if (logger != null)
+                    logger.LogInformation("Invoking " + identifier + "...");
+                method.Invoke(job, paramtypes);
+            }
+            catch(Exception ex)
+            {
+                if (logger != null)
+                    logger.LogError(ex.ToString());
+            }
             JobStatus[identifier] = false;
             return true;
+        }
+
+        public List<string> GetJobFunctions()
+        {
+            var ret = new List<string>();
+            foreach (var x in JobTypeCollection)
+            {
+                foreach (var y in x.DeclaredMethods)
+                {
+                    if (y.GetCustomAttribute<NonJobAttribute>() == null)
+                    {
+                        ret.Add(x.FullName + '.' + y.Name);
+                    }
+                }
+            }
+            return ret;
         }
     }
 }

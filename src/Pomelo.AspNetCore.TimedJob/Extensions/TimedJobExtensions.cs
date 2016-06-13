@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddTimedJob(this IServiceCollection self)
         {
             return self.AddSingleton<IAssemblyLocator, DefaultAssemblyLocator>()
-                .AddSingleton(x => new TimedJobService(x.GetRequiredService<IAssemblyLocator>()));
+                .AddSingleton<TimedJobService>();
         }
     }
 }
