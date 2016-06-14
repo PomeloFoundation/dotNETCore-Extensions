@@ -56,22 +56,27 @@ namespace Pomelo.AspNetCore.TimedJob
                 foreach (var y in x.DeclaredMethods)
                 {
                     if (y.GetCustomAttribute<NonJobAttribute>() == null)
+                    {
+                        JobStatus.Add(x.FullName + '.' + y.Name, false);
+                        var invoke = y.GetCustomAttribute<InvokeAttribute>();
+                        if (invoke != null && invoke.IsEnabled)
                         {
-                            JobStatus.Add(x.FullName + '.' + y.Name, false);
-                            var invoke = y.GetCustomAttribute<InvokeAttribute>();
-                            if (invoke != null)
+                            int delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds);
+                            if (delta < 0)
                             {
-                                int delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds) % invoke.Interval;
-                                if (delta < 0) delta += invoke.Interval;
-                                Task.Factory.StartNew(() =>
-                                {
-                                    var timer = new Timer(t => {
-                                        Execute(x.FullName + '.' + y.Name);
-                                    }, null, delta, invoke.Interval);
-                                    JobTimers.Add(x.FullName + '.' + y.Name, timer);
-                                });
+                                delta = delta % invoke.Interval;
+                                if (delta < 0)
+                                    delta += invoke.Interval;
                             }
+                            Task.Factory.StartNew(() =>
+                            {
+                                var timer = new Timer(t => {
+                                    Execute(x.FullName + '.' + y.Name);
+                                }, null, delta, invoke.Interval);
+                                JobTimers.Add(x.FullName + '.' + y.Name, timer);
+                            });
                         }
+                    }
                 }
             }
         }
@@ -79,7 +84,7 @@ namespace Pomelo.AspNetCore.TimedJob
         private void StartDynamicTimers()
         {
             var jobs = dynamicJobs.GetJobs();
-            foreach(var x in jobs)
+            foreach (var x in jobs)
             {
                 // 如果Hard Timer已经启动则注销实例
                 if (JobTimers.ContainsKey(x.Id))
@@ -89,8 +94,13 @@ namespace Pomelo.AspNetCore.TimedJob
                     JobTimers.Remove(x.Id);
                     JobStatus.Remove(x.Id);
                 }
-                int delta = Convert.ToInt32((x.Begin - DateTime.Now).TotalMilliseconds) % x.Interval;
-                if (delta < 0) delta += x.Interval;
+                int delta = Convert.ToInt32((x.Begin - DateTime.Now).TotalMilliseconds);
+                if (delta < 0)
+                {
+                    delta = delta % x.Interval;
+                    if (delta < 0)
+                        delta += x.Interval;
+                }
                 Task.Factory.StartNew(() =>
                 {
                     var timer = new Timer(t => {
@@ -104,7 +114,7 @@ namespace Pomelo.AspNetCore.TimedJob
         public void RestartDynamicTimers()
         {
             var jobs = dynamicJobs.GetJobs();
-            foreach(var x in jobs)
+            foreach (var x in jobs)
             {
                 if (JobTimers.ContainsKey(x.Id))
                 {
@@ -129,7 +139,7 @@ namespace Pomelo.AspNetCore.TimedJob
             var argtypes = type.GetConstructors()
                 .First()
                 .GetParameters()
-                .Select(x => 
+                .Select(x =>
                 {
                     if (x.ParameterType == typeof(IServiceProvider))
                         return services;
@@ -153,7 +163,7 @@ namespace Pomelo.AspNetCore.TimedJob
                     logger.LogInformation("Invoking " + identifier + "...");
                 method.Invoke(job, paramtypes);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (logger != null)
                     logger.LogError(ex.ToString());
