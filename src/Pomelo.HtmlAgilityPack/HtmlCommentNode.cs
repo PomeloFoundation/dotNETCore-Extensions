@@ -1,4 +1,5 @@
-// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+// Copyright (c) Pomelo Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 namespace Pomelo.HtmlAgilityPack
 {
     /// <summary>

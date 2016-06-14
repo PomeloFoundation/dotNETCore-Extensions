@@ -3,6 +3,7 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
+    "Microsoft.EntityFrameworkCore": "1.0.0-rc2-final",
     "Pomelo.AntiXss": "1.0.0-*"
   },
 
@@ -12,7 +13,11 @@
       "dependencies": {
         "NETStandard.Library": "1.5.0-rc2-24027"
       },
-      "imports": "dnxcore50"
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
     }
   }
 }

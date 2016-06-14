@@ -1,18 +1,14 @@
-// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
-
-#region
-
+// Copyright (c) Pomelo Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 using System;
 using System.Diagnostics;
-
-#endregion
-// ReSharper disable InconsistentNaming
 
 namespace Pomelo.HtmlAgilityPack
 {
     /// <summary>
     /// Represents an HTML attribute.
     /// </summary>
+    [DebuggerDisplay("Name: {OriginalName}, Value: {Value}")]
     public class HtmlAttribute : IComparable
     {
         #region Fields

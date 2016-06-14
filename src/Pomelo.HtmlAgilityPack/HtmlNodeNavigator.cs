@@ -1,4 +1,4 @@
-// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -135,6 +135,7 @@ namespace Pomelo.HtmlAgilityPack
         /// <param name="path">The complete file path to be read.</param>
         public HtmlNodeNavigator(string path)
         {
+            _doc.Load(path);
             Reset();
         }
 
@@ -145,6 +146,7 @@ namespace Pomelo.HtmlAgilityPack
         /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
         public HtmlNodeNavigator(string path, bool detectEncodingFromByteOrderMarks)
         {
+            _doc.Load(path, detectEncodingFromByteOrderMarks);
             Reset();
         }
 
@@ -155,6 +157,7 @@ namespace Pomelo.HtmlAgilityPack
         /// <param name="encoding">The character encoding to use.</param>
         public HtmlNodeNavigator(string path, Encoding encoding)
         {
+            _doc.Load(path, encoding);
             Reset();
         }
 
@@ -166,6 +169,7 @@ namespace Pomelo.HtmlAgilityPack
         /// <param name="detectEncodingFromByteOrderMarks">Indicates whether to look for byte order marks at the beginning of the file.</param>
         public HtmlNodeNavigator(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks)
         {
+            _doc.Load(path, encoding, detectEncodingFromByteOrderMarks);
             Reset();
         }
 
@@ -178,6 +182,7 @@ namespace Pomelo.HtmlAgilityPack
         /// <param name="buffersize">The minimum buffer size.</param>
         public HtmlNodeNavigator(string path, Encoding encoding, bool detectEncodingFromByteOrderMarks, int buffersize)
         {
+            _doc.Load(path, encoding, detectEncodingFromByteOrderMarks, buffersize);
             Reset();
         }
 
@@ -715,7 +720,12 @@ namespace Pomelo.HtmlAgilityPack
             {
                 return;
             }
-            //string name = sf.GetMethod().Name;
+#if NET40 || NET451
+            StackFrame sf = new StackFrame(1, true);
+            string name = sf.GetMethod().Name;
+#else
+            string name = string.Empty;
+#endif
             string nodename = _currentnode == null ? "(null)" : _currentnode.Name;
             string nodevalue;
             if (_currentnode == null)
@@ -743,6 +753,8 @@ namespace Pomelo.HtmlAgilityPack
                         break;
                 }
             }
+           
+            HtmlAgilityPack.Trace.WriteLine(string.Format("oid={0},n={1},a={2},v={3},{4}", GetHashCode(), nodename, _attindex, nodevalue, traceValue), "N!" + name);
         }
 
         #endregion

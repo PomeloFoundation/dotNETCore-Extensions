@@ -1,11 +1,11 @@
-// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
-// ReSharper disable InconsistentNaming
+
 namespace Pomelo.HtmlAgilityPack
 {
 	/// <summary>
@@ -1439,12 +1439,8 @@ namespace Pomelo.HtmlAgilityPack
 				case HtmlNodeType.Document:
 					if (_ownerdocument.OptionOutputAsXml)
 					{
-#if SILVERLIGHT || PocketPC || METRO
-						//outText.Write("<?xml version=\"1.0\" encoding=\"" + _ownerdocument.GetOutEncoding().WebName +
-									 "\"?>");
-#else
-						//outText.Write("<?xml version=\"1.0\" encoding=\"" + _ownerdocument.GetOutEncoding().BodyName + "\"?>");
-#endif
+						outText.Write("<?xml version=\"1.0\" encoding=\"" + _ownerdocument.GetOutEncoding().WebName +
+									  "\"?>");
 						// check there is a root element
 						if (_ownerdocument.DocumentNode.HasChildNodes)
 						{
@@ -1570,6 +1566,9 @@ namespace Pomelo.HtmlAgilityPack
 					break;
 
 				case HtmlNodeType.Document:
+					writer.WriteProcessingInstruction("xml",
+												 "version=\"1.0\" encoding=\"" +
+												 _ownerdocument.GetOutEncoding().WebName + "\"");
 
 					if (HasChildNodes)
 					{

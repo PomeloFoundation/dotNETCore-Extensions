@@ -1,29 +1,32 @@
 ﻿{
-  "version": "1.0.0-rc2-final",
+    "version": "1.0.0-rc2-final",
 
   "dependencies": {
   },
 
   "frameworks": {
+    "net40": {
+      "frameworkAssemblies": {
+        "System.Xml": "4.0.0.0",
+        "System.Security": "4.0.0.0",
+        "System.Net": "4.0.0.0"
+      }
+    },
     "net451": {
       "frameworkAssemblies": {
-        "System.Xml": "4.0.0.0"
+        "System.Xml": "4.0.0.0",
+        "System.Security": "4.0.0.0",
+        "System.Net.Http": "4.0.0.0"
       }
     },
     "netstandard1.5": {
       "dependencies": {
         "NETStandard.Library": "1.5.0-rc2-24027",
-        "System.Xml.XPath.XDocument": "4.0.1-rc2-24027",
+        "System.Diagnostics.TraceSource": "4.0.0-rc2-24027",
         "System.Xml.XmlDocument": "4.0.1-rc2-24027",
-        "System.Xml.XDocument": "4.0.11-rc2-24027",
-        "System.Xml.ReaderWriter": "4.0.11-rc2-24027",
-        "System.Xml.XPath.XmlDocument": "4.0.1-rc2-24027",
         "System.Xml.XPath": "4.0.1-rc2-24027",
-        "System.Xml.XmlSerializer": "4.0.11-rc2-24027",
-        "System.Collections": "4.0.11-rc2-24027",
-        "System.Linq": "4.1.0-rc2-24027",
-        "System.Runtime": "4.1.0-rc2-24027",
-        "System.Threading": "4.0.11-rc2-24027"
+        "System.Xml.XPath.XmlDocument": "4.0.1-rc2-24027",
+        "System.Net.Http": "4.0.1-rc2-24027"
       },
       "imports": "dnxcore50"
     }

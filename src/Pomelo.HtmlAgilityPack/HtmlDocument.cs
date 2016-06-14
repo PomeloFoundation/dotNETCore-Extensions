@@ -1,4 +1,4 @@
-// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +16,7 @@ namespace Pomelo.HtmlAgilityPack
 		#region Fields
 
 		private int _c;
+		private Crc32 _crc32;
 		private HtmlAttribute _currentattribute;
 		private HtmlNode _currentnode;
 		private Encoding _declaredencoding;
@@ -146,10 +147,10 @@ namespace Pomelo.HtmlAgilityPack
 		public HtmlDocument()
 		{
 			_documentnode = CreateNode(HtmlNodeType.Document, 0);
-#if SILVERLIGHT || METRO
+#if NETSTANDARD1_5
             OptionDefaultStreamEncoding =Encoding.UTF8;
 #else
-			OptionDefaultStreamEncoding = Encoding.UTF8;
+			OptionDefaultStreamEncoding = Encoding.Default;
 #endif
 
 		}
@@ -163,7 +164,7 @@ namespace Pomelo.HtmlAgilityPack
 		/// </summary>
 		public int CheckSum
 		{
-			get { return 0; }
+			get { return _crc32 == null ? 0 : (int)_crc32.CheckSum; }
 		}
 
 		/// <summary>
@@ -460,9 +461,9 @@ namespace Pomelo.HtmlAgilityPack
 			{
 				Parse();
 			}
-			catch (Exception ex)
+			catch (EncodingFoundException ex)
 			{
-				return Encoding.UTF8;
+				return ex.Encoding;
 			}
 			return null;
 		}
@@ -1031,6 +1032,12 @@ namespace Pomelo.HtmlAgilityPack
 
 		private void IncrementPosition()
 		{
+			if (_crc32 != null)
+			{
+				// REVIEW: should we add some checksum code in DecrementPosition too?
+				_crc32.AddToCRC32(_c);
+			}
+
 			_index++;
 			_maxlineposition = _lineposition;
 			if (_c == 10)
@@ -1112,6 +1119,10 @@ namespace Pomelo.HtmlAgilityPack
 		private void Parse()
 		{
 			int lastquote = 0;
+			if (OptionComputeChecksum)
+			{
+				_crc32 = new Crc32();
+			}
 
 			Lastnodes = new Dictionary<string, HtmlNode>();
 			_c = 0;
@@ -1656,18 +1667,13 @@ namespace Pomelo.HtmlAgilityPack
 					}
 					if (_onlyDetectEncoding)
 					{
-						throw new Exception("");
+						throw new EncodingFoundException(_declaredencoding);
 					}
 
 					if (_streamencoding != null)
 					{
-#if SILVERLIGHT || PocketPC || METRO
-						if (_declaredencoding.WebName != _streamencoding.WebName)
-#else
 						if (_declaredencoding != null)
-							if (false)
-                            //if (_declaredencoding.WindowsCodePage != _streamencoding.WindowsCodePage)
-#endif
+							if (_declaredencoding.CodePage != _streamencoding.CodePage)
 							{
 								AddError(
 									HtmlParseErrorCode.CharsetMismatch,

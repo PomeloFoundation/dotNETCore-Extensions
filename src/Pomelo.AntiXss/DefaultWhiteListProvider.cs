@@ -65,5 +65,9 @@ namespace Pomelo.AntiXSS
             {"ins", new string[]        {"style", "class"}},
             {"address",new string[]{"style","class"}}
         };
+
+        public void Refresh()
+        { 
+        }
     }
 }

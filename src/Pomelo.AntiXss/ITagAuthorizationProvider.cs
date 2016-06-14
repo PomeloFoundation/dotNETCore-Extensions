@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Pomelo.AntiXSS
 {
-    public interface IWhiteListProvider
+    public interface ITagAuthorizationProvider
     {
-        IDictionary<string, string[]> WhiteList { get; }
+        bool IsAbleToUse(string tag);
 
-        void Refresh();
+        bool IsAbleToUse(string tag, string attribute);
     }
 }
