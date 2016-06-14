@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.AntiXSS;
+using Pomelo.AspNetCore.AntiXSS.EntityFramework;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
@@ -29,7 +31,27 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddAntiXss(this IServiceCollection self)
         {
-            return self.AddSingleton<IWhiteListProvider>(new DefaultWhiteListProvider())
+            return self.AddScoped<IWhiteListProvider, DefaultWhiteListProvider>()
+                .AddScoped<ITagAuthorizationProvider, DefaultTagAuthorizationProvider>()
+                .AddSingleton<AntiXSS>();
+        }
+
+        public static IServiceCollection AddEntityFrameworkWhiteList<TContext, TUser, TKey>(this IServiceCollection self)
+            where TContext : IAntiXSSDbContext
+            where TUser : IdentityUserRole<TKey>
+            where TKey : IEquatable<TKey>
+
+        {
+            return self.AddScoped<IWhiteListProvider, EntityFrameworkWhiteListProvider<TContext>>()
+                .AddScoped<ITagAuthorizationProvider, EntityFrameworkTagAuthorizationProvider<TContext, TUser, TKey>>()
+                .AddSingleton<AntiXSS>();
+        }
+
+        public static IServiceCollection AddEntityFrameworkWhiteList<TContext>(this IServiceCollection self)
+            where TContext : IAntiXSSDbContext
+        {
+            return self.AddScoped<IWhiteListProvider, EntityFrameworkWhiteListProvider<TContext>>()
+                .AddScoped<ITagAuthorizationProvider, DefaultTagAuthorizationProvider>()
                 .AddSingleton<AntiXSS>();
         }
     }

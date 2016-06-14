@@ -13,9 +13,6 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
 
         [MaxLength(128)]
         public string RoleRequired { get; set; }
-
-        [MaxLength(128)]
-        public string ClaimRequired { get; set; }
         
         public virtual ICollection<WhiteListAttribute> Attributes { get; set; } = new List<WhiteListAttribute>();
     }

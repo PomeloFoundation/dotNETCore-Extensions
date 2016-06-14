@@ -17,9 +17,6 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
         [MaxLength(128)]
         public string RoleRequired { get; set; }
 
-        [MaxLength(128)]
-        public string ClaimRequired { get; set; }
-
         [MaxLength(64)]
         [ForeignKey("Tag")]
         public string TagId { get; set; }

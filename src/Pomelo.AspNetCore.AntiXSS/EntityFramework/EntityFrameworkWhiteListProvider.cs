@@ -4,9 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.AntiXSS;
-using Pomelo.AspNetCore.AntiXSS.EntityFramework;
 
-namespace Pomelo.AspNetCore.AntiXSS
+namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
 {
     public class EntityFrameworkWhiteListProvider<TContext> : IWhiteListProvider
         where TContext : IAntiXSSDbContext
