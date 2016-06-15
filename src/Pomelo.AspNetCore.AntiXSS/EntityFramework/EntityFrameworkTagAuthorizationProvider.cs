@@ -12,7 +12,7 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
 {
     public class EntityFrameworkTagAuthorizationProvider<TContext, TUser, TKey> : ITagAuthorizationProvider
         where TContext : IAntiXSSDbContext
-        where TUser : IdentityUserRole<TKey>
+        where TUser : IdentityUser<TKey>
         where TKey : IEquatable<TKey>
     {
         private TContext DB { get; set; }
@@ -26,25 +26,24 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
             this.claimType = ClaimType;
         }
 
-        public bool IsAbleToUse(string tag)
+        public bool IsAbleToUse(string tag, object UserId = null)
         {
-            var task = _IsAbleToUse(tag);
+            var task = _IsAbleToUse(tag, UserId);
             task.Wait();
             return task.Result;
         }
 
-        public async Task<bool> _IsAbleToUse(string tag)
+        public async Task<bool> _IsAbleToUse(string tag, object UserId = null)
         {
             try
             {
                 var t = DB.WhiteListTags.SingleOrDefault(x => x.Id == tag);
                 if (t == null) return false;
                 if (string.IsNullOrEmpty(t.RoleRequired)) return true;
-                var accessor = services.GetService<IHttpContextAccessor>();
-                if (accessor == null) return false;
-                if (!accessor.HttpContext.User.Identity.IsAuthenticated) return false;
+                if (UserId == null)
+                    return false;
                 var UserManager = services.GetRequiredService<UserManager<TUser>>();
-                var user = await UserManager.GetUserAsync(accessor.HttpContext.User);
+                var user = await UserManager.FindByIdAsync(UserId.ToString());
                 var claims = await UserManager.GetClaimsAsync(user);
                 var claimflag = claims.Where(x => x.Type == claimType && x.Value == tag).Count() > 0;
                 var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == t.RoleRequired).Count() > 0;
@@ -57,22 +56,22 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
             }
         }
 
-        public bool IsAbleToUse(string tag, string attribute)
+        public bool IsAbleToUse(string tag, string attribute, object UserId = null)
         {
-            var task = _IsAbleToUse(tag, attribute);
+            var task = _IsAbleToUse(tag, attribute, UserId);
             task.Wait();
             return task.Result;
         }
-        public async Task<bool> _IsAbleToUse(string tag, string attribute)
+
+        public async Task<bool> _IsAbleToUse(string tag, string attribute, object UserId = null)
         {
             var t = DB.WhiteListAttributes.SingleOrDefault(x => x.TagId == tag && x.Attribute == attribute);
             if (t == null) return false;
             if (string.IsNullOrEmpty(t.RoleRequired)) return true;
-            var accessor = services.GetService<IHttpContextAccessor>();
-            if (accessor == null) return false;
-            if (!accessor.HttpContext.User.Identity.IsAuthenticated) return false;
+            if (UserId == null)
+                return false;
             var UserManager = services.GetRequiredService<UserManager<TUser>>();
-            var user = await UserManager.GetUserAsync(accessor.HttpContext.User);
+            var user = await UserManager.FindByIdAsync(UserId.ToString());
             var claims = await UserManager.GetClaimsAsync(user);
             var claimflag = claims.Where(x => x.Type == claimType && x.Value == tag + "[" + attribute + "]").Count() > 0;
             var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == t.RoleRequired).Count() > 0;

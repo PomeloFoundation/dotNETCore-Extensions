@@ -1,0 +1,11 @@
+﻿<html>
+<head>
+</head>
+<body>
+    <h2>Admin</h2>
+        @Html.Sanitize("<div style=\"background: red; height: 300px; width: 300px\" data-test=\"xss\">1234</div><script>alert('xss');</script>", "00000000-0000-0000-0000-000000000000")
+    <hr />
+    <h2>Plain</h2>
+        @Html.Sanitize("<div style=\"background: red; height: 300px; width: 300px\" data-test=\"xss\">1234</div><script>alert('xss');</script>", "00000000-0000-0000-0000-000000000000")
+</body>
+</html>

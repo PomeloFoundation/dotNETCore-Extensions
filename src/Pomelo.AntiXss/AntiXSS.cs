@@ -33,7 +33,7 @@ namespace Pomelo.AntiXSS
         public AntiXSS(IWhiteListProvider whiteListProvider, ITagAuthorizationProvider authProvider)
         {
             WhiteListProvider = whiteListProvider;
-            AuthProvider = AuthProvider;
+            AuthProvider = authProvider;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Pomelo.AntiXSS
         /// </summary>
         /// <param name="Html">Html</param>
         /// <returns></returns>
-        public string Sanitize(string Html)
+        public string Sanitize(string Html, object UserId = null)
         {
             return SanitizeHtml(Html, WhiteList);
         }

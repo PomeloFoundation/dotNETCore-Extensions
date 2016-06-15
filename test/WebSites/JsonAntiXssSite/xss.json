@@ -1,0 +1,16 @@
+﻿{
+  "tr": [ "class", "style" ],
+  "td": {
+    "role": "admin",
+    "attributes": [ "class", "style" ]
+  },
+  "div": {
+    "role": "admin",
+    "attributes": [
+      {
+        "attribute": "style",
+        "role": "admin"
+      }
+    ]
+  }
+}
