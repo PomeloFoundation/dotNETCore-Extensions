@@ -31,7 +31,7 @@ namespace JsonAntiXssSite
                 .AddEntityFrameworkStores<JsonAntiXssContext>();
 
             services.AddAntiXss()
-                .AddJsonWhiteList();
+                .AddJsonWhiteList<IdentityUser, string>();
         }
         
         public void Configure(IApplicationBuilder app)

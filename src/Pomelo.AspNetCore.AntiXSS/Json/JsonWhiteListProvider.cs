@@ -27,7 +27,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
         {
             var ret = new Dictionary<string, string[]>();
             var jsonStr = System.IO.File.ReadAllText(Path);
-            var RawWhiteList = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(jsonStr);
+            RawWhiteList = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(jsonStr);
             foreach(var x in RawWhiteList)
             {
                 if (!ret.ContainsKey(x.Key))
