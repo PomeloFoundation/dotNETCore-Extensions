@@ -17,7 +17,7 @@ namespace JsonAntiXssSite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddDbContext<>();
+            services.AddDbContext<JsonAntiXssContext>();
             services.AddIdentity<IdentityUser, IdentityRole>(x =>
             {
                 x.Password.RequireDigit = false;

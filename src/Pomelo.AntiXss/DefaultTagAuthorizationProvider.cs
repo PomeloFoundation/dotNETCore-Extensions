@@ -7,11 +7,11 @@ namespace Pomelo.AntiXSS
 {
     public class DefaultTagAuthorizationProvider : ITagAuthorizationProvider
     {
-        public bool IsAbleToUse(string tag)
+        public bool IsAbleToUse(string tag, object UserId = null)
         {
             return true;
         }
-        public bool IsAbleToUse(string tag, string attribute)
+        public bool IsAbleToUse(string tag, string attribute, object UserId = null)
         {
             return true;
         }
