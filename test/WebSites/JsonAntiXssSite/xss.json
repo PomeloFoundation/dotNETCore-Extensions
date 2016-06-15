@@ -1,15 +1,14 @@
 ﻿{
   "tr": [ "class", "style" ],
   "td": {
-    "role": "admin",
+    "role": "Root",
     "attributes": [ "class", "style" ]
   },
   "div": {
-    "role": "admin",
     "attributes": [
       {
         "attribute": "style",
-        "role": "admin"
+        "role": "Root"
       }
     ]
   }

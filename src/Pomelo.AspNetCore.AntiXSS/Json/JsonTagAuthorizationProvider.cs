@@ -48,7 +48,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
             {
                 return true;
             }
-            if (role == null) return false;
+            if (role == null) return true;
             if (UserId==null)
                 return false;
             var UserManager = services.GetRequiredService<UserManager<TUser>>();
@@ -114,7 +114,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
                 }
             }
             
-            if (role == null) return false;
+            if (role == null) return true;
             if (UserId == null)
                 return false;
             var UserManager = services.GetRequiredService<UserManager<TUser>>();

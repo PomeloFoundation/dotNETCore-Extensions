@@ -43,7 +43,7 @@ namespace Pomelo.AntiXSS
         /// <returns></returns>
         public string Sanitize(string Html, object UserId = null)
         {
-            return SanitizeHtml(Html, WhiteList);
+            return SanitizeHtml(Html, UserId);
         }
 
         private static volatile AntiXSS _instance;
@@ -56,10 +56,9 @@ namespace Pomelo.AntiXSS
         /// </summary>
         /// <param name="source">Html source</param>
         /// <returns>Clean output</returns>
-        public string SanitizeHtml(string source, IDictionary<string, string[]> WhiteListDic = null)
+        public string SanitizeHtml(string source, object UserId = null)
         {
-            if (WhiteListDic == null)
-                WhiteListDic = WhiteList;
+            var WhiteListDic = WhiteList;
 
             HtmlDocument html = GetHtml(source);
             if (html == null) return string.Empty;
@@ -72,7 +71,7 @@ namespace Pomelo.AntiXSS
                                   select kv.Key).ToArray();
 
             // Scrub tags not in whitelist
-            CleanNodes(allNodes, whitelist);
+            CleanNodes(allNodes, whitelist, UserId);
 
             // Filter the attributes of the remaining
             foreach (KeyValuePair<string, string[]> tag in WhiteListDic)
@@ -94,7 +93,7 @@ namespace Pomelo.AntiXSS
                     foreach (HtmlAttribute a in attr)
                     {
                         // Checking the attribute whitelist and authorization by Yuuko
-                        if (!tag.Value.Contains(a.Name) || (tag.Value.Contains(a.Name) && !AuthProvider.IsAbleToUse(tag.Key, a.Name)))
+                        if (!tag.Value.Contains(a.Name) || (tag.Value.Contains(a.Name) && !AuthProvider.IsAbleToUse(tag.Key, a.Name, UserId)))
                         {
                             a.Remove(); // Attribute wasn't in the whitelist
                         }
@@ -163,12 +162,12 @@ namespace Pomelo.AntiXSS
         /// <summary>
         /// Recursively delete nodes not in the whitelist
         /// </summary>
-        private void CleanNodes(HtmlNode node, string[] whitelist)
+        private void CleanNodes(HtmlNode node, string[] whitelist, object UserId = null)
         {
             if (node.NodeType == HtmlNodeType.Element)
             {
                 // Checking the white list and authorization by Yuuko
-                if (!whitelist.Contains(node.Name) || (whitelist.Contains(node.Name) && !AuthProvider.IsAbleToUse(node.Name)))
+                if (!whitelist.Contains(node.Name) || (whitelist.Contains(node.Name) && !AuthProvider.IsAbleToUse(node.Name, UserId)))
                 {
                     node.ParentNode.RemoveChild(node);
                     return; // We're done
@@ -176,16 +175,16 @@ namespace Pomelo.AntiXSS
             }
 
             if (node.HasChildNodes)
-                CleanChildren(node, whitelist);
+                CleanChildren(node, whitelist, UserId);
         }
 
         /// <summary>
         /// Apply CleanNodes to each of the child nodes
         /// </summary>
-        private void CleanChildren(HtmlNode parent, string[] whitelist)
+        private void CleanChildren(HtmlNode parent, string[] whitelist, object UserId = null)
         {
             for (int i = parent.ChildNodes.Count - 1; i >= 0; i--)
-                CleanNodes(parent.ChildNodes[i], whitelist);
+                CleanNodes(parent.ChildNodes[i], whitelist, UserId);
         }
 
         /// <summary>
