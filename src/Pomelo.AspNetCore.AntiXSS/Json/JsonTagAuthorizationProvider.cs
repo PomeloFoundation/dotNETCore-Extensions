@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,12 +38,19 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
         public async Task<bool> _IsAbleToUse(string tag, object UserId = null)
         {
             if (!whitelist.RawWhiteList.ContainsKey(tag)) return false;
-            string role = null;
+            string[] role = null;
             if (whitelist.RawWhiteList[tag].Type == Newtonsoft.Json.Linq.JTokenType.Array)
                 return true;
             try
             {
-                role = whitelist.RawWhiteList[tag].role;
+                if (whitelist.RawWhiteList[tag].role.Type == Newtonsoft.Json.Linq.JTokenType.String)
+                {
+                    role = new string[] { whitelist.RawWhiteList[tag].role.ToString() };
+                }
+                else
+                {
+                    role = whitelist.RawWhiteList[tag].role.ToObject<string[]>();
+                }
             }
             catch
             {
@@ -55,7 +63,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
             var user = await UserManager.FindByIdAsync(UserId.ToString());
             var claims = await UserManager.GetClaimsAsync(user);
             var claimflag = claims.Where(x => x.Type == ClaimType && x.Value == tag).Count() > 0;
-            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == role).Count() > 0;
+            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => role.Contains(x)).Count() > 0;
             if (claimflag || roleflag) return true;
             return false;
         }
@@ -70,7 +78,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
         public async Task<bool> _IsAbleToUse(string tag, string attribute, object UserId = null)
         {
             if (!whitelist.RawWhiteList.ContainsKey(tag)) return false;
-            string role = null;
+            string[] role = null;
             if (whitelist.RawWhiteList[tag].Type == Newtonsoft.Json.Linq.JTokenType.Array)
             {
                 foreach (var x in whitelist.RawWhiteList[tag])
@@ -82,7 +90,14 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
                     {
                         try
                         {
-                            role = x.role;
+                            if (x.role.Type == Newtonsoft.Json.Linq.JTokenType.String)
+                            {
+                                role = new string[] { x.role.ToString() };
+                            }
+                            else
+                            {
+                                role = x.role.ToObject<string[]>();
+                            }
                             break;
                         }
                         catch
@@ -103,10 +118,17 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
                     {
                         try
                         {
-                            role = x.role;
+                            if (x.role.Type == Newtonsoft.Json.Linq.JTokenType.String)
+                            {
+                                role = new string[] { x.role.ToString() };
+                            }
+                            else
+                            {
+                                role = x.role.ToObject<string[]>();
+                            }
                             break;
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             return true;
                         }
@@ -121,7 +143,7 @@ namespace Pomelo.AspNetCore.AntiXSS.Json
             var user = await UserManager.FindByIdAsync(UserId.ToString());
             var claims = await UserManager.GetClaimsAsync(user);
             var claimflag = claims.Where(x => x.Type == ClaimType && x.Value == tag + "[" + attribute + "]").Count() > 0;
-            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == role).Count() > 0;
+            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => role.Contains(x)).Count() > 0;
             if (claimflag || roleflag) return true;
             return false;
         }

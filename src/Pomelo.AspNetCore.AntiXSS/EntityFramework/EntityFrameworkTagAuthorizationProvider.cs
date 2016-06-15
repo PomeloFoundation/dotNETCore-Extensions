@@ -42,11 +42,12 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
                 if (string.IsNullOrEmpty(t.RoleRequired)) return true;
                 if (UserId == null)
                     return false;
+                var roles = t.RoleRequired.Split(',').Select(x => x.Trim());
                 var UserManager = services.GetRequiredService<UserManager<TUser>>();
                 var user = await UserManager.FindByIdAsync(UserId.ToString());
                 var claims = await UserManager.GetClaimsAsync(user);
                 var claimflag = claims.Where(x => x.Type == claimType && x.Value == tag).Count() > 0;
-                var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == t.RoleRequired).Count() > 0;
+                var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => roles.Contains(x)).Count() > 0;
                 if (claimflag || roleflag) return true;
                 return false;
             }
@@ -70,11 +71,12 @@ namespace Pomelo.AspNetCore.AntiXSS.EntityFramework
             if (string.IsNullOrEmpty(t.RoleRequired)) return true;
             if (UserId == null)
                 return false;
+            var roles = t.RoleRequired.Split(',').Select(x => x.Trim());
             var UserManager = services.GetRequiredService<UserManager<TUser>>();
             var user = await UserManager.FindByIdAsync(UserId.ToString());
             var claims = await UserManager.GetClaimsAsync(user);
             var claimflag = claims.Where(x => x.Type == claimType && x.Value == tag + "[" + attribute + "]").Count() > 0;
-            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => x == t.RoleRequired).Count() > 0;
+            var roleflag = (await UserManager.GetRolesAsync(user)).Where(x => roles.Contains(x)).Count() > 0;
             if (claimflag || roleflag) return true;
             return false;
         }
