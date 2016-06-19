@@ -7,6 +7,11 @@ namespace Pomelo.Net.Smtp
 {
     public abstract class EmailSender : IEmailSender
     {
+        public Task SendEmailAsync(string to, string subject, string message, params Attachment[] Attachments)
+        {
+            return SendEmailAsync(to, null, null, Attachments);
+        }
+
         public virtual Task SendEmailAsync(string to, string cc, string bcc, string subject, string message, params Attachment[] Attachments)
         {
             var _to = new string[0];
