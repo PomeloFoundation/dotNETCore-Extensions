@@ -26,8 +26,6 @@ namespace Pomelo.AspNetCore.TimedJob
 
         private List<TypeInfo> JobTypeCollection { get; set; } = new List<TypeInfo>();
 
-        private int lcm { get; set; } = 1000;
-
         public TimedJobService(IAssemblyLocator locator, IServiceProvider services)
         {
             this.services = services;
