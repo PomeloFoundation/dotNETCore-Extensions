@@ -2,6 +2,9 @@
   "version": "1.0.0-rc2-final",
 
   "dependencies": {
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0-rc2-final",
+    "Pomelo.AspNetCore.Common": "1.0.0-rc2-final",
+    "Pomelo.Extensions.Common": "1.0.0-rc2-final"
   },
 
   "frameworks": {

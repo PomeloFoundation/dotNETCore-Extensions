@@ -129,9 +129,13 @@ namespace Pomelo.AspNetCore.Statistics
                     var end = userAgent.IndexOf(" ", begin);
                     if (end < begin) end = userAgent.Length;
                     ret.Version = userAgent.Substring(begin, end - begin);
+                    return ret;
                 }
                 ret.Name = "Linux";
+                ret.Version = "Unknown";
+                return ret;
             }
+            return ret;
         }
     }
 }

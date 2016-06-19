@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace Pomelo.Net.Smtp
 {
-    public interface IEmailSender
+    public class Attachment
     {
-        Task SendEmailAsync(string email, string subject, string message, params Attachment[] Attachments);
+        public string FileName { get; set; }
+        
+        public byte[] File { get; set; }
     }
 }
