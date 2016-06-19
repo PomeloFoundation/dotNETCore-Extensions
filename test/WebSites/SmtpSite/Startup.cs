@@ -27,8 +27,8 @@ namespace SmtpSite
             var Env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
             var Email = app.ApplicationServices.GetRequiredService<IEmailSender>();
             var atta = new Attachment { FileName = "Avatar.png", File = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Env.ContentRootPath, "avatar.png")) };
-            Email.SendEmailAsync("911574351@qq.com", "测试不带有附件的电子邮件发送", "<h2>Email testing without attachment</h2>");
-            Email.SendEmailAsync("911574351@qq.com", "测试带有附件的电子邮件发送", "<h2>Email testing with attachment</h2>", atta);
+            Email.SendEmailAsync("1@1234.sh", null, "911574351@qq.com, 18903616070@189.cn", "测试不带有附件的电子邮件发送", "<h2>Email testing without attachment</h2>");
+            Email.SendEmailAsync("1@1234.sh", null, "911574351@qq.com, 18903616070@189.cn", "测试带有附件的电子邮件发送", "<h2>Email testing with attachment</h2>", atta);
         }
     }
 }

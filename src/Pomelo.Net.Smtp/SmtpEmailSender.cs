@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace Pomelo.Net.Smtp
 {
-    public class SmtpEmailSender : IEmailSender
+    public class SmtpEmailSender : EmailSender
     {
         public SmtpEmailSender(IContentTypeProvider ctp, string Server, int Port, string SenderName, string SenderEmail, string UserName, string Password, bool SSL = false)
         {
@@ -34,7 +34,7 @@ namespace Pomelo.Net.Smtp
         private string pwd;
         private string boundary = "--------------=Pomelo_" + DateTime.Now.ToTimeStamp();
 
-        public Task SendEmailAsync(string email, string subject, string message, params Attachment[] Attachments)
+        public override Task SendEmailAsync(string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
         {
             if (!ssl)
                 return Task.Factory.StartNew(async () =>
@@ -46,7 +46,7 @@ namespace Pomelo.Net.Smtp
                         using (var reader = new StreamReader(stream))
                         using (var writer = new StreamWriter(stream) { AutoFlush = true, NewLine = "\r\n" })
                         {
-                            TcpWrite(writer, reader, email, subject, message, Attachments);
+                            TcpWrite(writer, reader, to, cc, bcc, subject, message, Attachments);
                         }
                     }
                 });
@@ -62,39 +62,65 @@ namespace Pomelo.Net.Smtp
                             using (var reader = new StreamReader(stream))
                             using (var writer = new StreamWriter(stream) { AutoFlush = true, NewLine = "\r\n" })
                             {
-                                TcpWrite(writer, reader, email, subject, message, Attachments);
+                                TcpWrite(writer, reader, to, cc, bcc, subject, message, Attachments);
                             }
                         }
                     }
                 });
         }
 
-        private void TcpWrite(StreamWriter writer, StreamReader reader, string email, string subject, string message, params Attachment[] Attachments)
+        private string GetName(string email)
         {
-            reader.ReadLine();
+            return email.Split('@')[0];
+        }
+
+        private string GetAddress(string email)
+        {
+            return $"\"{GetName(email)}\"<{email}>";
+        }
+
+        private string GetAddresses(string[] emails)
+        {
+            return string.Join(", ", emails.Select(x => GetAddress(x)));
+        }
+
+        private void TcpWrite(StreamWriter writer, StreamReader reader, string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
+        {
+            Console.WriteLine(reader.ReadLine());
             writer.WriteLine("HELO " + server);
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
             writer.WriteLine("AUTH LOGIN");
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
             var plainTextBytes1 = System.Text.Encoding.UTF8.GetBytes(username);
             string base64Username = System.Convert.ToBase64String(plainTextBytes1);
             writer.WriteLine(base64Username);
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
             string password = pwd;
             var plainTextBytes2 = System.Text.Encoding.UTF8.GetBytes(password);
             string base64Password = System.Convert.ToBase64String(plainTextBytes2);
             writer.WriteLine(base64Password);
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
             writer.WriteLine($"MAIL FROM:<{my_email}>");
-            reader.ReadLine();
-            writer.WriteLine($"RCPT TO:<{email}>");
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
+            var tmp = to.ToList();
+            tmp.AddRange(cc);
+            tmp.AddRange(bcc);
+            foreach(var x in tmp)
+            {
+                writer.WriteLine($"RCPT TO:<{x}>");
+                Console.WriteLine(reader.ReadLine());
+            }
             writer.WriteLine("DATA");
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
             writer.WriteLine($"BodyFormat: 0");
             writer.WriteLine($"MailFormat: 0");
             writer.WriteLine($"From: \"{my_name}\" <{my_email}>");
-            writer.WriteLine($"To: \"Somebody\" <{email}>");
+            if (to.Count() > 0)
+                writer.WriteLine($"To: " + GetAddresses(to));
+            if (cc.Count() > 0)
+                writer.WriteLine($"Cc: " + GetAddresses(cc));
+            if (bcc.Count() > 0)
+                writer.WriteLine($"Bcc: " + GetAddresses(bcc));
             writer.WriteLine($"Subject: {subject}");
             writer.WriteLine("MIME-Version: 1.0; ");
 
@@ -143,10 +169,10 @@ namespace Pomelo.Net.Smtp
             writer.WriteLine($"--{boundary}_EMAIL--");
 
             writer.WriteLine(".");
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
 
             writer.WriteLine("QUIT");
-            reader.ReadLine();
+            Console.WriteLine(reader.ReadLine());
         }
     }
 }
