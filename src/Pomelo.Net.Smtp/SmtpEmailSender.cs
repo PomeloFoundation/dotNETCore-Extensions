@@ -34,7 +34,7 @@ namespace Pomelo.Net.Smtp
         private string pwd;
         private string boundary = "--------------=Pomelo_" + DateTime.Now.ToTimeStamp();
 
-        public override Task SendEmailAsync(string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
+        public override Task PostEmailAsync(string name, string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
         {
             if (!ssl)
                 return Task.Factory.StartNew(async () =>
@@ -46,7 +46,7 @@ namespace Pomelo.Net.Smtp
                         using (var reader = new StreamReader(stream))
                         using (var writer = new StreamWriter(stream) { AutoFlush = true, NewLine = "\r\n" })
                         {
-                            TcpWrite(writer, reader, to, cc, bcc, subject, message, Attachments);
+                            TcpWrite(writer, reader, name, to, cc, bcc, subject, message, Attachments);
                         }
                     }
                 });
@@ -62,7 +62,7 @@ namespace Pomelo.Net.Smtp
                             using (var reader = new StreamReader(stream))
                             using (var writer = new StreamWriter(stream) { AutoFlush = true, NewLine = "\r\n" })
                             {
-                                TcpWrite(writer, reader, to, cc, bcc, subject, message, Attachments);
+                                TcpWrite(writer, reader, name, to, cc, bcc, subject, message, Attachments);
                             }
                         }
                     }
@@ -84,7 +84,7 @@ namespace Pomelo.Net.Smtp
             return string.Join(", ", emails.Select(x => GetAddress(x)));
         }
 
-        private void TcpWrite(StreamWriter writer, StreamReader reader, string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
+        private void TcpWrite(StreamWriter writer, StreamReader reader, string name, string[] to, string[] cc, string[] bcc, string subject, string message, params Attachment[] Attachments)
         {
             Console.WriteLine(reader.ReadLine());
             writer.WriteLine("HELO " + server);
@@ -114,7 +114,7 @@ namespace Pomelo.Net.Smtp
             Console.WriteLine(reader.ReadLine());
             writer.WriteLine($"BodyFormat: 0");
             writer.WriteLine($"MailFormat: 0");
-            writer.WriteLine($"From: \"{my_name}\" <{my_email}>");
+            writer.WriteLine($"From: \"{(string.IsNullOrEmpty(name) ? my_name : name)}\" <{my_email}>");
             if (to.Count() > 0)
                 writer.WriteLine($"To: " + GetAddresses(to));
             if (cc.Count() > 0)

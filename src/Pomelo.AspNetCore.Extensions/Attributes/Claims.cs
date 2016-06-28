@@ -111,6 +111,7 @@ namespace Microsoft.AspNetCore.Mvc
                 ViewName = "Prompt",
                 ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), context.ModelState) { Model = prompt }
             };
+            
         }
     }
     #endregion
@@ -181,6 +182,7 @@ namespace Microsoft.AspNetCore.Mvc
                 ViewName = "Prompt",
                 ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), context.ModelState) { Model = prompt }
             };
+            
         }
     }
     #endregion
@@ -211,6 +213,7 @@ namespace Microsoft.AspNetCore.Mvc
                 ViewName = "Prompt",
                 ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), context.ModelState) { Model = prompt }
             };
+            
         }
     }
     #endregion

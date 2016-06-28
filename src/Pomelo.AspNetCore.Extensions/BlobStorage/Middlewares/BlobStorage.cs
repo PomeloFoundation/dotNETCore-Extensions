@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.AspNetCore.Extensions.BlobStorage;
 using Pomelo.AspNetCore.Extensions.BlobStorage.Models;
-using Pomelo.AspNetCore.Extensions.BlobStorage.Middlewares;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -16,26 +15,28 @@ namespace Microsoft.AspNetCore.Builder
         {
             #region Download
 
-            var endpoint1 = new DelegateRouteEndpoint(async context => {
-                var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
-                var id = Guid.Parse(context.RouteData.Values["id"].ToString());
+            var endpoint1 = new RouteHandler(async context => {
+                var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
+                var id = Guid.Parse(context.GetRouteValue("id").ToString());
                 var blob = bs.Get(id);
-                var auth = context.HttpContext.RequestServices.GetService<IBlobAccessAuthorizationProvider>();
+                var auth = context.RequestServices.GetService<IBlobAccessAuthorizationProvider>();
                 if (blob == null)
                 {
-                    context.HttpContext.Response.StatusCode = 404;
-                    await context.HttpContext.Response.WriteAsync("Not Found");
+                    context.Response.StatusCode = 404;
+                    await context.Response.WriteAsync("Not Found");
                 }
-                else if (auth == null || auth.IsAbleToDownload(blob.Id))
+                else if (auth != null && !auth.IsAbleToDownload(blob.Id))
                 {
-                    context.HttpContext.Response.ContentType = blob.ContentType;
-                    context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
-                    context.HttpContext.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
+                    context.Response.StatusCode = 403;
+                    await context.Response.WriteAsync("Forbidden");
                 }
                 else
                 {
-                    context.HttpContext.Response.StatusCode = 403;
-                    await context.HttpContext.Response.WriteAsync("Forbidden");
+                    context.Response.ContentType = blob.ContentType;
+                    context.Response.Headers["Content-length"] = blob.ContentLength.ToString();
+                    if (blob.ContentType.IndexOf("image") < 0)
+                        context.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
+                    context.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
                 }
             });
             var routeBuilder1 = new RouteBuilder(self);
@@ -43,59 +44,60 @@ namespace Microsoft.AspNetCore.Builder
             routeBuilder1.MapRoute(downloadRouteName, controller + "/"+ downloadAction +"/{id:Guid}");
             #endregion
             #region Upload
-            var endpoint2 = new DelegateRouteEndpoint(async context => {
-                var auth = context.HttpContext.RequestServices.GetService<IBlobUploadAuthorizationProvider>();
-                var handler = context.HttpContext.RequestServices.GetService<IBlobHandler<TModel>>();
-                if (auth != null && !auth.IsAbleToUpload())
+            self.Map("/" + controller + "/" + uploadAction, config =>
+            {
+                config.Run(async context =>
                 {
-                    context.HttpContext.Response.StatusCode = 403;
-                    await context.HttpContext.Response.WriteAsync("Forbidden");
-                }
-                else if (context.HttpContext.Request.Method == "POST")
-                {
-                    var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
-                    var file = context.HttpContext.Request.Form.Files["file"];
-                    if (file != null)
+                    var auth = context.RequestServices.GetService<IBlobUploadAuthorizationProvider>();
+                    var handler = context.RequestServices.GetService<IBlobHandler<TModel>>();
+                    if (auth != null && !auth.IsAbleToUpload())
                     {
-                        var f = new TModel
+                        context.Response.StatusCode = 403;
+                        await context.Response.WriteAsync("Forbidden");
+                    }
+                    else if (context.Request.Method == "POST")
+                    {
+                        var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
+                        var file = context.Request.Form.Files["file"];
+                        if (file != null)
                         {
-                            Time = DateTime.Now,
-                            ContentType = file.ContentType,
-                            ContentLength = file.Length,
-                            FileName = file.GetFileName(),
-                            Bytes = file.ReadAllBytes()
-                        };
-                        if (handler != null)
-                            f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
-                        var id = bs.Set(f);
-                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
+                            var f = new TModel
+                            {
+                                Time = DateTime.Now,
+                                ContentType = file.ContentType,
+                                ContentLength = file.Length,
+                                FileName = file.GetFileName(),
+                                Bytes = file.ReadAllBytes()
+                            };
+                            if (handler != null)
+                                f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
+                            var id = bs.Set(f);
+                            await context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
+                        }
+                        else
+                        {
+                            var blob = new Base64StringFile(context.Request.Form["file"]);
+                            var f = new TModel
+                            {
+                                Time = DateTime.Now,
+                                ContentType = blob.ContentType,
+                                ContentLength = blob.Base64String.Length,
+                                FileName = "file",
+                                Bytes = blob.AllBytes
+                            };
+                            if (handler != null)
+                                f = handler.Handle(f, new Base64StringFile(f.Bytes, f.Bytes.Length.ToString()));
+                            var id = bs.Set(f);
+                            await context.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
+                        }
                     }
                     else
                     {
-                        var blob = new Base64StringFile(context.HttpContext.Request.Form["file"]);
-                        var f = new TModel
-                        {
-                            Time = DateTime.Now,
-                            ContentType = blob.ContentType,
-                            ContentLength = blob.Base64String.Length,
-                            FileName = "file",
-                            Bytes = blob.AllBytes
-                        };
-                        if (handler != null)
-                            f = handler.Handle(f, new Base64StringFile(f.Bytes, file.ContentType));
-                        var id = bs.Set(f);
-                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(f));
+                        context.Response.StatusCode = 400;
+                        await context.Response.WriteAsync("Bad Request");
                     }
-                }
-                else
-                {
-                    context.HttpContext.Response.StatusCode = 400;
-                    await context.HttpContext.Response.WriteAsync("Bad Request");
-                }
+                });
             });
-            var routeBuilder2 = new RouteBuilder(self);
-            routeBuilder2.DefaultHandler = endpoint2;
-            routeBuilder2.MapRoute(uploadRouteName, controller + "/" + uploadAction);
             #endregion
             #region Javascript
             self.Map(path, config =>
@@ -824,8 +826,7 @@ namespace Microsoft.AspNetCore.Builder
             });
             #endregion
 
-            return self.UseRouter(routeBuilder1.Build())
-                .UseRouter(routeBuilder2.Build());
+            return self.UseRouter(routeBuilder1.Build());
         }
         public static IApplicationBuilder UseBlobStorage(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName = "file", string controller = "file", string downloadAction = "download", string uploadAction = "upload", string uploadRouteName = "FileUpload", string downloadRouteName = "FileDownload")
         {
