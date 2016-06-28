@@ -59,7 +59,11 @@ namespace Pomelo.AspNetCore.TimedJob
                         var invoke = y.GetCustomAttribute<InvokeAttribute>();
                         if (invoke != null && invoke.IsEnabled)
                         {
-                            int delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds);
+                            int delta = 0;
+                            if (invoke._begin == default(DateTime))
+                                invoke._begin = DateTime.Now;
+                            else
+                                delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds);
                             if (delta < 0)
                             {
                                 delta = delta % invoke.Interval;
