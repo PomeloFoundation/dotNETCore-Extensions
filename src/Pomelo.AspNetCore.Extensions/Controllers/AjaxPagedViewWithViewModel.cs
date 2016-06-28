@@ -26,12 +26,12 @@ namespace Microsoft.AspNetCore.Mvc
         {
             if (Request.Query["raw"] == "info")
             {
-                var info = Pager.GetPagerInfo(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
+                var info = Paging.GetPagerInfo(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
                 return Json(info);
             }
             else if (Request.Query["raw"] == "true")
             {
-                Pager.PlainDivide(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
+                Paging.PlainDivide(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
                 if (string.IsNullOrEmpty(ViewPath))
                     return View("/_" + ControllerContext.ActionDescriptor.ActionName, Source);
                 else

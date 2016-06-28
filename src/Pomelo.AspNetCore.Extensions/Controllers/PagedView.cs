@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Mvc
             {
                 p = 1;
             }
-            ViewData["PagerInfo"] = Pager.Divide(ref Source, PageSize, p.Value);
+            ViewData["PagerInfo"] = Paging.Divide(ref Source, PageSize, p.Value);
             if (string.IsNullOrEmpty(ViewPath))
                 return View(Source);
             else

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Mvc
 {
-    public class PagerInfo
+    public class PagingInfo
     {
         public int PageSize { get; set; }
         public int PageCount { get; set; }
@@ -18,11 +18,11 @@ namespace Microsoft.AspNetCore.Mvc
         public long Count { get; set; }
     }
 
-    public static class Pager
+    public static class Paging
     {
-        public static PagerInfo GetPagerInfo<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
+        public static PagingInfo GetPagerInfo<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
         {
-            var ret = new PagerInfo();
+            var ret = new PagingInfo();
             ret.Count = src.LongCount();
             ret.PageCount = Convert.ToInt32((src.LongCount() + PageSize - 1) / PageSize);
             ret.PageSize = PageSize;
@@ -44,9 +44,9 @@ namespace Microsoft.AspNetCore.Mvc
             src = src.Skip((Page - 1) * PageSize).Take(PageSize).ToList();
         }
 
-        public static PagerInfo Divide<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
+        public static PagingInfo Divide<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
         {
-            var ret = new PagerInfo();
+            var ret = new PagingInfo();
             ret.Count = src.LongCount();
             ret.PageCount = Convert.ToInt32((src.LongCount() + PageSize - 1) / PageSize);
             ret.PageSize = PageSize;
@@ -72,7 +72,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
 
     public static class PagerHtmlHelper
     {
-        public static HtmlString MakePager(this IHtmlHelper self, string PlainClass = "pager-item", string ActiveClass = "active", string OuterClass = "pager-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagerInfo = "PagerInfo")
+        public static HtmlString Paging(this IHtmlHelper self, string PlainClass = "pager-item", string ActiveClass = "active", string OuterClass = "pager-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagerInfo = "PagerInfo")
         {
             StringBuilder ret = new StringBuilder();
             if (self.ViewContext.ViewData["__Performance"] != null && Convert.ToInt32(self.ViewContext.ViewData["__Performance"]) == 1)
@@ -121,7 +121,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                     : self.ViewContext.RouteData.Values["p"] != null
                     ? int.Parse(self.ViewContext.RouteData.Values["p"].ToString())
                     : 1;
-                var tmp = (PagerInfo)self.ViewData[PagerInfo];
+                var tmp = (PagingInfo)self.ViewData[PagerInfo];
                 ret.AppendLine("<ul class=\"" + OuterClass + "\">");
                 RouteValueTemplate["p"] = "1";
                 ret.AppendLine("<li class=\"" + PlainClass + "\">" + (self.ActionLink("«", self.ViewContext.RouteData.Values["action"].ToString(), self.ViewContext.RouteData.Values["controller"].ToString(), RouteValueTemplate, null) as TagBuilder).ToHtmlString() + "</li>");

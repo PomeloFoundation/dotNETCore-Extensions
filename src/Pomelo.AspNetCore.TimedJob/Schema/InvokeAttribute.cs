@@ -7,6 +7,13 @@ namespace Pomelo.AspNetCore.TimedJob
 {
     public class InvokeAttribute : Attribute
     {
+        public InvokeAttribute()
+        {
+            _begin = DateTime.Now;
+            if (Interval >= 1000 * 30)
+                _begin = _begin.AddMinutes(1);
+        }
+
         public bool IsEnabled { get; set; } = true;
 
         public int Interval { get; set; } = 1000 * 60 * 60 * 24; // 24 hours
@@ -19,6 +26,6 @@ namespace Pomelo.AspNetCore.TimedJob
             set { _begin = Convert.ToDateTime(value); }
         }
 
-        public DateTime _begin { get; protected set; } = DateTime.Now;
+        public DateTime _begin { get; protected set; }
     }
 }
