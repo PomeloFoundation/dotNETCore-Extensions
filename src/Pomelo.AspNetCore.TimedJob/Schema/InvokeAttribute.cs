@@ -11,7 +11,7 @@ namespace Pomelo.AspNetCore.TimedJob
         {
             _begin = DateTime.Now;
             if (Interval >= 1000 * 30)
-                _begin = _begin.AddMinutes(1);
+                _begin = _begin.AddSeconds(30);
         }
 
         public bool IsEnabled { get; set; } = true;
