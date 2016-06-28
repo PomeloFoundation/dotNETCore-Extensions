@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Mvc
             {
                 p = 1;
             }
-            ViewData["PagerInfo"] = Paging.Divide(ref Source, PageSize, p.Value);
+            ViewData["PagingInfo"] = Paging.Divide(ref Source, PageSize, p.Value);
             if (JsonSerializerSettings == null)
                 return Json(Source);
             else

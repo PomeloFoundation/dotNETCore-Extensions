@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Mvc
 
     public static class Paging
     {
-        public static PagingInfo GetPagerInfo<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
+        public static PagingInfo GetPagingInfo<T>(ref IEnumerable<T> src, int PageSize = 50, int Page = 1)
         {
             var ret = new PagingInfo();
             ret.Count = src.LongCount();
@@ -70,19 +70,19 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
 {
     using Microsoft.AspNetCore.Html;
 
-    public static class PagerHtmlHelper
+    public static class PagingHtmlHelper
     {
-        public static HtmlString Paging(this IHtmlHelper self, string PlainClass = "pager-item", string ActiveClass = "active", string OuterClass = "pager-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagerInfo = "PagerInfo")
+        public static HtmlString Paging(this IHtmlHelper self, string PlainClass = "paging-item", string ActiveClass = "active", string OuterClass = "paging-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagingInfo = "PagingInfo")
         {
             StringBuilder ret = new StringBuilder();
             if (self.ViewContext.ViewData["__Performance"] != null && Convert.ToInt32(self.ViewContext.ViewData["__Performance"]) == 1)
             {
-                ret.AppendLine("<ul id=\"" + self.ViewContext.ViewData["__PagerDomId"] + "\" class=\"" + OuterClass + "\" data-plain-class=\"" + PlainClass + "\" data-active-class=\"" + ActiveClass + "\">");
+                ret.AppendLine("<ul id=\"" + self.ViewContext.ViewData["__PagingDomId"] + "\" class=\"" + OuterClass + "\" data-plain-class=\"" + PlainClass + "\" data-active-class=\"" + ActiveClass + "\">");
                 ret.AppendLine("</ul>");
                 ret.AppendLine("<script>");
                 ret.AppendLine("    var __contentSelector = '" + self.ViewContext.ViewData["__ContentSelector"] + "';");
                 ret.AppendLine("    var __performance = '" + self.ViewContext.ViewData["__Performance"] + "';");
-                ret.AppendLine("    var __pagerSelector = '#" + self.ViewContext.ViewData["__PagerDomId"] + "';");
+                ret.AppendLine("    var __pagingSelector = '#" + self.ViewContext.ViewData["__PagingDomId"] + "';");
                 ret.AppendLine("    var __formSelector = '" + self.ViewContext.ViewData["__FormSelector"] + "';");
                 ret.AppendLine("    var __url = '" + self.ViewContext.HttpContext.Request.Path.Value + "';");
                 ret.AppendLine("    __PomeloAjaxEvents[__url] = {};");
@@ -93,7 +93,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                 ret.AppendLine("<script>");
                 ret.AppendLine("    var __contentSelector = '" + self.ViewContext.ViewData["__ContentSelector"] + "';");
                 ret.AppendLine("    var __performance = '" + self.ViewContext.ViewData["__Performance"] + "';");
-                ret.AppendLine("    var __pagerSelector = '#" + self.ViewContext.ViewData["__PagerDomId"] + "';");
+                ret.AppendLine("    var __pagingSelector = '#" + self.ViewContext.ViewData["__PagingDomId"] + "';");
                 ret.AppendLine("    var __formSelector = '" + self.ViewContext.ViewData["__FormSelector"] + "';");
                 ret.AppendLine("    var __url = '" + self.ViewContext.HttpContext.Request.Path.Value + "';");
                 ret.AppendLine("    __PomeloAjaxEvents[__url] = {};");
@@ -121,7 +121,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
                     : self.ViewContext.RouteData.Values["p"] != null
                     ? int.Parse(self.ViewContext.RouteData.Values["p"].ToString())
                     : 1;
-                var tmp = (PagingInfo)self.ViewData[PagerInfo];
+                var tmp = (PagingInfo)self.ViewData[PagingInfo];
                 ret.AppendLine("<ul class=\"" + OuterClass + "\">");
                 RouteValueTemplate["p"] = "1";
                 ret.AppendLine("<li class=\"" + PlainClass + "\">" + (self.ActionLink("«", self.ViewContext.RouteData.Values["action"].ToString(), self.ViewContext.RouteData.Values["controller"].ToString(), RouteValueTemplate, null) as TagBuilder).ToHtmlString() + "</li>");

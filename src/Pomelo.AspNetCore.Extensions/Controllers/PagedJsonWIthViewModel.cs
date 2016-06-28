@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Mvc
             {
                 p = 1;
             }
-            ViewData["PagerInfo"] = Paging.Divide(ref Source, PageSize, p.Value);
+            ViewData["PagingInfo"] = Paging.Divide(ref Source, PageSize, p.Value);
             var ret = new List<TView>();
             foreach (var item in Source)
             {

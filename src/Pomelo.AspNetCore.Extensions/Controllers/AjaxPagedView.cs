@@ -25,13 +25,13 @@ namespace Microsoft.AspNetCore.Mvc
             string ContentSelector,
             int PageSize = 50,
             AjaxPerformanceType AjaxPerformance = AjaxPerformanceType.WaterFallFlow,
-            string PagerDomId = "pager-outer",
+            string PagingDomId = "paging-outer",
             string FormSelector = "form",
             string ViewPath = null)
         {
             if (Request.Query["raw"] == "info")
             {
-                var info = Paging.GetPagerInfo(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
+                var info = Paging.GetPagingInfo(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
                 return Json(info);
             }
             else if (Request.Query["raw"] == "true")
@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Mvc
             else
             {
                 ViewData["__Performance"] = (int)AjaxPerformance;
-                ViewData["__PagerDomId"] = PagerDomId;
+                ViewData["__PagingDomId"] = PagingDomId;
                 ViewData["__ContentSelector"] = ContentSelector;
                 ViewData["__FormSelector"] = FormSelector;
                 if (string.IsNullOrEmpty(ViewPath))

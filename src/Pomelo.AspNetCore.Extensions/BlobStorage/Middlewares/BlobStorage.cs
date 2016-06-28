@@ -33,9 +33,11 @@ namespace Microsoft.AspNetCore.Builder
                 else
                 {
                     context.Response.ContentType = blob.ContentType;
-                    context.Response.Headers["Content-length"] = blob.ContentLength.ToString();
+                    context.Response.Headers["Content-length"] = blob.Bytes.Length.ToString();
                     if (blob.ContentType.IndexOf("image") < 0)
                         context.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
+                    else
+                        context.Response.Headers["Cache-Control"] = $"max-age={ 60 * 24 }";
                     context.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
                 }
             });

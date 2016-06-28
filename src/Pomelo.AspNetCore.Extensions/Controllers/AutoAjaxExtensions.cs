@@ -52,7 +52,7 @@ function __Load(sender) {
     __lock = true;
     try { __PomeloAjaxEvents['All'].onLoading(); } catch (e) { };
     try { __PomeloAjaxEvents['Home/Index'].onLoading(); } catch (e) { };
-    var __pagerInfoParams;
+    var __PagingInfoParams;
     if (typeof (sender) == 'undefined') {
         __paramsCache = $(__formSelector).serializeObject();
         __paramsCache.raw = 'true';
@@ -62,17 +62,17 @@ function __Load(sender) {
     $.getJSON(__url, __paramsCache, function (result) {
         __pageCount = result.PageCount;
         if (__performance == 1) {
-            var __plainClass = $(__pagerSelector).attr('data-plain-class');
-            var __activeClass = $(__pagerSelector).attr('data-active-class');
-            $(__pagerSelector).html('');
-            $(__pagerSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(1);\'>«</a></li>');
+            var __plainClass = $(__pagingSelector).attr('data-plain-class');
+            var __activeClass = $(__pagingSelector).attr('data-active-class');
+            $(__pagingSelector).html('');
+            $(__pagingSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(1);\'>«</a></li>');
             for (var i = result.Start; i <= result.End; i++) {
                 if (i != __page)
-                    $(__pagerSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(' + i + ');\'>' + i + '</a></li>');
+                    $(__pagingSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(' + i + ');\'>' + i + '</a></li>');
                 else
-                    $(__pagerSelector).append('<li class=' + __plainClass + ' ' + __activeClass + '><a href=\'javascript: __movePage(' + i + ');\'>' + i + '</a></li>');
+                    $(__pagingSelector).append('<li class=' + __plainClass + ' ' + __activeClass + '><a href=\'javascript: __movePage(' + i + ');\'>' + i + '</a></li>');
             }
-            $(__pagerSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(' + (__pageCount == 0 ? 1 : __pageCount) + ');\'>»</a></li>');
+            $(__pagingSelector).append('<li class=' + __plainClass + '><a href=\'javascript: __movePage(' + (__pageCount == 0 ? 1 : __pageCount) + ');\'>»</a></li>');
         }
         __paramsCache.raw = 'true';
         if (__performance == 1)
