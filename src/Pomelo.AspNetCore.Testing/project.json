@@ -1,6 +1,6 @@
 {
   "description": "Various helpers for writing tests that use DNX or ASP.NET.",
-  "version": "1.0.0-rc2-final",
+  "version": "1.0.0",
   "packOptions": {
     "repository": {
       "type": "git",
@@ -8,7 +8,8 @@
     }
   },
   "dependencies": {
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc2-final",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
+    "Pomelo.Extensions.RuntimeEnvironment.Sources": "1.0.0",
     "xunit": "2.1.0"
   },
   "frameworks": {
@@ -25,11 +26,11 @@
         }
       }
     },
-    "netstandard1.5": {
+    "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.5.0-rc2-24027",
-        "System.Globalization": "4.0.11-rc2-24027",
-        "System.Threading.Thread": "4.0.0-rc2-24027"
+        "NETStandard.Library": "1.6.0",
+        "System.Globalization": "4.0.11",
+        "System.Threading.Thread": "4.0.0"
       },
       "imports": [
         "portable-net451+win8",

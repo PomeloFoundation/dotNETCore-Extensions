@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "shared": "**/*.cs",
+  "dependencies": {
+    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-*"
+  },
+  "frameworks": {
+    "netstandard1.3": {},
+    "net451": {}
+  }
+}

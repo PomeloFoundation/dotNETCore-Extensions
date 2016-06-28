@@ -68,6 +68,8 @@ namespace Microsoft.AspNetCore.Mvc
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
+    using Microsoft.AspNetCore.Html;
+
     public static class PagerHtmlHelper
     {
         public static HtmlString MakePager(this IHtmlHelper self, string PlainClass = "pager-item", string ActiveClass = "active", string OuterClass = "pager-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagerInfo = "PagerInfo")

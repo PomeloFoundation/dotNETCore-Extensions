@@ -147,7 +147,7 @@ namespace Pomelo.HtmlAgilityPack
 		public HtmlDocument()
 		{
 			_documentnode = CreateNode(HtmlNodeType.Document, 0);
-#if NETSTANDARD1_5
+#if NETSTANDARD1_6
             OptionDefaultStreamEncoding =Encoding.UTF8;
 #else
 			OptionDefaultStreamEncoding = Encoding.Default;

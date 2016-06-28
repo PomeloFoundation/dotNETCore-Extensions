@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Mvc
             {
                 Pager.PlainDivide(ref Source, PageSize, string.IsNullOrEmpty(Request.Query["p"]) ? 1 : Convert.ToInt32(Request.Query["p"]));
                 if (string.IsNullOrEmpty(ViewPath))
-                    return View("_" + ControllerContext.ActionDescriptor.Name, Source);
+                    return View("_" + ControllerContext.ActionDescriptor.ActionName, Source);
                 else
                 {
                     var last = ViewPath.LastIndexOf('/');

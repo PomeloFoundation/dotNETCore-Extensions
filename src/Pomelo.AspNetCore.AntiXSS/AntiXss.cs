@@ -10,6 +10,8 @@ using Pomelo.AspNetCore.AntiXSS.EntityFramework;
 
 namespace Microsoft.AspNetCore.Mvc.Rendering
 {
+    using Microsoft.AspNetCore.Html;
+
     public static class AntiXssExtension
     {
         /// <summary>
