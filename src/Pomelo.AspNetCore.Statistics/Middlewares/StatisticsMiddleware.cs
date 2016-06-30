@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Pomelo.AspNetCore.Statistics.Middlewares
 {
@@ -15,10 +16,19 @@ namespace Pomelo.AspNetCore.Statistics.Middlewares
             this.next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context)
         {
-            var url = context.Request.Scheme + "://" + context.Request.Host + "/" + context.Request.Path;
+            Task.Factory.StartNew(async ()=> {
 
+                // Get services
+                var geo = context.RequestServices.GetRequiredService<IGeolocationProvider>();
+
+                // Get significant arguments
+                var url = context.Request.Scheme + "://" + context.Request.Host + "/" + context.Request.Path;
+                var ip = context.Connection.RemoteIpAddress.ToString();
+                var geolocation = await geo.GeolocateAsync(ip);
+            });
+            return Task.FromResult(0);
         }
     }
 }
