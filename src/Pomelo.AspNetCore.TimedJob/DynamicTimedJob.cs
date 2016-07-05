@@ -5,7 +5,6 @@ namespace Pomelo.AspNetCore.TimedJob
 {
     public class DynamicTimedJob
     {
-
         [MaxLength(512)]
         public string Id { get; set; }
 
