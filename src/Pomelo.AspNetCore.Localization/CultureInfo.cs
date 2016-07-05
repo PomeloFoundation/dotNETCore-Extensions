@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace Pomelo.AspNetCore.Extensions.Localization
+namespace Pomelo.AspNetCore.Localization
 {
     public class CultureInfo
     {

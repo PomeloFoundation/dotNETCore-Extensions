@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Pomelo.AspNetCore.Extensions.Localization
+namespace Pomelo.AspNetCore.Localization
 {
     public interface IRequestCultureProvider
     {

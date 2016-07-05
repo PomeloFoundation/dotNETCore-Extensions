@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Pomelo.AspNetCore.Extensions.Localization
+namespace Pomelo.AspNetCore.Localization
 {
     public abstract class LocalizationStringCollection : ILocalizationStringCollection
     {

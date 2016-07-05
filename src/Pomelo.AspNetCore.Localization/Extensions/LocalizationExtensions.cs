@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.PlatformAbstractions;
-using Pomelo.AspNetCore.Extensions.Localization;
-using Pomelo.AspNetCore.Extensions.Localization.EntityFramework;
-using Pomelo.AspNetCore.Extensions.Localization.Json;
+using Pomelo.AspNetCore.Localization;
+using Pomelo.AspNetCore.Localization.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -19,17 +18,6 @@ namespace Microsoft.Extensions.DependencyInjection
             return self
                 .AddHttpContextAccessor()
                 .AddSingleton<ILocalizationStringCollection>(x => new JsonCollection(resourcePath, x.GetRequiredService<IRequestCultureProvider>(), x.GetRequiredService<IHostingEnvironment>()));
-        }
-
-        public static IServiceCollection AddEFLocalization<TContext, TKey>(this IServiceCollection self)
-            where TKey:IEquatable<TKey>
-            where TContext : class, ILocalizationDbContext<TKey>
-        {
-            return self
-                .AddHttpContextAccessor()
-                .AddScoped<ILocalizationDbContext<TKey>, TContext>()
-                .AddScoped<EFLocalizationManager<TKey>>()
-                .AddSingleton<ILocalizationStringCollection, EFCollection<TKey>>();
         }
 
         public static IServiceCollection AddCookieCulture(this IServiceCollection self, string cookieField = "ASPNET_LANG")

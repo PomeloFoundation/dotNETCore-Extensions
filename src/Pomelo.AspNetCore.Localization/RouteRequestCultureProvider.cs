@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Pomelo.AspNetCore.Extensions.Localization
+namespace Pomelo.AspNetCore.Localization
 {
     public class RouteRequestCultureProvider : IRequestCultureProvider
     {

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using Pomelo.AspNetCore.Extensions.Localization;
+using Pomelo.AspNetCore.Localization;
 
 namespace Microsoft.AspNetCore.Builder
 {

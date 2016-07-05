@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Pomelo.AspNetCore.Extensions.Localization
+namespace Pomelo.AspNetCore.Localization
 {
     public class QueryStringRequestCultureProvider : IRequestCultureProvider
     {

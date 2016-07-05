@@ -13,7 +13,8 @@
     "Pomelo.AspNetCore.AntiXSS": "1.0.0-*",
     "Pomelo.Net.Smtp": "1.0.0-*",
     "Pomelo.AspNetCore.Common": "1.0.0-*",
-    "Pomelo.Extensions.Common": "1.0.0"
+    "Pomelo.Extensions.Common": "1.0.0",
+    "Pomelo.AspNetCore.Localization": "1.0.0-*"
   },
 
   "frameworks": {

@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Mvc
 
         public Pomelo.AspNetCore.Extensions.Others.Marked Marked { get; set; } = new Pomelo.AspNetCore.Extensions.Others.Marked();
 
-        public Pomelo.AspNetCore.Extensions.Localization.ILocalizationStringCollection SR { get { return HttpContext.RequestServices?.GetService<Pomelo.AspNetCore.Extensions.Localization.ILocalizationStringCollection>(); } }
+        public Pomelo.AspNetCore.Localization.ILocalizationStringCollection SR { get { return HttpContext.RequestServices?.GetService<Pomelo.AspNetCore.Localization.ILocalizationStringCollection>(); } }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
