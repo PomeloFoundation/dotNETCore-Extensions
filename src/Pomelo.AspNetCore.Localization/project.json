@@ -3,8 +3,8 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Http": "1.0.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "Microsoft.EntityFrameworkCore": "1.0.0",
     "Newtonsoft.Json": "9.0.1",
     "Pomelo.AspNetCore.Common": "1.0.0"
   },
