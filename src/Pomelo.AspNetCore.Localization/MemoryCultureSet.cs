@@ -13,13 +13,13 @@ namespace Pomelo.AspNetCore.Localization
 
         public void AddCulture(string[] Cultures, ILocalizedStringStore Strings, bool IsDefault = false)
         {
+            if (IsDefault || dic.Count == 0)
+                Default = Strings;
+
             if (!dic.ContainsKey(Cultures.ToList()))
                 dic.Add(Cultures, Strings);
             else
                 dic[Cultures] = Strings;
-
-            if (IsDefault || dic.Count == 0)
-                Default = Strings;
         }
 
         public ILocalizedStringStore GetLocalizedStrings(string Culture)

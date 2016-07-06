@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class HttpContextAccessorExtensions
     {
-        public static IServiceCollection AddHttpContextAccessor(this IServiceCollection self)
+        public static IServiceCollection AddContextAccessor(this IServiceCollection self)
         {
             if (self.Count(x => x.ServiceType == typeof(IHttpContextAccessor)) == 0)
                 self.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

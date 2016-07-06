@@ -16,7 +16,8 @@
         {
             get
             {
-                var s = set.GetLocalizedStrings(culture.DetermineCulture());
+                var culture = this.culture.DetermineCulture();
+                var s = set.GetLocalizedStrings(culture);
                 return s.Localize(src, args);
             }
         }

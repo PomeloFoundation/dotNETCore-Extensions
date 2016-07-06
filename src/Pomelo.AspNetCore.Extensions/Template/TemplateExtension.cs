@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IMvcBuilder AddMultiTemplateEngine(this IMvcBuilder self)
         {
             self.Services
-                .AddHttpContextAccessor()
+                .AddContextAccessor()
                 .AddSingleton<TemplateCollection>()
                 .AddSingleton<IRazorViewEngine, MultiTemplateEngine>()
                 .AddScoped<TemplateManager>();

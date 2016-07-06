@@ -11,6 +11,12 @@ namespace Pomelo.AspNetCore.Localization.Extensions
 {
     public static class HtmlHelperExtensions
     {
+        public static string Culture(this IHtmlHelper self)
+        {
+            var services = self.ViewContext.HttpContext.RequestServices;
+            return services.GetRequiredService<ICultureProvider>().DetermineCulture(); 
+        }
+
         public static string Localize(this IHtmlHelper self, string localizedString)
         {
             try

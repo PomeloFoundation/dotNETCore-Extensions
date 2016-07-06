@@ -25,8 +25,19 @@ namespace Pomelo.AspNetCore.Localization
             if (fi.LastWriteTime > time)
                 Load();
             if (this.ContainsKey(src))
-                return string.Format(this[src], args);
-            return string.Format(src, args);
+            {
+                if (args == null)
+                    return this[src];
+                else
+                    return string.Format(this[src], args);
+            }
+            else
+            {
+                if (args == null)
+                    return src;
+                else
+                    return string.Format(src, args);
+            }
         }
 
         private void Load()

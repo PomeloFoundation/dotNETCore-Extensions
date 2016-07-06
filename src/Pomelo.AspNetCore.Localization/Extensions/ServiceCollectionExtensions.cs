@@ -10,6 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var set = new MemoryCultureSet();
             InitCultureSource?.Invoke(set);
+            self.AddContextAccessor();
             self.AddSingleton<ICultureSet>(set);
             self.AddScoped<ICultureProvider, DefaultCultureProvider>();
             self.AddScoped<IStringReader, DefaultStringReader>();

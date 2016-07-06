@@ -56,7 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TKey : IEquatable<TKey>
 
         {
-            return self.AddHttpContextAccessor()
+            return self.AddContextAccessor()
                 .AddScoped<IWhiteListProvider, EntityFrameworkWhiteListProvider<TContext>>()
                 .AddScoped<ITagAuthorizationProvider, EntityFrameworkTagAuthorizationProvider<TContext, TUser, TKey>>(x => new EntityFrameworkTagAuthorizationProvider<TContext, TUser, TKey>(x, ClaimType))
                 .AddSingleton<AntiXSS>();
@@ -75,7 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TKey : IEquatable<TKey>
 
         {
-            return self.AddHttpContextAccessor()
+            return self.AddContextAccessor()
                 .AddSingleton<IWhiteListProvider, JsonWhiteListProvider>()
                 .AddScoped<ITagAuthorizationProvider, JsonTagAuthorizationProvider<TUser, TKey>>(x => new JsonTagAuthorizationProvider<TUser, TKey>(x.GetRequiredService<IWhiteListProvider>(), x, ClaimType))
                 .AddSingleton<AntiXSS>();

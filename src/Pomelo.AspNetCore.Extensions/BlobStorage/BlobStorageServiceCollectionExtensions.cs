@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IBlobStorageBuilder AddBlobStorage(this IServiceCollection self)
         {
-            self.AddHttpContextAccessor();
+            self.AddContextAccessor();
             var builder = new BlobStorageBuilder();
             builder.Services = self.AddRouting();
             return builder;

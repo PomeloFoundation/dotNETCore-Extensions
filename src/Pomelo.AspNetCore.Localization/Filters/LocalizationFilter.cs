@@ -16,15 +16,22 @@ namespace Pomelo.AspNetCore.Localization.Filters
     {
         public void OnResultExecuted(ResultExecutedContext context)
         {
+        }
+
+        public void OnResultExecuting(ResultExecutingContext context)
+        {
             var services = context.HttpContext.RequestServices;
             var culture = services.GetRequiredService<ICultureProvider>().DetermineCulture();
             if (context.Result is ViewResult)
             {
                 var result = (ViewResult)context.Result;
+                if (result.Model == null)
+                    return;
+
                 if (result.Model is IEnumerable)
                 {
                     var model = (IEnumerable<object>)result.Model;
-                    foreach(var x in model)
+                    foreach (var x in model)
                     {
                         var type = x.GetType();
                         var properties = type.GetProperties().Where(y => y.PropertyType == typeof(string) && y.GetCustomAttribute<LocalizedAttribute>() != null);
@@ -72,10 +79,6 @@ namespace Pomelo.AspNetCore.Localization.Filters
                     }
                 }
             }
-        }
-
-        public void OnResultExecuting(ResultExecutingContext context)
-        {
         }
     }
 }

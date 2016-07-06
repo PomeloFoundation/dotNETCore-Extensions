@@ -54,12 +54,16 @@ namespace Microsoft.AspNetCore.Identity.EntityFrameworkCore
                     var cultureProvider = services.GetRequiredService<ICultureProvider>();
                     var culture = cultureProvider.DetermineCulture();
                     culture = set.SimplifyCulture(culture);
-                    var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(origin.ToString());
+                    Dictionary<string, string> json;
+                    if (x.State == EntityState.Added)
+                        json = new Dictionary<string, string>();
+                    else
+                        json = JsonConvert.DeserializeObject<Dictionary<string, string>>(origin.ToString());
                     if (json.ContainsKey(culture))
                         json[culture] = current.ToString();
                     else
                         json.Add(culture, current.ToString());
-                    y.SetValue(x.Entity, JsonConvert.SerializeObject(json));
+                    x.Property(y.Name).CurrentValue = JsonConvert.SerializeObject(json);
                 }
             }
         }

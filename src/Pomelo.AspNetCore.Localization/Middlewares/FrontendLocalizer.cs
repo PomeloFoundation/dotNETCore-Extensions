@@ -8,18 +8,18 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class FrontendLocalizer
     {
-        public static IApplicationBuilder UseJavascriptLocalization(this IApplicationBuilder self, string scriptUrl = "/scripts/localizer.js")
+        public static IApplicationBuilder UseFrontendLocalizer(this IApplicationBuilder self, string scriptUrl = "/scripts/localizer.js")
         {
-
-            var cultureProvider = self.ApplicationServices.GetRequiredService<ICultureProvider>();
-            var cultureSet = self.ApplicationServices.GetRequiredService<ICultureSet>();
-            var strings = cultureSet.GetLocalizedStrings(cultureProvider.DetermineCulture());
-            var json = JsonConvert.SerializeObject(strings);
             return self.Map(scriptUrl, config =>
             {
-                var js = new StringBuilder("var __dictionary = {};");
                 config.Run(async context =>
                 {
+                    var cultureProvider = self.ApplicationServices.GetRequiredService<ICultureProvider>();
+                    var cultureSet = self.ApplicationServices.GetRequiredService<ICultureSet>();
+                    var strings = cultureSet.GetLocalizedStrings(cultureProvider.DetermineCulture());
+                    var json = JsonConvert.SerializeObject(strings);
+
+                    var js = new StringBuilder("var __dictionary = {};");
                     js.AppendLine("__dictionary = " + json + ";");
                     js.AppendLine(@"
 function __replaceAll(str0, str1, str2)
