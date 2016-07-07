@@ -25,7 +25,7 @@ namespace Pomelo.AspNetCore.Localization
             else if (actionContextAccessor.ActionContext.RouteData.Values.ContainsKey("culture"))
                 return actionContextAccessor.ActionContext.RouteData.Values["culture"].ToString();
             else if (httpContextAccessor.HttpContext.Request.Query.ContainsKey("lang"))
-                return httpContextAccessor.HttpContext.Request.Query["lang"];
+                return httpContextAccessor.HttpContext.Request.Query["lang"].ToString();
             else
             {
                 var raw = httpContextAccessor.HttpContext.Request.Headers["Accept-Language"].ToString().Split(';')[0].Split(',').Select(x => x.Trim());

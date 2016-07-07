@@ -10,11 +10,19 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var set = new MemoryCultureSet();
             InitCultureSource?.Invoke(set);
+            self.AddMemoryCache();
             self.AddContextAccessor();
             self.AddSingleton<ICultureSet>(set);
             self.AddScoped<ICultureProvider, DefaultCultureProvider>();
             self.AddScoped<IStringReader, DefaultStringReader>();
+            self.AddSingleton<ITranslator, NonTranslator>();
+            self.AddSingleton<ITranslatedCaching, MemoryTranslatedCaching>();
             return self;
+        }
+
+        public static IServiceCollection AddBaiduTranslator(this IServiceCollection self)
+        {
+            return self.AddSingleton<ITranslator, BaiduTranslator>();
         }
 
         public static IMvcBuilder AddDynamicLocalizer(this IMvcBuilder self)

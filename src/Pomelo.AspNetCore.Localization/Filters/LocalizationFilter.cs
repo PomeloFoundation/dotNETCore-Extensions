@@ -21,6 +21,8 @@ namespace Pomelo.AspNetCore.Localization.Filters
         public void OnResultExecuting(ResultExecutingContext context)
         {
             var services = context.HttpContext.RequestServices;
+            var cache = services.GetRequiredService<ITranslatedCaching>();
+            var translator = services.GetRequiredService<ITranslator>();
             var culture = services.GetRequiredService<ICultureProvider>().DetermineCulture();
             if (context.Result is ViewResult)
             {
@@ -46,7 +48,25 @@ namespace Pomelo.AspNetCore.Localization.Filters
                                 else
                                 {
                                     var key = json.Keys.FirstOrDefault();
-                                    y.SetValue(x, key == null ? "" : json[key]);
+                                    if (key == null)
+                                    {
+                                        y.SetValue(x, "");
+                                    }
+                                    else
+                                    {
+                                        var cachedString = cache.Get(json[key], culture);
+                                        if (cachedString == null)
+                                        {
+                                            var translateTask = translator.TranslateAsync(key, culture, json[key]);
+                                            translateTask.Wait();
+                                            cache.Set(json[key], culture, translateTask.Result);
+                                            y.SetValue(x, translateTask.Result);
+                                        }
+                                        else
+                                        {
+                                            y.SetValue(x, cachedString);
+                                        }
+                                    }
                                 }
                             }
                             catch
@@ -70,7 +90,25 @@ namespace Pomelo.AspNetCore.Localization.Filters
                             else
                             {
                                 var key = json.Keys.FirstOrDefault();
-                                y.SetValue(result.Model, key == null ? "" : json[key]);
+                                if (key == null)
+                                {
+                                    y.SetValue(result.Model, "");
+                                }
+                                else
+                                {
+                                    var cachedString = cache.Get(json[key], culture);
+                                    if (cachedString == null)
+                                    {
+                                        var translateTask = translator.TranslateAsync(key, culture, json[key]);
+                                        translateTask.Wait();
+                                        cache.Set(json[key], culture, translateTask.Result);
+                                        y.SetValue(result.Model, translateTask.Result);
+                                    }
+                                    else
+                                    {
+                                        y.SetValue(result.Model, cachedString);
+                                    }
+                                }
                             }
                         }
                         catch

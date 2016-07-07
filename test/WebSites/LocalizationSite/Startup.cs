@@ -27,7 +27,8 @@ namespace LocalizationSite
             {
                 x.AddCulture(new[] { "zh", "zh-CN", "zh-Hans" }, new JsonLocalizedStringStore(Path.Combine("Localization", "zh-CN.json")));
                 x.AddCulture(new[] { "en-US" }, new JsonLocalizedStringStore(Path.Combine("Localization", "en-US.json")));
-            });
+            })
+                .AddBaiduTranslator();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
