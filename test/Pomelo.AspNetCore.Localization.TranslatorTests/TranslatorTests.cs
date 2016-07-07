@@ -10,9 +10,9 @@ namespace Pomelo.AspNetCore.Localization.TranslatorTests
     public class TranslatorTests
     {
         [Fact]
-        public async void google_translator_test()
+        public async void baidu_translator_test()
         {
-            var translator = new GoogleTranslator();
+            var translator = new BaiduTranslator();
             var result = await translator.TranslateAsync("en", "zh", "Hello");
             Assert.Equal("你好", result);
         }
