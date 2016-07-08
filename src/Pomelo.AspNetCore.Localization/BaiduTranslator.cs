@@ -17,26 +17,33 @@ namespace Pomelo.AspNetCore.Localization
 
         public async Task<string> TranslateAsync(string from, string to, string src)
         {
-            if (disabler.IsDisabled())
-                return src;
-
-            if (from.IndexOf('-') >= 0)
-                from = from.Split('-')[0];
-            if (to.IndexOf('-') >= 0)
-                to = to.Split('-')[0];
-
-            if (from == to)
-                return src;
-
-            using (var client = new HttpClient() { BaseAddress = new Uri("http://fanyi.baidu.com") })
+            try
             {
-                var result = await client.GetAsync($"/v2transapi?from={ from }&query={ UrlEncoder.Default.Encode(src) }&to={ to }");
-                var jsonStr = await result.Content.ReadAsStringAsync();
-                var json = JsonConvert.DeserializeObject<dynamic>(jsonStr);
-                if (json.trans_result.data.Count == 0)
+                if (disabler.IsDisabled())
                     return src;
-                else
-                    return json.trans_result.data.First.dst;
+
+                if (from.IndexOf('-') >= 0)
+                    from = from.Split('-')[0];
+                if (to.IndexOf('-') >= 0)
+                    to = to.Split('-')[0];
+
+                if (from == to)
+                    return src;
+
+                using (var client = new HttpClient() { BaseAddress = new Uri("http://fanyi.baidu.com") })
+                {
+                    var result = await client.GetAsync($"/v2transapi?from={ from }&query={ UrlEncoder.Default.Encode(src) }&to={ to }");
+                    var jsonStr = await result.Content.ReadAsStringAsync();
+                    var json = JsonConvert.DeserializeObject<dynamic>(jsonStr);
+                    if (json.trans_result.data.Count == 0)
+                        return src;
+                    else
+                        return json.trans_result.data.First.dst;
+                }
+            }
+            catch
+            {
+                return src;
             }
         }
     }
