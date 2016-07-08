@@ -67,6 +67,7 @@ namespace Pomelo.AspNetCore.Localization.Extensions
             var translator = services.GetRequiredService<ITranslator>();
             var culture = services.GetRequiredService<ICultureProvider>().DetermineCulture();
             var ret = cache.Get(src, culture);
+            self.ViewData["__IsTranslated"] = true;
             if (ret == null)
             {
                 var task = translator.TranslateAsync("", culture, src);
@@ -78,6 +79,11 @@ namespace Pomelo.AspNetCore.Localization.Extensions
             {
                 return ret;
             }
+        }
+
+        public static bool IsTranslated(this IHtmlHelper self)
+        {
+            if (self.ViewData.ContainsKey("__IsTranslated") && Convert.ToBoolean(self.ViewData["__IsTranslated"]))
         }
     }
 }

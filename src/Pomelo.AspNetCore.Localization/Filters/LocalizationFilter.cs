@@ -54,6 +54,7 @@ namespace Pomelo.AspNetCore.Localization.Filters
                                     }
                                     else
                                     {
+                                        (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
                                         var cachedString = cache.Get(json[key], culture);
                                         if (cachedString == null)
                                         {
