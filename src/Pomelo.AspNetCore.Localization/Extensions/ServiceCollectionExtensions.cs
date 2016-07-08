@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             self.AddScoped<IStringReader, DefaultStringReader>();
             self.AddSingleton<ITranslator, NonTranslator>();
             self.AddSingleton<ITranslatedCaching, MemoryTranslatedCaching>();
+            self.AddScoped<ITranslatorDisabler, DefaultTranslatorDisabler>();
             return self;
         }
 

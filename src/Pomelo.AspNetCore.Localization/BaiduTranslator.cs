@@ -8,8 +8,18 @@ namespace Pomelo.AspNetCore.Localization
 {
     public class BaiduTranslator : ITranslator
     {
+        private ITranslatorDisabler disabler { get; set; }
+
+        public BaiduTranslator(ITranslatorDisabler disabler)
+        {
+            this.disabler = disabler;
+        }
+
         public async Task<string> TranslateAsync(string from, string to, string src)
         {
+            if (disabler.IsDisabled())
+                return src;
+
             if (from.IndexOf('-') >= 0)
                 from = from.Split('-')[0];
             if (to.IndexOf('-') >= 0)
