@@ -7,10 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LocalizationSite.Models
 {
-    public class TestContext : LocalizedDbContext
+    public class TestContext : DbContext
     {
-        public TestContext(IServiceProvider services, DbContextOptions opt)
-            : base(services, opt)
+        public TestContext(DbContextOptions opt)
+            : base(opt)
         {
         }
 

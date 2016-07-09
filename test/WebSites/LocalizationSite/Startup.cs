@@ -18,10 +18,10 @@ namespace LocalizationSite
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .AddDynamicLocalizer();
+            services.AddMvc();
 
-            services.AddDbContext<TestContext>(x =>x.UseInMemoryDatabase());
+            services.AddEntityFrameworkInMemoryDatabase()
+                .AddDbContext<TestContext>(x =>x.UseInMemoryDatabase());
 
             services.AddPomeloLocalization(x =>
             {

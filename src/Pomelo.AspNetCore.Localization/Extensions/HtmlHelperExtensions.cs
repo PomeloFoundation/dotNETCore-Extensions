@@ -84,6 +84,8 @@ namespace Pomelo.AspNetCore.Localization.Extensions
         public static bool IsTranslated(this IHtmlHelper self)
         {
             if (self.ViewData.ContainsKey("__IsTranslated") && Convert.ToBoolean(self.ViewData["__IsTranslated"]))
+                return true;
+            return false;
         }
     }
 }

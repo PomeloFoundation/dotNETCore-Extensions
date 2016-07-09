@@ -17,7 +17,9 @@ namespace LocalizationSite.Controllers
 
         public IActionResult Insert(string MultiLangContent, [FromServices]TestContext DB)
         {
-            DB.Tests.Add(new Test { MultiLangContent = MultiLangContent });
+            var t = new Test { MultiLangContent = MultiLangContent };
+            t.MultiLangContent = MultiLangContent;
+            DB.Tests.Add(t);
             DB.SaveChanges();
             return Redirect("/");
         }

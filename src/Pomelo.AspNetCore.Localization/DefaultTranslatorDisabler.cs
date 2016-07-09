@@ -19,9 +19,9 @@ namespace Pomelo.AspNetCore.Localization
         public bool IsDisabled()
         {
             var httpContext = services.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            if (httpContext.Request.Cookies.ContainsKey("ASPNET_TRANSLATOR") && !Convert.ToBoolean(httpContext.Request.Cookies["ASPNET_TRANSLATOR"]))
-                return false;
-            return true;
+            if (httpContext.Request.Cookies.ContainsKey("ASPNET_TRANSLATOR") && Convert.ToBoolean(httpContext.Request.Cookies["ASPNET_TRANSLATOR"]))
+                return true;
+            return false;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Pomelo.AspNetCore.Localization.Filters
         public void OnResultExecuting(ResultExecutingContext context)
         {
             var services = context.HttpContext.RequestServices;
+            var disabler = services.GetRequiredService<ITranslatorDisabler>();
             var cache = services.GetRequiredService<ITranslatedCaching>();
             var translator = services.GetRequiredService<ITranslator>();
             var culture = services.GetRequiredService<ICultureProvider>().DetermineCulture();
@@ -54,6 +55,8 @@ namespace Pomelo.AspNetCore.Localization.Filters
                                     }
                                     else
                                     {
+                                        if (disabler.IsDisabled())
+                                            y.SetValue(x, json[key]);
                                         (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
                                         var cachedString = cache.Get(json[key], culture);
                                         if (cachedString == null)
@@ -70,8 +73,9 @@ namespace Pomelo.AspNetCore.Localization.Filters
                                     }
                                 }
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                Console.WriteLine(ex.ToString());
                             }
                         }
                     }
