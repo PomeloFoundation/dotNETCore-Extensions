@@ -72,7 +72,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering
 
     public static class PagingHtmlHelper
     {
-        public static HtmlString Paging(this IHtmlHelper self, string PlainClass = "paging-item", string ActiveClass = "active", string OuterClass = "paging-outer", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagingInfo = "PagingInfo")
+        public static HtmlString Paging(this IHtmlHelper self, string PlainClass = "", string ActiveClass = "active", string OuterClass = "pagination", string PageNumberFormat = null, IEnumerable<string> IgnoreParam = null, string PagingInfo = "PagingInfo")
         {
             StringBuilder ret = new StringBuilder();
             if (self.ViewContext.ViewData["__Performance"] != null && Convert.ToInt32(self.ViewContext.ViewData["__Performance"]) == 1)

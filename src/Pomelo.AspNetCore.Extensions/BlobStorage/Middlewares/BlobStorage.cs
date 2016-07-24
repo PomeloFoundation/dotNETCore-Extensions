@@ -10,16 +10,30 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class BlobStorage
     {
-        public static IApplicationBuilder UseBlobStorage<TModel>(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName="file", string controller = "file", string downloadAction = "download", string uploadAction="upload", string uploadRouteName="FileUpload", string downloadRouteName = "FileDownload")
-            where TModel : Blob, new()
+        public static IApplicationBuilder UseBlobStorage<TModel, TKey>(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName="file", string controller = "file", string downloadAction = "download", string uploadAction="upload", string uploadRouteName="FileUpload", string downloadRouteName = "FileDownload")
+            where TKey : IEquatable<TKey>
+            where TModel : Blob<TKey>, new()
         {
             #region Download
 
             var endpoint1 = new RouteHandler(async context => {
-                var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
-                var id = Guid.Parse(context.GetRouteValue("id").ToString());
-                var blob = bs.Get(id);
-                var auth = context.RequestServices.GetService<IBlobAccessAuthorizationProvider>();
+                var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel, TKey>>();
+                var strId = context.GetRouteValue("id").ToString();
+                object id;
+                if (typeof(TKey) == typeof(short))
+                    id = Convert.ToInt16(strId);
+                else if (typeof(TKey) == typeof(int))
+                    id = Convert.ToInt32(strId);
+                else if (typeof(TKey) == typeof(long))
+                    id = Convert.ToInt64(strId);
+                else if (typeof(TKey) == typeof(Guid))
+                    id = Guid.Parse(strId);
+                else if (typeof(TKey) == typeof(string))
+                    id = strId;
+                else
+                    throw new NotSupportedException(typeof(TKey).FullName);
+                var blob = bs.Get((TKey)id);
+                var auth = context.RequestServices.GetService<IBlobAccessAuthorizationProvider<TKey>>();
                 if (blob == null)
                 {
                     context.Response.StatusCode = 404;
@@ -51,7 +65,7 @@ namespace Microsoft.AspNetCore.Builder
                 config.Run(async context =>
                 {
                     var auth = context.RequestServices.GetService<IBlobUploadAuthorizationProvider>();
-                    var handler = context.RequestServices.GetService<IBlobHandler<TModel>>();
+                    var handler = context.RequestServices.GetService<IBlobHandler<TModel, TKey>>();
                     if (auth != null && !auth.IsAbleToUpload())
                     {
                         context.Response.StatusCode = 403;
@@ -59,7 +73,7 @@ namespace Microsoft.AspNetCore.Builder
                     }
                     else if (context.Request.Method == "POST")
                     {
-                        var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel>>();
+                        var bs = context.RequestServices.GetRequiredService<IBlobStorageProvider<TModel, TKey>>();
                         var file = context.Request.Form.Files["file"];
                         if (file != null)
                         {
@@ -832,7 +846,7 @@ namespace Microsoft.AspNetCore.Builder
         }
         public static IApplicationBuilder UseBlobStorage(this IApplicationBuilder self, string path = "/scripts/jquery.pomelo.fileupload.js", string fileFormName = "file", string controller = "file", string downloadAction = "download", string uploadAction = "upload", string uploadRouteName = "FileUpload", string downloadRouteName = "FileDownload")
         {
-            return self.UseBlobStorage<Blob>(path, fileFormName, controller, downloadAction, uploadAction, uploadRouteName, downloadRouteName);
+            return self.UseBlobStorage<Blob, Guid>(path, fileFormName, controller, downloadAction, uploadAction, uploadRouteName, downloadRouteName);
         }
     }
 }

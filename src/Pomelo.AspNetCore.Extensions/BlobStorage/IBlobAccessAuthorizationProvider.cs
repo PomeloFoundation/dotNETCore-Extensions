@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Pomelo.AspNetCore.Extensions.BlobStorage
 {
-    public interface IBlobAccessAuthorizationProvider
+    public interface IBlobAccessAuthorizationProvider<TKey>
+        where TKey : IEquatable<TKey>
     {
-        bool IsAbleToDownload(Guid BlobId);
+        bool IsAbleToDownload(TKey BlobId);
     }
 }
