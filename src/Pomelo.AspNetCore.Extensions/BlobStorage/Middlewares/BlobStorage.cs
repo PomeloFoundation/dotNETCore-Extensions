@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -57,7 +57,7 @@ namespace Microsoft.AspNetCore.Builder
             });
             var routeBuilder1 = new RouteBuilder(self);
             routeBuilder1.DefaultHandler = endpoint1;
-            routeBuilder1.MapRoute(downloadRouteName, controller + "/"+ downloadAction +"/{id:Guid}");
+            routeBuilder1.MapRoute(downloadRouteName, controller + "/"+ downloadAction +"/{id}");
             #endregion
             #region Upload
             self.Map("/" + controller + "/" + uploadAction, config =>
