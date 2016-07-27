@@ -1,10 +1,21 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.0-*",
 
+  "packOptions": {
+    "authors": [ "Amamiya Yuuko" ],
+    "projectUrl": "https://github.com/PomeloFoundation/dotNETCore-Extensions",
+    "iconUrl": "http://www.1234.sh/assets/Shared/pomelofoundation.png",
+    "licenseUrl": "https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/PomeloFoundation/dotNETCore-Extensions"
+    }
+
+  },
   "dependencies": {
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.TestHost": "1.0.0",
-    "Pomelo.AspNetCore.Testing": "1.0.0"
+    "Pomelo.AspNetCore.Testing": "1.0.0-*"
   },
 
   "frameworks": {

@@ -1,6 +1,6 @@
 {
   "description": "Various helpers for writing tests that use DNX or ASP.NET.",
-  "version": "1.0.0",
+  "version": "1.0.0-*",
   "packOptions": {
     "repository": {
       "type": "git",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "Pomelo.Extensions.RuntimeEnvironment.Sources": "1.0.0",
+    "Pomelo.Extensions.RuntimeEnvironment.Sources": "1.0.0-*",
     "xunit": "2.1.0"
   },
   "frameworks": {
