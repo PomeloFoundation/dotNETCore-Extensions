@@ -104,23 +104,43 @@ namespace Pomelo.Data.Excel
 
         private void ReadFromZip()
         {
-            var e = ZipArchive.GetEntry("xl/workbook.xml");
-            using (var stream = e.Open())
+            var e = ZipArchive.GetEntry("xl/_rels/workbook.xml.rels");
+            using (var streamRels = e.Open())
             {
-                var sr = new StreamReader(stream);
+                var sr = new StreamReader(streamRels);
                 var result = sr.ReadToEnd();
-                var xd = new XmlDocument();
-                xd.LoadXml(result);
-                var tmp = xd.GetElementsByTagName("sheet");
-                foreach (XmlNode x in tmp)
+                var xdRels = new XmlDocument();
+                xdRels.LoadXml(result);
+
+                e = ZipArchive.GetEntry("xl/workbook.xml");
+                using (var stream = e.Open())
                 {
-                    var name = x.Attributes["name"].Value;
-                    var sheetId = x.Attributes["sheetId"].Value;
-                    WorkBook.Add(new WorkBook
+                    sr = new StreamReader(stream);
+                    result = sr.ReadToEnd();
+                    var xd = new XmlDocument();
+                    xd.LoadXml(result);
+                    var tmp = xd.GetElementsByTagName("sheet");
+                    foreach (XmlNode x in tmp)
                     {
-                        Name = name,
-                        Id = Convert.ToUInt64(sheetId)
-                    });
+                        var name = x.Attributes["name"].Value;
+                        var sheetId = x.Attributes["sheetId"].Value;
+                        var rId = x.Attributes["r:id"].Value;
+
+                        var relationship =
+                            xdRels.GetElementsByTagName("Relationship")
+                            .Cast<XmlNode>()
+                            .Where(x2 => x2.Attributes["Id"].Value == rId)
+                            .Single();
+
+                        var target = relationship.Attributes["Target"].Value;
+
+                        WorkBook.Add(new WorkBook
+                        {
+                            Name = name,
+                            Id = Convert.ToUInt64(sheetId),
+                            Target = target
+                        });
+                    }
                 }
             }
         }
@@ -137,7 +157,7 @@ namespace Pomelo.Data.Excel
         public SheetWithoutHDR LoadSheet(ulong Id)
         {
             var worksheet = WorkBook.Where(x => x.Id == Id).First();
-            var e = ZipArchive.GetEntry($"xl/worksheets/{worksheet.FileName}");
+            var e = ZipArchive.GetEntry($"xl/{worksheet.Target}");
             using (var stream = e.Open())
             {
                 var sr = new StreamReader(stream);
@@ -158,7 +178,7 @@ namespace Pomelo.Data.Excel
         public SheetHDR LoadSheetHDR(ulong Id)
         {
             var worksheet = WorkBook.Where(x => x.Id == Id).First();
-            var e = ZipArchive.GetEntry($"xl/worksheets/{worksheet.FileName}");
+            var e = ZipArchive.GetEntry($"xl/{worksheet.Target}");
             using (var stream = e.Open())
             {
                 var sr = new StreamReader(stream);
