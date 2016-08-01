@@ -11,14 +11,16 @@ namespace Pomelo.Data.Excel
 {
     public class ExcelStream : IDisposable
     {
-        private FileStream file;
+        private readonly Stream _file;
+        private SharedStrings _sharedStrings;
+
         public ZipArchive ZipArchive { get; set; }
-        private SharedStrings sharedStrings;
-        private SharedStrings cachedSharedStrings
+
+        private SharedStrings CachedSharedStrings
         {
             get
             {
-                if (sharedStrings == null)
+                if (_sharedStrings == null)
                 {
                     var e = ZipArchive.GetEntry("xl/sharedStrings.xml");
                     // 如果sharedStrings.xml不存在，则创建
@@ -77,19 +79,31 @@ namespace Pomelo.Data.Excel
                     {
                         var sr = new StreamReader(stream);
                         var result = sr.ReadToEnd();
-                        sharedStrings = new SharedStrings(result);
+                        _sharedStrings = new SharedStrings(result);
                     }
                 }
-                return sharedStrings;
+                return _sharedStrings;
             }
         }
 
         public List<WorkBook> WorkBook { get; set; } = new List<WorkBook>();
 
+        public ExcelStream(Stream stream)
+        {
+            _file = null;
+            ZipArchive = new ZipArchive(stream, ZipArchiveMode.Read);
+            ReadFromZip();
+        }
+
         public ExcelStream(string path)
         {
-            file = File.Open(path, FileMode.Open , FileAccess.ReadWrite);
-            ZipArchive = new ZipArchive(file, ZipArchiveMode.Read | ZipArchiveMode.Update);
+            _file = File.Open(path, FileMode.Open, FileAccess.ReadWrite);
+            ZipArchive = new ZipArchive(_file, ZipArchiveMode.Read | ZipArchiveMode.Update);
+            ReadFromZip();
+        }
+
+        private void ReadFromZip()
+        {
             var e = ZipArchive.GetEntry("xl/workbook.xml");
             using (var stream = e.Open())
             {
@@ -98,7 +112,7 @@ namespace Pomelo.Data.Excel
                 var xd = new XmlDocument();
                 xd.LoadXml(result);
                 var tmp = xd.GetElementsByTagName("sheet");
-                foreach(XmlNode x in tmp)
+                foreach (XmlNode x in tmp)
                 {
                     var name = x.Attributes["name"].Value;
                     var sheetId = x.Attributes["sheetId"].Value;
@@ -128,7 +142,7 @@ namespace Pomelo.Data.Excel
             {
                 var sr = new StreamReader(stream);
                 var result = sr.ReadToEnd();
-                return new SheetWithoutHDR(worksheet.Id, result, this, cachedSharedStrings);
+                return new SheetWithoutHDR(worksheet.Id, result, this, CachedSharedStrings);
             }
         }
 
@@ -149,7 +163,7 @@ namespace Pomelo.Data.Excel
             {
                 var sr = new StreamReader(stream);
                 var result = sr.ReadToEnd();
-                return new SheetHDR(worksheet.Id, result, this, cachedSharedStrings);
+                return new SheetHDR(worksheet.Id, result, this, CachedSharedStrings);
             }
         }
 
@@ -394,7 +408,10 @@ namespace Pomelo.Data.Excel
         public void Dispose()
         {
             ZipArchive.Dispose();
-            file.Dispose();
+            if (_file != null)
+            {
+                _file.Dispose();
+            }
         }
 
         public static ExcelStream Create(string path)
