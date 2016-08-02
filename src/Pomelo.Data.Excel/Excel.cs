@@ -436,6 +436,17 @@ namespace Pomelo.Data.Excel
 
         public static ExcelStream Create(string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+            }
+
+            var directoryPath = Path.GetDirectoryName(path);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             File.WriteAllBytes(path, NewExcel.Bytes);
             return new ExcelStream(path);
         }
