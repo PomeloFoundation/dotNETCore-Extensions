@@ -438,6 +438,7 @@ namespace Pomelo.Data.Excel
         {
             if (string.IsNullOrEmpty(path))
             {
+                throw new ArgumentNullException(nameof(path));
             }
 
             var directoryPath = Path.GetDirectoryName(path);
