@@ -9,12 +9,6 @@ namespace Pomelo.Data.Excel.Infrastructure
     {
         public ulong Id { get; set; }
         public string Name { get; set; }
-        public string FileName
-        {
-            get
-            {
-                return $"sheet{Id}.xml";
-            }
-        }
+        public string Target { get; set; }
     }
 }
