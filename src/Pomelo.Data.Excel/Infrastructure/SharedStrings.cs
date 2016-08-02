@@ -13,9 +13,14 @@ namespace Pomelo.Data.Excel.Infrastructure
 
         private Dictionary<ulong, string> dic = new Dictionary<ulong, string>();
         private Dictionary<string, ulong> dic2 = new Dictionary<string, ulong>();
+        private int nullIndex = 0;
 
         public bool Exist(string str)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return false;
+            }
             if (dic2.ContainsKey(str))
                 return true;
             return false;
@@ -113,6 +118,13 @@ namespace Pomelo.Data.Excel.Infrastructure
         {
             lock (this)
             {
+                //修复添加null值时，报错的Bug
+                if (item == null)
+                {
+                    nullIndex++;
+                    item = "Null";
+                }
+
                 if (dic.Count == 0)
                 {
                     dic.Add(0, item);
@@ -123,7 +135,7 @@ namespace Pomelo.Data.Excel.Infrastructure
                 {
                     var last = dic.Last().Key;
                     dic.Add(last + 1, item);
-                    dic2.Add(item, last + 1);
+                    dic2.Add($"{item}{nullIndex}", last + 1);
                     return last + 1;
                 }
             }
