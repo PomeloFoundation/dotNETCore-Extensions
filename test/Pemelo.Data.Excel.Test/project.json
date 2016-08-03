@@ -17,7 +17,10 @@
   },
   //解决Win10 提示Can not find runtime target for framework
   "runtimes": {
-    "win10-x64": {}
+    "win10-x64": {},
+    "win81-x64": {},
+    "win8-x64": {},
+    "win7-x64": {}
   }
 }
 
