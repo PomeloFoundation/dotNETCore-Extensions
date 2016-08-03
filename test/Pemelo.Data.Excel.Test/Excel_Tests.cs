@@ -17,17 +17,15 @@ namespace Pemelo.Data.Excel.Test
         {
             _ExcelStream = new ExcelStream();
             _ExcelPath = @"c:\excel\test.xlsx";
-
+            if (File.Exists(_ExcelPath))
+            {
+                File.Delete(_ExcelPath);
+            }
         }
 
         [Fact(DisplayName = "测试创建Excel文件")]
         public void Test_Creat_Excel()
         {
-            if (File.Exists(_ExcelPath))
-            {
-                File.Delete(_ExcelPath);
-            }
-
             using (var x = _ExcelStream.Create(_ExcelPath))
             {
                 using (var sheet = x.LoadSheet(1))
@@ -141,7 +139,6 @@ namespace Pemelo.Data.Excel.Test
         [Fact(DisplayName = "测试第一行作为列索引")]
         public void Test_LoadSheetHDR()
         {
-            File.Delete(_ExcelPath);
             using (var x = _ExcelStream.Create(_ExcelPath))
             {
                 using (var sheet = x.LoadSheet(1))
