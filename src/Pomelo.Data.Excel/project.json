@@ -4,30 +4,40 @@
   "dependencies": {
   },
 
-  "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.IO.Compression": "4.0.0.0",
-        "System.Xml": "4.0.0.0"
-      }
+  "packOptions": {
+    "authors": [ "Amamiya Yuuko" ],
+    "projectUrl": "https://github.com/PomeloFoundation/dotNETCore-Extensions",
+    "iconUrl": "http://www.1234.sh/assets/Shared/pomelofoundation.png",
+    "licenseUrl": "https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/PomeloFoundation/dotNETCore-Extensions"
     },
-    "netstandard1.6": {
-      "dependencies": {
-        "NETStandard.Library": "1.6.0",
-        "System.Xml.XPath.XDocument": "4.0.1",
-        "System.Xml.XmlDocument": "4.0.1",
-        "System.Xml.XDocument": "4.0.11",
-        "System.Xml.ReaderWriter": "4.0.11",
-        "System.Xml.XPath.XmlDocument": "4.0.1",
-        "System.Xml.XPath": "4.0.1",
-        "System.Xml.XmlSerializer": "4.0.11",
-        "System.Collections": "4.0.11",
-        "System.Linq": "4.1.0",
-        "System.Runtime": "4.1.0",
-        "System.Threading": "4.0.11",
-        "System.IO.Compression": "4.1.0"
+
+    "frameworks": {
+      "net451": {
+        "frameworkAssemblies": {
+          "System.IO.Compression": "4.0.0.0",
+          "System.Xml": "4.0.0.0"
+        }
       },
-      "imports": "dnxcore50"
+      "netstandard1.6": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "System.Xml.XPath.XDocument": "4.0.1",
+          "System.Xml.XmlDocument": "4.0.1",
+          "System.Xml.XDocument": "4.0.11",
+          "System.Xml.ReaderWriter": "4.0.11",
+          "System.Xml.XPath.XmlDocument": "4.0.1",
+          "System.Xml.XPath": "4.0.1",
+          "System.Xml.XmlSerializer": "4.0.11",
+          "System.Collections": "4.0.11",
+          "System.Linq": "4.1.0",
+          "System.Runtime": "4.1.0",
+          "System.Threading": "4.0.11",
+          "System.IO.Compression": "4.1.0"
+        },
+        "imports": "dnxcore50"
+      }
     }
   }
-}
