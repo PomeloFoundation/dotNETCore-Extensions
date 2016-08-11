@@ -9,27 +9,28 @@
     "repository": {
       "type": "git",
       "url": "https://github.com/PomeloFoundation/dotNETCore-Extensions"
-    },
+    }
+  },
 
-    "dependencies": {
-      "Pomelo.AntiXss": "1.0.0-*",
-      "Pomelo.Data.Excel": "1.0.0-*",
-      "Pomelo.Extensions.Caching": "1.0.0-*",
-      "Pomelo.Marked": "1.0.0-*",
-      "Pomelo.Net.Smtp": "1.0.0-*"
-    },
+  "dependencies": {
+    "Pomelo.AntiXss": "1.0.0-*",
+    "Pomelo.Data.Excel": "1.0.0-*",
+    "Pomelo.Extensions.Caching": "1.0.0-*",
+    "Pomelo.Marked": "1.0.0-*",
+    "Pomelo.Net.Smtp": "1.0.0-*"
+  },
 
-    "frameworks": {
-      "net451": {},
-      "netstandard1.6": {
-        "dependencies": {
-          "NETStandard.Library": "1.6.0"
-        },
-        "imports": [
-          "dotnet5.6",
-          "dnxcore50",
-          "portable-net45+win8"
-        ]
-      }
+  "frameworks": {
+    "net451": {},
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      },
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
     }
   }
+}

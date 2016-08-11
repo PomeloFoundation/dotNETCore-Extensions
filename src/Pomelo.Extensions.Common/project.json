@@ -9,34 +9,35 @@
     "repository": {
       "type": "git",
       "url": "https://github.com/PomeloFoundation/dotNETCore-Extensions"
-    },
+    }
+  },
 
-    "dependencies": {
-    },
+  "dependencies": {
+  },
 
-    "frameworks": {
-      "net451": {
-        "frameworkAssemblies": {
-          "System.Net.Http": "4.0.0.0",
-          "System.IO.Compression": "4.0.0.0",
-          "System.Reflection": "4.0.0.0",
-          "System.Security": "4.0.0.0"
-        }
-      },
-      "netstandard1.6": {
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
-          "System.Diagnostics.Process": "4.1.0",
-          "System.IO.Compression": "4.1.0",
-          "System.Net.Http": "4.1.0",
-          "System.Reflection": "4.1.0",
-          "System.Security.Cryptography.Algorithms": "4.2.0"
-        },
-        "imports": [
-          "dotnet5.6",
-          "dnxcore50",
-          "portable-net45+win8"
-        ]
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Net.Http": "4.0.0.0",
+        "System.IO.Compression": "4.0.0.0",
+        "System.Reflection": "4.0.0.0",
+        "System.Security": "4.0.0.0"
       }
+    },
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Diagnostics.Process": "4.1.0",
+        "System.IO.Compression": "4.1.0",
+        "System.Net.Http": "4.1.0",
+        "System.Reflection": "4.1.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0"
+      },
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50",
+        "portable-net45+win8"
+      ]
     }
   }
+}
