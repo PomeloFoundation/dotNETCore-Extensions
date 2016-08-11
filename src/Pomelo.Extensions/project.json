@@ -4,6 +4,7 @@
   "dependencies": {
     "Pomelo.AntiXss": "1.0.0-*",
     "Pomelo.Data.Excel": "1.0.0-*",
+    "Pomelo.Extensions.Caching": "1.0.0-*",
     "Pomelo.Marked": "1.0.0-*",
     "Pomelo.Net.Smtp": "1.0.0-*"
   },

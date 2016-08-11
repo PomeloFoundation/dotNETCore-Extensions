@@ -70,6 +70,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FileUploadSite", "test\WebS
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pemelo.Data.Excel.Test", "test\Pemelo.Data.Excel.Test\Pemelo.Data.Excel.Test.xproj", "{38324C6A-C25B-4DF5-984E-5606083838D3}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Extensions.Caching", "src\Pomelo.Extensions.Caching\Pomelo.Extensions.Caching.xproj", "{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -188,6 +190,10 @@ Global
 		{38324C6A-C25B-4DF5-984E-5606083838D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38324C6A-C25B-4DF5-984E-5606083838D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38324C6A-C25B-4DF5-984E-5606083838D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,5 +228,6 @@ Global
 		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
 		{05873A1B-BA22-4889-B83E-0ADB70F1199D} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 		{38324C6A-C25B-4DF5-984E-5606083838D3} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
+		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 	EndGlobalSection
 EndGlobal
