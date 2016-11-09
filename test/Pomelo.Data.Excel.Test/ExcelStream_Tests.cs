@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Pemelo.Data.Excel.Test
+namespace Pomelo.Data.Excel.Test
 {
     public class ExcelStream_Tests
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Pemelo.Data.Excel.Test
+namespace Pomelo.Data.Excel.Test
 {
     public class ExcelStreamReader_Tests
     {
@@ -41,7 +41,7 @@ namespace Pemelo.Data.Excel.Test
         }
 
         [Fact]
-        public void Test_ExcelStringReader_Load()
+        public void Test_ExcelStreamReader_Load()
         {
             using (var x = _excelStreamReader.Load(_excelPath))
             {
@@ -74,7 +74,7 @@ namespace Pemelo.Data.Excel.Test
         }
 
         [Fact]
-        public void Test_ExcelStringReader_LoadHdr()
+        public void Test_ExcelStreamReader_LoadHdr()
         {
             using (var x = _excelStreamReader.Load(_excelPath))
             {
