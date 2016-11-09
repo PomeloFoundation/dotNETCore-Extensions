@@ -9,56 +9,14 @@ using Pomelo.Data.Excel.Infrastructure;
 
 namespace Pomelo.Data.Excel
 {
-    public class ExcelStream : IExcelStream, IDisposable
+    public class ExcelStream : ExcelStreamBase<ExcelStream>, IExcelStream, IDisposable
     {
-        private Stream _file;
-        private SharedStrings _sharedStrings;
-
-        public ZipArchive ZipArchive { get; set; }
-
-        public List<WorkBook> WorkBook { get; set; } = new List<WorkBook>();
-
-
         /// <summary>
         /// 构造函数
         /// </summary>
         public ExcelStream()
         {
 
-        }
-
-        /// <summary>
-        /// 加载Excel
-        /// </summary>
-        /// <param name="stream">Excel字节流</param>
-        public ExcelStream Load(Stream stream)
-        {
-            if (stream == null)
-            {
-                throw new ArgumentNullException(nameof(stream));
-            }
-            _file = null;
-            ZipArchive = new ZipArchive(stream, ZipArchiveMode.Read);
-            ReadFromZip();
-
-            return this;
-        }
-
-        /// <summary>
-        /// 加载Excel
-        /// </summary>
-        /// <param name="path">Excel文件路径</param>
-        public ExcelStream Load(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException($"{nameof(path)}is not found");
-            }
-            _file = File.Open(path, FileMode.Open, FileAccess.ReadWrite);
-            ZipArchive = new ZipArchive(_file, ZipArchiveMode.Read | ZipArchiveMode.Update);
-            ReadFromZip();
-
-            return this;
         }
 
         /// <summary>
@@ -74,10 +32,10 @@ namespace Pomelo.Data.Excel
             }
 
             //check the dirctory
-            var dirctory = Path.GetDirectoryName(path);
-            if (!Directory.Exists(dirctory))
+            var directory = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(dirctory);
+                Directory.CreateDirectory(directory);
             }
 
             File.WriteAllBytes(path, NewExcel.Bytes);
@@ -114,21 +72,21 @@ namespace Pomelo.Data.Excel
         /// <returns></returns>
         public SheetWithoutHDR LoadSheet(string name)
         {
-            var Id = WorkBook
+            var id = WorkBook
                 .Where(x => x.Name == name)
                 .Select(x => x.Id)
                 .First();
-            return LoadSheet(Id);
+            return LoadSheet(id);
         }
 
         /// <summary>
         /// 加载Sheet不包含头部
         /// </summary>
-        /// <param name="Id">Sheet名称对应的Id</param>
+        /// <param name="id">Sheet名称对应的Id</param>
         /// <returns></returns>
-        public SheetWithoutHDR LoadSheet(ulong Id)
+        public SheetWithoutHDR LoadSheet(ulong id)
         {
-            var worksheet = WorkBook.Where(x => x.Id == Id).First();
+            var worksheet = WorkBook.First(x => x.Id == id);
             var e = ZipArchive.GetEntry($"xl/{worksheet.Target}");
             using (var stream = e.Open())
             {
@@ -145,11 +103,11 @@ namespace Pomelo.Data.Excel
         /// <returns></returns>
         public SheetHDR LoadSheetHDR(string name)
         {
-            var Id = WorkBook
+            var id = WorkBook
                 .Where(x => x.Name == name)
                 .Select(x => x.Id)
                 .First();
-            return LoadSheetHDR(Id);
+            return LoadSheetHDR(id);
         }
 
         /// <summary>
@@ -199,10 +157,10 @@ namespace Pomelo.Data.Excel
                 var result = sr.ReadToEnd();
                 var xd = new XmlDocument();
                 xd.LoadXml(result);
-                var tmp = xd.GetElementsByTagName("sheet")
+                var tmp = xd
+                    .GetElementsByTagName("sheet")
                     .Cast<XmlNode>()
-                    .Where(x => x.Attributes["sheetId"].Value == Id.ToString())
-                    .Single();
+                    .Single(x => x.Attributes["sheetId"].Value == Id.ToString());
                 tmp.ParentNode.RemoveChild(tmp);
                 stream.Position = 0;
                 stream.SetLength(0);
@@ -221,10 +179,10 @@ namespace Pomelo.Data.Excel
                 var result = sr.ReadToEnd();
                 var xd = new XmlDocument();
                 xd.LoadXml(result);
-                var tmp = xd.GetElementsByTagName("Override")
+                var tmp = xd
+                    .GetElementsByTagName("Override")
                     .Cast<XmlNode>()
-                    .Where(x => x.Attributes["PartName"].Value == $"/xl/worksheets/sheet{Id}.xml")
-                    .Single();
+                    .Single(x => x.Attributes["PartName"].Value == $"/xl/worksheets/sheet{Id}.xml");
                 tmp.ParentNode.RemoveChild(tmp);
                 stream.Position = 0;
                 stream.SetLength(0);
@@ -239,10 +197,10 @@ namespace Pomelo.Data.Excel
                 var result = sr.ReadToEnd();
                 var xd = new XmlDocument();
                 xd.LoadXml(result);
-                var tmp = xd.GetElementsByTagName("vt:lpstr")
+                var tmp = xd
+                    .GetElementsByTagName("vt:lpstr")
                     .Cast<XmlNode>()
-                    .Where(x => x.InnerText == name)
-                    .Single();
+                    .Single(x => x.InnerText == name);
                 tmp.ParentNode.Attributes["size"].Value = (Convert.ToInt32(tmp.ParentNode.Attributes["size"].Value) - 1).ToString();
                 tmp.ParentNode.RemoveChild(tmp);
                 var tmp2 = xd.GetElementsByTagName("vt:i4")
@@ -267,8 +225,7 @@ namespace Pomelo.Data.Excel
                     .First();
                 var sheetX = relationships.ChildNodes
                     .Cast<XmlNode>()
-                    .Where(x => x.Attributes["Target"].Value == $"worksheets/sheet{Id}.xml")
-                    .Single();
+                    .Single(x => x.Attributes["Target"].Value == $"worksheets/sheet{Id}.xml");
                 relationships.RemoveChild(sheetX);
                 stream.Position = 0;
                 stream.SetLength(0);
@@ -280,10 +237,7 @@ namespace Pomelo.Data.Excel
         public void Dispose()
         {
             ZipArchive.Dispose();
-            if (_file != null)
-            {
-                _file.Dispose();
-            }
+            FileStream?.Dispose();
         }
 
         #region 私有方法
@@ -397,10 +351,10 @@ namespace Pomelo.Data.Excel
                 xd.LoadXml(result);
                 var element = xd.CreateElement("vt:lpstr", "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes");
                 element.InnerText = name;
-                var tmp = xd.GetElementsByTagName("vt:vector")
+                var tmp = xd
+                    .GetElementsByTagName("vt:vector")
                     .Cast<XmlNode>()
-                    .Where(x => x.Attributes["baseType"].Value == "lpstr")
-                    .Single();
+                    .Single(x => x.Attributes["baseType"].Value == "lpstr");
                 tmp.AppendChild(element);
 
                 tmp.Attributes["size"].Value = (Convert.ToInt32(tmp.Attributes["size"].Value) + 1).ToString();
@@ -417,54 +371,11 @@ namespace Pomelo.Data.Excel
             return Id;
         }
 
-        private void ReadFromZip()
-        {
-            var e = ZipArchive.GetEntry("xl/_rels/workbook.xml.rels");
-            using (var streamRels = e.Open())
-            {
-                var sr = new StreamReader(streamRels);
-                var result = sr.ReadToEnd();
-                var xdRels = new XmlDocument();
-                xdRels.LoadXml(result);
-
-                e = ZipArchive.GetEntry("xl/workbook.xml");
-                using (var stream = e.Open())
-                {
-                    sr = new StreamReader(stream);
-                    result = sr.ReadToEnd();
-                    var xd = new XmlDocument();
-                    xd.LoadXml(result);
-                    var tmp = xd.GetElementsByTagName("sheet");
-                    foreach (XmlNode x in tmp)
-                    {
-                        var name = x.Attributes["name"].Value;
-                        var sheetId = x.Attributes["sheetId"].Value;
-                        var rId = x.Attributes["r:id"].Value;
-
-                        var relationship =
-                            xdRels.GetElementsByTagName("Relationship")
-                            .Cast<XmlNode>()
-                            .Where(x2 => x2.Attributes["Id"].Value == rId)
-                            .Single();
-
-                        var target = relationship.Attributes["Target"].Value;
-
-                        WorkBook.Add(new WorkBook
-                        {
-                            Name = name,
-                            Id = Convert.ToUInt64(sheetId),
-                            Target = target
-                        });
-                    }
-                }
-            }
-        }
-
         private SharedStrings CachedSharedStrings
         {
             get
             {
-                if (_sharedStrings == null)
+                if (this.SharedStrings == null)
                 {
                     var e = ZipArchive.GetEntry("xl/sharedStrings.xml");
                     // 如果sharedStrings.xml不存在，则创建
@@ -523,10 +434,10 @@ namespace Pomelo.Data.Excel
                     {
                         var sr = new StreamReader(stream);
                         var result = sr.ReadToEnd();
-                        _sharedStrings = new SharedStrings(result);
+                        SharedStrings = new SharedStrings(result);
                     }
                 }
-                return _sharedStrings;
+                return SharedStrings;
             }
         }
         #endregion

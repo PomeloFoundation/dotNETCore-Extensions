@@ -8,11 +8,11 @@ namespace Pomelo.Data.Excel.Infrastructure
 {
     public class SheetWithoutHDR : Sheet
     {
-        public SheetWithoutHDR(ulong Id, string XmlSource, ExcelStream Excel, SharedStrings stringDictionary)
-            : base(Id, Excel, stringDictionary)
+        public SheetWithoutHDR(ulong id, string xmlSource, ExcelStream excel, SharedStrings stringDictionary)
+            : base(id, excel, stringDictionary)
         {
             var xd = new XmlDocument();
-            xd.LoadXml(XmlSource);
+            xd.LoadXml(xmlSource);
             var rows = xd.GetElementsByTagName("row");
             // 遍历row标签
             foreach (XmlNode x in rows)
