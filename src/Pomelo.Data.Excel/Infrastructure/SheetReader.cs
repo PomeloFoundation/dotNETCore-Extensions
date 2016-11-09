@@ -14,11 +14,15 @@ namespace Pomelo.Data.Excel.Infrastructure
         private readonly Stream _sheetStream;
         private readonly XmlReader _xmlReader;
         private readonly SharedStrings _sharedStrings;
+        private readonly bool _hdr;
 
-        public SheetReader(Stream sheetStream, SharedStrings sharedStrings)
+        public Header Header { get; private set; }
+
+        public SheetReader(Stream sheetStream, SharedStrings sharedStrings, bool hdr)
         {
             _sheetStream = sheetStream;
             _sharedStrings = sharedStrings;
+            _hdr = hdr;
 
             _xmlReader = XmlReader.Create(sheetStream);
 
@@ -26,13 +30,16 @@ namespace Pomelo.Data.Excel.Infrastructure
             {
                 throw new NotSupportedException("Not expected file-format");    
             }
+
+            if (hdr) Header = ReadNextRow();
+            if (Header == null) Header = new Header();
         }
 
         public Row ReadNextRow()
         {
             if (_xmlReader.EOF) return null;
 
-            var row = new Row();
+            var row = new Row(Header);
 
             var moreColumns = true;
             var elements = new [] { "c"}; 

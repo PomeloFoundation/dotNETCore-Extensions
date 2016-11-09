@@ -16,22 +16,42 @@ namespace Pomelo.Data.Excel
 
         }
 
-        public SheetReader LoadSheetReader(string name)
+        private SheetReader LoadSheetReader(string name, bool hdr)
         {
             var id = WorkBook
                 .Where(x => x.Name == name)
                 .Select(x => x.Id)
                 .First();
-            return LoadSheetReader(id);
+            return LoadSheetReader(id, hdr);
         }
 
-        public SheetReader LoadSheetReader(ulong id)
+        private SheetReader LoadSheetReader(ulong id, bool hdr)
         {
             var worksheet = WorkBook.First(x => x.Id == id);
             var e = ZipArchive.GetEntry($"xl/{worksheet.Target}");
 
             var sheetStream = e.Open();
-            return new SheetReader(sheetStream, CachedSharedStrings);
+            return new SheetReader(sheetStream, CachedSharedStrings, hdr);
+        }
+
+        public SheetReader LoadSheetReader(string name)
+        {
+            return LoadSheetReader(name, false);
+        }
+
+        public SheetReader LoadSheetReader(ulong id)
+        {
+            return LoadSheetReader(id, false);
+        }
+
+        public SheetReader LoadSheetReaderHDR(ulong id)
+        {
+            return LoadSheetReader(id, true);
+        }
+
+        public SheetReader LoadSheetReaderHDR(string name)
+        {
+            return LoadSheetReader(name, true);
         }
     }
 }

@@ -72,5 +72,33 @@ namespace Pemelo.Data.Excel.Test
                 }
             }
         }
+
+        [Fact]
+        public void Test_ExcelStringReader_LoadHdr()
+        {
+            using (var x = _excelStreamReader.Load(_excelPath))
+            {
+                using (var sheetReader = x.LoadSheetReaderHDR(1))
+                {
+                    // Reading the data from sheet
+                    var row = sheetReader.ReadNextRow();
+                    var rowCounter = 0;
+                    while (row != null)
+                    {
+                        switch (rowCounter)
+                        {
+                            case 0:
+                                Assert.Equal("Tor", row["Name"]);
+                                Assert.Equal("Male", row["Sex"]);
+                                Assert.Equal("42", row["Age"]);
+                                break;
+                        }
+                        row = sheetReader.ReadNextRow();
+                        rowCounter++;
+                    }
+                    Assert.Equal(1, rowCounter);
+                }
+            }
+        }
     }
 }

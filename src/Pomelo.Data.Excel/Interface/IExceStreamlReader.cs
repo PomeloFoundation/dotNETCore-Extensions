@@ -12,5 +12,9 @@ namespace Pomelo.Data.Excel
         SheetReader LoadSheetReader(string name);
 
         SheetReader LoadSheetReader(ulong id);
+
+        SheetReader LoadSheetReaderHDR(string name);
+
+        SheetReader LoadSheetReaderHDR(ulong id);
     }
 }

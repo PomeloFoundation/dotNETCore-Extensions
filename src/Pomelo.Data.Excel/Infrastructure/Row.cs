@@ -5,24 +5,9 @@ using System.Threading.Tasks;
 
 namespace Pomelo.Data.Excel.Infrastructure
 {
-    public class Row : List<string>
+    public class Row : Header
     {
-        private Header _header;
-
-        public string Spans { get; private set; }
-
-        public void Add(string item, string pos)
-        {
-            var numStr = "";
-            foreach (var x in pos)
-                if ("QWERTYUIOPASDFGHJKLZXCVBNM".Contains(x))
-                    numStr += x;
-            var num = new ColNumber(numStr);
-            var intvalue = Convert.ToInt64(ColNumber.FromNumberSystem26(num)) - 1;
-            while (this.LongCount() != intvalue +1)
-                this.Add(null);
-            this[(int)intvalue] = item;
-        }
+        private readonly Header _header;
 
         public Row(Header header = null)
         {
