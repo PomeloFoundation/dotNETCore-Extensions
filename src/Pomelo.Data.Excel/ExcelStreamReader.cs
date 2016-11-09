@@ -30,7 +30,8 @@ namespace Pomelo.Data.Excel
             var worksheet = WorkBook.First(x => x.Id == id);
             var e = ZipArchive.GetEntry($"xl/{worksheet.Target}");
 
-            return new SheetReader(e.Open());
+            var sheetStream = e.Open();
+            return new SheetReader(sheetStream, CachedSharedStrings);
         }
     }
 }

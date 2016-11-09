@@ -48,15 +48,27 @@ namespace Pemelo.Data.Excel.Test
                 using (var sheetReader = x.LoadSheetReader(1))
                 {
                     // Reading the data from sheet
-                    var a = sheetReader.ReadNextRow();
-                    while (a != null)
+                    var row = sheetReader.ReadNextRow();
+                    var rowCounter = 0;
+                    while (row != null)
                     {
-                        foreach (var b in a)
+                        switch (rowCounter)
                         {
-                            Assert.Equal("Create test", b);
+                            case 0:
+                                Assert.Equal("Name", row[0]);
+                                Assert.Equal("Sex", row[1]);
+                                Assert.Equal("Age", row[2]);
+                                break;
+                            case 1:
+                                Assert.Equal("Tor", row[0]);
+                                Assert.Equal("Male", row[1]);
+                                Assert.Equal("42", row[2]);
+                                break;
                         }
-                        a = sheetReader.ReadNextRow();
+                        row = sheetReader.ReadNextRow();
+                        rowCounter++;
                     }
+                    Assert.Equal(2, rowCounter);
                 }
             }
         }

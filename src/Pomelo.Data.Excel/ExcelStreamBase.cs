@@ -12,6 +12,7 @@ namespace Pomelo.Data.Excel
     public class ExcelStreamBase<T> where T : ExcelStreamBase<T>, IDisposable
     {
         protected Stream FileStream { get; set; }
+
         protected SharedStrings SharedStrings { get; set; }
 
         public ZipArchive ZipArchive { get; set; }
@@ -55,8 +56,9 @@ namespace Pomelo.Data.Excel
 
         public void Dispose()
         {
-            ZipArchive.Dispose();
+            ZipArchive?.Dispose();
             FileStream?.Dispose();
+            SharedStrings?.Dispose();
         }
 
         private void ReadFromZip()
@@ -102,7 +104,7 @@ namespace Pomelo.Data.Excel
             }
         }
 
-        private SharedStrings CachedSharedStrings
+        protected SharedStrings CachedSharedStrings
         {
             get
             {
@@ -131,10 +133,10 @@ namespace Pomelo.Data.Excel
                             var element = xd.CreateElement("Override", xd.DocumentElement.NamespaceURI);
                             element.SetAttribute("PartName", "/xl/sharedStrings.xml");
                             element.SetAttribute("ContentType", "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml");
-                            var tmp = xd.GetElementsByTagName("Types")
-                                .Cast<XmlNode>()
-                                .First()
-                                .AppendChild(element);
+                            //var tmp = xd.GetElementsByTagName("Types")
+                            //    .Cast<XmlNode>()
+                            //    .First()
+                            //    .AppendChild(element);
                             stream.Position = 0;
                             stream.SetLength(0);
                             xd.Save(stream);

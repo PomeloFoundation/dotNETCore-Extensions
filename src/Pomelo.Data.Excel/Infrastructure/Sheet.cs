@@ -11,6 +11,10 @@ namespace Pomelo.Data.Excel.Infrastructure
 {
     public class Sheet : List<Row>, IDisposable
     {
+        private readonly ExcelStream _excel;
+
+        private readonly ulong _id;
+
         protected SharedStrings StringDictionary { get; set; }
 
         public Sheet(ulong id, ExcelStream excel, SharedStrings stringDictionary)
@@ -19,10 +23,6 @@ namespace Pomelo.Data.Excel.Infrastructure
             _excel = excel;
             StringDictionary = stringDictionary;
         }
-
-        private readonly ExcelStream _excel;
-
-        private readonly ulong _id;
 
         public void Dispose()
         {

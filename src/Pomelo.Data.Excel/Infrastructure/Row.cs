@@ -7,7 +7,7 @@ namespace Pomelo.Data.Excel.Infrastructure
 {
     public class Row : List<string>
     {
-        private Header header;
+        private Header _header;
 
         public string Spans { get; private set; }
 
@@ -24,9 +24,9 @@ namespace Pomelo.Data.Excel.Infrastructure
             this[(int)intvalue] = item;
         }
 
-        public Row(Header Header = null)
+        public Row(Header header = null)
         {
-            header = Header;
+            _header = header;
         }
 
         public string this[string index]
@@ -35,7 +35,7 @@ namespace Pomelo.Data.Excel.Infrastructure
             {
                 try
                 {
-                    return this[header.IndexOf(index)];
+                    return this[_header.IndexOf(index)];
                 }
                 catch
                 {
