@@ -11,18 +11,18 @@ namespace Pomelo.Data.Excel.Infrastructure
 {
     public class Sheet : List<Row>, IDisposable
     {
-        public Sheet(ulong Id, ExcelStream Excel, SharedStrings StringDictionary)
-        {
-            this.Id = Id;
-            this.StringDictionary = StringDictionary;
-            this.excel = Excel;
-        }
+        private readonly ExcelStream _excel;
 
-        private ExcelStream excel;
-
-        private ulong Id;
+        private readonly ulong _id;
 
         protected SharedStrings StringDictionary { get; set; }
+
+        public Sheet(ulong id, ExcelStream excel, SharedStrings stringDictionary)
+        {
+            _id = id;
+            _excel = excel;
+            StringDictionary = stringDictionary;
+        }
 
         public void Dispose()
         {
@@ -39,7 +39,7 @@ namespace Pomelo.Data.Excel.Infrastructure
             var row = 1ul;
             ColNumber col;
             // 获取sheetX.xml
-            var sheetX = excel.ZipArchive.GetEntry($"xl/worksheets/sheet{Id}.xml");
+            var sheetX = _excel.ZipArchive.GetEntry($"xl/worksheets/sheet{_id}.xml");
             using (var stream = sheetX.Open())
             using (var sr = new StreamReader(stream))
             {
@@ -110,7 +110,7 @@ namespace Pomelo.Data.Excel.Infrastructure
             GC.Collect();
 
             // 保存sharedStrings.xml
-            var sharedStrings = excel.ZipArchive.GetEntry($"xl/sharedStrings.xml");
+            var sharedStrings = _excel.ZipArchive.GetEntry($"xl/sharedStrings.xml");
             using (var stream = sharedStrings.Open())
             using (var sw = new StreamWriter(stream))
             {

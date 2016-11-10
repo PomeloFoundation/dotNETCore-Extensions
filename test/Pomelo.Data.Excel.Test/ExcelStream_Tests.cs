@@ -6,27 +6,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Pemelo.Data.Excel.Test
+namespace Pomelo.Data.Excel.Test
 {
-    public class Excel_Tests
+    public class ExcelStream_Tests
     {
-        ExcelStream _ExcelStream;
-        string _ExcelPath;
+        ExcelStream _excelStream;
+        string _excelPath;
 
-        public Excel_Tests()
+        public ExcelStream_Tests()
         {
-            _ExcelStream = new ExcelStream();
-            _ExcelPath = @"c:\excel\test.xlsx";
-            if (File.Exists(_ExcelPath))
+            _excelStream = new ExcelStream();
+            //_excelPath = @"c:\excel\test.xlsx";
+            _excelPath = Path.GetTempFileName();
+            if (File.Exists(_excelPath))
             {
-                File.Delete(_ExcelPath);
+                File.Delete(_excelPath);
             }
         }
 
         [Fact(DisplayName = "测试创建Excel文件")]
-        public void Test_Creat_Excel()
+        public void Test_ExcelStream_Create()
         {
-            using (var x = _ExcelStream.Create(_ExcelPath))
+            using (var x = _excelStream.Create(_excelPath))
             {
                 using (var sheet = x.LoadSheet(1))
                 {
@@ -37,14 +38,14 @@ namespace Pemelo.Data.Excel.Test
                     sheet.SaveChanges();
                 }
             }
-            Assert.True(File.Exists(_ExcelPath));
+            Assert.True(File.Exists(_excelPath));
         }
 
         [Fact(DisplayName = "测试通过path加载Excel文件")]
-        public void Test_Load_Excel()
+        public void Test_ExcelStream_Load()
         {
-            Test_Creat_Excel();
-            using (var x = _ExcelStream.Load(_ExcelPath))
+            Test_ExcelStream_Create();
+            using (var x = _excelStream.Load(_excelPath))
             {
                 using (var sheet = x.LoadSheet(1))
                 {
@@ -53,7 +54,7 @@ namespace Pemelo.Data.Excel.Test
                     {
                         foreach (var b in a)
                         {
-                            Assert.Equal(b, "Create test");
+                            Assert.Equal("Create test", b);
                         }
                     }
                 }
@@ -61,11 +62,11 @@ namespace Pemelo.Data.Excel.Test
         }
 
         [Fact(DisplayName = "测试修改Excel中的内容")]
-        public void Test_Edit_Excel()
+        public void Test_ExcelStream_Edit()
         {
-            Test_Creat_Excel();
+            Test_ExcelStream_Create();
 
-            using (var x = _ExcelStream.Load(_ExcelPath))
+            using (var x = _excelStream.Load(_excelPath))
             {
                 using (var sheet = x.LoadSheet(1))
                 {
@@ -81,16 +82,15 @@ namespace Pemelo.Data.Excel.Test
                     sheet.SaveChanges(); // Save changes
                 }
             }
-
         }
 
         [Fact(DisplayName = "测试通过Stream加载Excel文件")]
-        public void Test_Load_Excel_Stream()
+        public void Test_ExcelStream_Load_Stream()
         {
-            Test_Creat_Excel();
-            using (var fileStream = new FileStream(_ExcelPath, FileMode.Open))
+            Test_ExcelStream_Create();
+            using (var fileStream = new FileStream(_excelPath, FileMode.Open))
             {
-                using (var x = _ExcelStream.Load(fileStream))
+                using (var x = _excelStream.Load(fileStream))
                 {
                     using (var sheet = x.LoadSheet(1))
                     {
@@ -108,11 +108,11 @@ namespace Pemelo.Data.Excel.Test
         }
 
         [Fact(DisplayName = "测试创建Excel的Sheet")]
-        public void Test_Create_Sheet()
+        public void Test_ExcelStream_Create_Sheet()
         {
-            Test_Creat_Excel();
+            Test_ExcelStream_Create();
 
-            using (var x = _ExcelStream.Load(_ExcelPath))
+            using (var x = _excelStream.Load(_excelPath))
             {
                 using (var sheet = x.CreateSheet("数据库"))
                 {
@@ -126,20 +126,20 @@ namespace Pemelo.Data.Excel.Test
         }
 
         [Fact(DisplayName = "测试删除Excel中的Sheet")]
-        public void Test_Delete_Sheet()
+        public void Test_ExcelStream_Delete_Sheet()
         {
-            Test_Create_Sheet();
+            Test_ExcelStream_Create_Sheet();
 
-            using (var x = _ExcelStream.Load(_ExcelPath))
+            using (var x = _excelStream.Load(_excelPath))
             {
                 x.RemoveSheet("数据库");
             }
         }
 
         [Fact(DisplayName = "测试第一行作为列索引")]
-        public void Test_LoadSheetHDR()
+        public void Test_ExcelStream_LoadSheetHDR()
         {
-            using (var x = _ExcelStream.Create(_ExcelPath))
+            using (var x = _excelStream.Create(_excelPath))
             {
                 using (var sheet = x.LoadSheet(1))
                 {
@@ -155,7 +155,7 @@ namespace Pemelo.Data.Excel.Test
                 }
             }
 
-            using (var x = _ExcelStream.Load(_ExcelPath))
+            using (var x = _excelStream.Load(_excelPath))
             {
                 using (var sheet = x.LoadSheetHDR(1))
                 {

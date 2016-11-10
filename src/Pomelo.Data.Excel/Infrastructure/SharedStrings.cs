@@ -86,6 +86,7 @@ namespace Pomelo.Data.Excel.Infrastructure
         public void Dispose()
         {
             dic.Clear();
+            dic2.Clear();
             GC.Collect();
         }
 
@@ -161,8 +162,8 @@ namespace Pomelo.Data.Excel.Infrastructure
 
         public void Clear()
         {
-            dic.Clear();
-            dic2.Clear();
+            dic?.Clear();
+            dic2?.Clear();
         }
 
         public bool Contains(string item)

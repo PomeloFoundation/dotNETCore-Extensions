@@ -29,16 +29,16 @@ namespace Pomelo.Data.Excel
         /// <summary>
         /// 加载Excel,返回ExcelStream
         /// </summary>
-        /// <param name="path">excel文件路径</param>
+        /// <param name="stream">excel字节流</param>
         /// <returns></returns>
-        ExcelStream Load(string path);
+        ExcelStream Load(Stream stream);
 
         /// <summary>
         /// 加载Excel,返回ExcelStream
         /// </summary>
-        /// <param name="stream">excel字节流</param>
+        /// <param name="path">excel文件路径</param>
         /// <returns></returns>
-        ExcelStream Load(Stream stream);
+        ExcelStream Load(string path);
 
         /// <summary>
         /// 加载LoadSheet不包含列名
@@ -50,9 +50,9 @@ namespace Pomelo.Data.Excel
         /// <summary>
         /// 加载LoadSheet不包含列名
         /// </summary>
-        /// <param name="Id">Sheet名称对于的Id，从1开始</param>
+        /// <param name="id">Sheet名称对于的Id，从1开始</param>
         /// <returns></returns>
-        SheetWithoutHDR LoadSheet(ulong Id);
+        SheetWithoutHDR LoadSheet(ulong id);
 
         /// <summary>
         /// 加载LoadSheet包含列名
