@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "1.1.0-*",
 
   "packOptions": {
     "authors": [ "Amamiya Yuuko" ],
@@ -20,7 +20,7 @@
   "frameworks": {
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.0"
+        "NETStandard.Library": "1.6.1-preview1-24530-04"
       },
       "imports": "dnxcore50"
     }

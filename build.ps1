@@ -33,7 +33,7 @@ cd $PSScriptRoot
 $repoFolder = $PSScriptRoot
 $env:REPO_FOLDER = $repoFolder
 
-$koreBuildZip="https://github.com/PomeloFoundation/KoreBuild/releases/download/1.0.0/KoreBuild-1.0.0.zip"
+$koreBuildZip="https://github.com/aspnet/KoreBuild/archive/rel/1.1.0-preview1.zip"
 if ($env:KOREBUILD_ZIP)
 {
     $koreBuildZip=$env:KOREBUILD_ZIP

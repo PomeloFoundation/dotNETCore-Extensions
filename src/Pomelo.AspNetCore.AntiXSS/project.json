@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.1.0-*",
 
   "packOptions": {
     "authors": [ "Amamiya Yuuko" ],
@@ -13,19 +13,18 @@
   },
 
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
-    "Microsoft.EntityFrameworkCore": "1.0.0",
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
-    "Pomelo.AntiXss": "1.0.0-*",
-    "Pomelo.AspNetCore.Common": "1.0.0-*"
+    "Microsoft.AspNetCore.Mvc": "1.1.0-preview1-final",
+    "Microsoft.EntityFrameworkCore": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0-preview1-final",
+    "Pomelo.AntiXss": "1.1.0-*",
+    "Pomelo.AspNetCore.Common": "1.1.0-*"
   },
 
   "frameworks": {
     "net451": {},
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.0",
-        "System.Reflection.Emit": "4.0.1"
+        "NETStandard.Library": "1.6.1-preview1-24530-04",
       },
       "imports": [
         "dotnet5.6",

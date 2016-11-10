@@ -1,6 +1,6 @@
 {
   "description": "Various helpers for writing tests that use DNX or ASP.NET.",
-  "version": "1.0.0-*",
+  "version": "1.1.0-*",
   "packOptions": {
     "authors": [ "Amamiya Yuuko" ],
     "projectUrl": "https://github.com/PomeloFoundation/dotNETCore-Extensions",
@@ -12,8 +12,8 @@
     }
   },
   "dependencies": {
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-    "Pomelo.Extensions.RuntimeEnvironment.Sources": "1.0.0-*",
+    "Microsoft.Extensions.PlatformAbstractions": "1.1.0-preview1-final",
+    "Pomelo.Extensions.RuntimeEnvironment.Sources": "1.1.0-*",
     "xunit": "2.1.0"
   },
   "frameworks": {
@@ -32,9 +32,9 @@
     },
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.0",
-        "System.Globalization": "4.0.11",
-        "System.Threading.Thread": "4.0.0"
+        "NETStandard.Library": "1.6.1-preview1-24530-04",
+        "System.Globalization": "4.3.0-preview1-24530-04",
+        "System.Threading.Thread": "4.3.0-preview1-24530-04"
       },
       "imports": [
         "portable-net451+win8",

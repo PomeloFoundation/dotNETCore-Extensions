@@ -19,19 +19,8 @@ namespace Pomelo.AspNetCore.Localization.Listeners
             this.services = services;
         }
 
-        public void StateChanged(InternalEntityEntry entry, EntityState oldState, bool skipInitialFixup, bool fromQuery)
-        {
-            Console.WriteLine(
-               "  Changed {0} from {1} to {2}.",
-               entry.Entity.GetType().Name, oldState, entry.EntityState);
-        }
-
         public void StateChanging(InternalEntityEntry entry, EntityState newState)
         {
-            Console.WriteLine(
-                "  Changing {0} from {1} to {2}.",
-                entry.Entity.GetType().Name, entry.EntityState, newState);
-
             if (newState != EntityState.Added && newState != EntityState.Modified)
                 return;
 
@@ -64,6 +53,10 @@ namespace Pomelo.AspNetCore.Localization.Listeners
                     break;
                 }
             }
+        }
+
+        public void StateChanged(InternalEntityEntry entry, EntityState oldState, bool fromQuery)
+        {
         }
     }
 }

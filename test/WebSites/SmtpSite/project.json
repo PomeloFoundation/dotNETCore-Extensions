@@ -1,15 +1,8 @@
 ﻿{
   "dependencies": {
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-    "Pomelo.AspNetCore.Extensions": "1.0.0"
-  },
-
-  "tools": {
-    "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
-      "version": "1.0.0-preview2-final",
-      "imports": "portable-net45+win8+dnxcore50"
-    }
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0-preview1-final",
+    "Pomelo.AspNetCore.Extensions": "1.1.0"
   },
 
   "frameworks": {
