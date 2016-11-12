@@ -15,7 +15,7 @@ namespace Pomelo.AspNetCore.Localization
             this.services = services;
         }
 
-        public string DetermineCulture()
+        private string _DetermineCulture()
         {
             var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
             var actionContextAccessor = services.GetRequiredService<IActionContextAccessor>();
@@ -31,6 +31,13 @@ namespace Pomelo.AspNetCore.Localization
                 var raw = httpContextAccessor.HttpContext.Request.Headers["Accept-Language"].ToString().Split(';')[0].Split(',').Select(x => x.Trim());
                 return raw.FirstOrDefault();
             }
+        }
+
+        public string DetermineCulture()
+        {
+            var culture = _DetermineCulture();
+            var cs = services.GetRequiredService<ICultureSet>();
+            return cs.SimplifyCulture(culture);
         }
     }
 }
