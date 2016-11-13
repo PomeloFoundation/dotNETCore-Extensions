@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Globalization;
 
 namespace Pomelo.AspNetCore.Localization
 {
@@ -25,6 +27,11 @@ namespace Pomelo.AspNetCore.Localization
             get
             {
                 var culture = this.culture.DetermineCulture();
+#if NETSTANDARD1_6
+                CultureInfo.CurrentCulture = new CultureInfo(culture);
+#else
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+#endif
                 var s = set.GetLocalizedStrings(culture);
                 if (s.ContainsKey(src) || translator is NonTranslator)
                     return s.Localize(src, args);
