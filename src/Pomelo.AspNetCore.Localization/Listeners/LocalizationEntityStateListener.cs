@@ -13,6 +13,7 @@ namespace Pomelo.AspNetCore.Localization.Listeners
     public class LocalizationEntityStateListener : IEntityStateListener
     {
         private IServiceProvider services { get; set; }
+        private static MethodInfo writePropertyValue = typeof(InternalEntityEntry).GetTypeInfo().DeclaredMethods.Single(x => x.Name == "WritePropertyValue");
 
         public LocalizationEntityStateListener(IServiceProvider services)
         {
@@ -21,7 +22,7 @@ namespace Pomelo.AspNetCore.Localization.Listeners
 
         public void StateChanging(InternalEntityEntry entry, EntityState newState)
         {
-            if (newState != EntityState.Added && newState != EntityState.Modified)
+            if (!(newState == EntityState.Added && entry.EntityState == EntityState.Detached || newState == EntityState.Modified && entry.EntityState == EntityState.Unchanged))
                 return;
 
             var set = services.GetRequiredService<ICultureSet>();
@@ -37,18 +38,19 @@ namespace Pomelo.AspNetCore.Localization.Listeners
                     var cultureProvider = services.GetRequiredService<ICultureProvider>();
                     var culture = cultureProvider.DetermineCulture();
                     culture = set.SimplifyCulture(culture);
-                    Dictionary<string, string> json;
+                    Dictionary<string, string> dic;
                     if (newState == EntityState.Added)
-                        json = new Dictionary<string, string>();
+                        dic = new Dictionary<string, string>();
                     else
-                        json = JsonConvert.DeserializeObject<Dictionary<string, string>>(origin.ToString());
-                    if (json.ContainsKey(culture))
-                        json[culture] = current.ToString();
+                        dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(origin.ToString());
+                    if (dic.ContainsKey(culture))
+                        dic[culture] = current.ToString();
                     else
-                        json.Add(culture, current.ToString());
-                    entry.SetProperty(entry.EntityType.FindProperty(y.Name), JsonConvert.SerializeObject(json));
+                        dic.Add(culture, current.ToString());
+                    var json = JsonConvert.SerializeObject(dic);
+                    writePropertyValue.Invoke(entry, new object[] { entry.EntityType.FindProperty(y.Name), json });
                 }
-                catch
+                catch (Exception ex)
                 {
                     break;
                 }

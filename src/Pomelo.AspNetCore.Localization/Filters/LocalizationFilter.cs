@@ -28,193 +28,95 @@ namespace Pomelo.AspNetCore.Localization.Filters
             if (context.Result is ViewResult)
             {
                 var result = (ViewResult)context.Result;
-                foreach(var vd in result.ViewData)
+                HandleLocalization(result.Model, disabler, cache, translator, culture, context);
+                foreach (var key in result.ViewData.Keys.ToList())
                 {
-                    if (vd.Value is IEnumerable)
-                    {
-                        var model = (IEnumerable<object>)vd.Value;
-                        foreach (var x in model)
-                        {
-                            var type = x.GetType();
-                            var properties = type.GetProperties().Where(y => y.PropertyType == typeof(string) && y.GetCustomAttribute<LocalizedAttribute>() != null);
-                            foreach (var y in properties)
-                            {
-                                try
-                                {
-                                    var jsonStr = y.GetValue(x);
-                                    var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
-                                    if (json.ContainsKey(culture))
-                                        y.SetValue(x, json[culture]);
-                                    else
-                                    {
-                                        var key = json.Keys.FirstOrDefault();
-                                        if (key == null)
-                                        {
-                                            y.SetValue(x, "");
-                                        }
-                                        else
-                                        {
-                                            if (disabler.IsDisabled())
-                                                y.SetValue(x, json[key]);
-                                            (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
-                                            var cachedString = cache.Get(json[key], culture);
-                                            if (cachedString == null)
-                                            {
-                                                var translateTask = translator.TranslateAsync(key, culture, json[key]);
-                                                translateTask.Wait();
-                                                cache.Set(json[key], culture, translateTask.Result);
-                                                y.SetValue(x, translateTask.Result);
-                                            }
-                                            else
-                                            {
-                                                y.SetValue(x, cachedString);
-                                            }
-                                        }
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine(ex.ToString());
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var type = vd.Value.GetType();
-                        var properties = type.GetProperties().Where(y => y.PropertyType == typeof(string) && y.GetCustomAttribute<LocalizedAttribute>() != null);
-                        foreach (var y in properties)
-                        {
-                            try
-                            {
-                                var jsonStr = y.GetValue(vd.Value);
-                                var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
-                                if (json.ContainsKey(culture))
-                                    y.SetValue(vd.Value, json[culture]);
-                                else
-                                {
-                                    var key = json.Keys.FirstOrDefault();
-                                    if (key == null)
-                                    {
-                                        y.SetValue(vd.Value, "");
-                                    }
-                                    else
-                                    {
-                                        var cachedString = cache.Get(json[key], culture);
-                                        if (cachedString == null)
-                                        {
-                                            var translateTask = translator.TranslateAsync(key, culture, json[key]);
-                                            translateTask.Wait();
-                                            cache.Set(json[key], culture, translateTask.Result);
-                                            y.SetValue(vd.Value, translateTask.Result);
-                                        }
-                                        else
-                                        {
-                                            y.SetValue(vd.Value, cachedString);
-                                        }
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                }
-                if (result.Model != null)
-                {
-                    if (result.Model is IEnumerable)
-                    {
-                        var model = (IEnumerable<object>)result.Model;
-                        foreach (var x in model)
-                        {
-                            var type = x.GetType();
-                            var properties = type.GetProperties().Where(y => y.PropertyType == typeof(string) && y.GetCustomAttribute<LocalizedAttribute>() != null);
-                            foreach (var y in properties)
-                            {
-                                try
-                                {
-                                    var jsonStr = y.GetValue(x);
-                                    var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
-                                    if (json.ContainsKey(culture))
-                                        y.SetValue(x, json[culture]);
-                                    else
-                                    {
-                                        var key = json.Keys.FirstOrDefault();
-                                        if (key == null)
-                                        {
-                                            y.SetValue(x, "");
-                                        }
-                                        else
-                                        {
-                                            if (disabler.IsDisabled())
-                                                y.SetValue(x, json[key]);
-                                            (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
-                                            var cachedString = cache.Get(json[key], culture);
-                                            if (cachedString == null)
-                                            {
-                                                var translateTask = translator.TranslateAsync(key, culture, json[key]);
-                                                translateTask.Wait();
-                                                cache.Set(json[key], culture, translateTask.Result);
-                                                y.SetValue(x, translateTask.Result);
-                                            }
-                                            else
-                                            {
-                                                y.SetValue(x, cachedString);
-                                            }
-                                        }
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine(ex.ToString());
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var type = result.Model.GetType();
-                        var properties = type.GetProperties().Where(y => y.PropertyType == typeof(string) && y.GetCustomAttribute<LocalizedAttribute>() != null);
-                        foreach (var y in properties)
-                        {
-                            try
-                            {
-                                var jsonStr = y.GetValue(result.Model);
-                                var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
-                                if (json.ContainsKey(culture))
-                                    y.SetValue(result.Model, json[culture]);
-                                else
-                                {
-                                    var key = json.Keys.FirstOrDefault();
-                                    if (key == null)
-                                    {
-                                        y.SetValue(result.Model, "");
-                                    }
-                                    else
-                                    {
-                                        var cachedString = cache.Get(json[key], culture);
-                                        if (cachedString == null)
-                                        {
-                                            var translateTask = translator.TranslateAsync(key, culture, json[key]);
-                                            translateTask.Wait();
-                                            cache.Set(json[key], culture, translateTask.Result);
-                                            y.SetValue(result.Model, translateTask.Result);
-                                        }
-                                        else
-                                        {
-                                            y.SetValue(result.Model, cachedString);
-                                        }
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
+                    result.ViewData[key] = HandleLocalization(result.ViewData[key], disabler, cache, translator, culture, context);
                 }
             }
+        }
+
+        private object HandleLocalization(object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context)
+        {
+            if (src == null)
+                return null;
+            if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
+                return src;
+            if (src is IDictionary)
+                return src;
+            if (src is IEnumerable)
+            {
+                var model = src is IList ? src : ((dynamic)src).ToList();
+                for (var i = 0; i < model.Count; i++)
+                {
+                    var tmp = model[i];
+                    HandleLocalizationForObject(ref tmp, disabler, cache, translator, culture, context);
+                    model[i] = tmp;
+                }
+                return model;
+            }
+            else
+            {
+                return HandleLocalizationForObject(ref src, disabler, cache, translator, culture, context);
+            }
+        }
+
+        private object HandleLocalizationForObject(ref object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context)
+        {
+            if (src == null)
+                return null;
+            if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
+                return src;
+            var type = src.GetType().GetTypeInfo();
+            var properties = type.DeclaredProperties;
+            foreach (var y in properties)
+            {
+                if (y.PropertyType.GetTypeInfo().BaseType == typeof(ValueType))
+                {
+                    continue;
+                }
+                else if (y.PropertyType == typeof(string))
+                {
+                    if (y.GetCustomAttribute<LocalizedAttribute>() != null)
+                    {
+                        var jsonStr = y.GetValue(src);
+                        var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
+                        if (json.ContainsKey(culture))
+                            y.SetValue(src, json[culture]);
+                        else
+                        {
+                            var key = json.Keys.FirstOrDefault();
+                            if (key == null)
+                            {
+                                y.SetValue(src, "");
+                            }
+                            else
+                            {
+                                if (disabler.IsDisabled())
+                                    y.SetValue(src, json[key]);
+                                (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
+                                var cachedString = cache.Get(json[key], culture);
+                                if (cachedString == null)
+                                {
+                                    var translateTask = translator.TranslateAsync(key, culture, json[key]);
+                                    translateTask.Wait();
+                                    cache.Set(json[key], culture, translateTask.Result);
+                                    y.SetValue(src, translateTask.Result);
+                                }
+                                else
+                                {
+                                    y.SetValue(src, cachedString);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    HandleLocalization(y.GetValue(src), disabler, cache, translator, culture, context);
+                }
+            }
+            return src;
         }
     }
 }
