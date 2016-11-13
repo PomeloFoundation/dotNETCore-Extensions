@@ -112,7 +112,9 @@ namespace Pomelo.Data.Excel
                 {
                     var e = ZipArchive.GetEntry("xl/sharedStrings.xml");
                     // 如果sharedStrings.xml不存在，则创建
-                    if (e == null)
+                    if (e == null 
+                        && ((ZipArchive.Mode & ZipArchiveMode.Update) == ZipArchiveMode.Update) 
+                        && GetType() != typeof(ExcelStreamReader))
                     {
                         // 创建sharedStrings.xml
                         e = ZipArchive.CreateEntry("xl/sharedStrings.xml", CompressionLevel.Optimal);
@@ -163,11 +165,15 @@ namespace Pomelo.Data.Excel
                             xd.Save(stream);
                         }
                     }
-                    using (var stream = e.Open())
+                   
+                    if (e != null)
                     {
-                        var sr = new StreamReader(stream);
-                        var result = sr.ReadToEnd();
-                        SharedStrings = new SharedStrings(result);
+                        using (var stream = e.Open())
+                        {
+                            var sr = new StreamReader(stream);
+                            var result = sr.ReadToEnd();
+                            SharedStrings = new SharedStrings(result);
+                        }
                     }
                 }
                 return SharedStrings;
