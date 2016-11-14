@@ -135,10 +135,10 @@ namespace Pomelo.Data.Excel
                             var element = xd.CreateElement("Override", xd.DocumentElement.NamespaceURI);
                             element.SetAttribute("PartName", "/xl/sharedStrings.xml");
                             element.SetAttribute("ContentType", "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml");
-                            //var tmp = xd.GetElementsByTagName("Types")
-                            //    .Cast<XmlNode>()
-                            //    .First()
-                            //    .AppendChild(element);
+                            xd.GetElementsByTagName("Types")
+                                .Cast<XmlNode>()
+                                .First()
+                                .AppendChild(element);
                             stream.Position = 0;
                             stream.SetLength(0);
                             xd.Save(stream);
