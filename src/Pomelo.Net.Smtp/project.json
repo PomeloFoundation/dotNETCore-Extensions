@@ -26,10 +26,10 @@
     },
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1-preview1-24530-04",
-        "System.Net.Http": "4.3.0-preview1-24530-04",
-        "System.Net.Sockets": "4.3.0-preview1-24530-04",
-        "System.Net.Security": "4.3.0-preview1-24530-04"
+        "NETStandard.Library": "1.6.1",
+        "System.Net.Http": "4.3.0",
+        "System.Net.Sockets": "4.3.0",
+        "System.Net.Security": "4.3.0"
       },
       "imports": "dnxcore50"
     }

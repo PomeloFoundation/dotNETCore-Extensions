@@ -24,19 +24,19 @@
     },
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1-preview1-24530-04",
-        "System.Xml.XPath.XDocument": "4.3.0-preview1-24530-04",
-        "System.Xml.XmlDocument": "4.3.0-preview1-24530-04",
-        "System.Xml.XDocument": "4.3.0-preview1-24530-04",
-        "System.Xml.ReaderWriter": "4.3.0-preview1-24530-04",
-        "System.Xml.XPath.XmlDocument": "4.3.0-preview1-24530-04",
-        "System.Xml.XPath": "4.3.0-preview1-24530-04",
-        "System.Xml.XmlSerializer": "4.3.0-preview1-24530-04",
-        "System.Collections": "4.3.0-preview1-24530-04",
-        "System.Linq": "4.3.0-preview1-24530-04",
-        "System.Runtime": "4.3.0-preview1-24530-04",
-        "System.Threading": "4.3.0-preview1-24530-04",
-        "System.IO.Compression": "4.3.0-preview1-24530-04"
+        "NETStandard.Library": "1.6.1",
+        "System.Xml.XPath.XDocument": "4.3.0",
+        "System.Xml.XmlDocument": "4.3.0",
+        "System.Xml.XDocument": "4.3.0",
+        "System.Xml.ReaderWriter": "4.3.0",
+        "System.Xml.XPath.XmlDocument": "4.3.0",
+        "System.Xml.XPath": "4.3.0",
+        "System.Xml.XmlSerializer": "4.3.0",
+        "System.Collections": "4.3.0",
+        "System.Linq": "4.3.0",
+        "System.Runtime": "4.3.0",
+        "System.Threading": "4.3.0",
+        "System.IO.Compression": "4.3.0"
       },
       "imports": "dnxcore50"
     }

@@ -26,12 +26,12 @@
     },
     "netstandard1.6": {
       "dependencies": {
-        "NETStandard.Library": "1.6.1-preview1-24530-04",
-        "System.Diagnostics.Process": "4.3.0-preview1-24530-04",
-        "System.IO.Compression": "4.3.0-preview1-24530-04",
-        "System.Net.Http": "4.3.0-preview1-24530-04",
-        "System.Reflection": "4.3.0-preview1-24530-04",
-        "System.Security.Cryptography.Algorithms": "4.3.0-preview1-24530-04"
+        "NETStandard.Library": "1.6.1",
+        "System.Diagnostics.Process": "4.3.0",
+        "System.IO.Compression": "4.3.0",
+        "System.Net.Http": "4.3.0",
+        "System.Reflection": "4.3.0",
+        "System.Security.Cryptography.Algorithms": "4.3.0"
       },
       "imports": [
         "dotnet5.6",
