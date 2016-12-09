@@ -44,6 +44,8 @@ namespace Pomelo.AspNetCore.Localization.Filters
                 return src;
             if (src is IDictionary)
                 return src;
+            if (src is string)
+                return src;
             if (src is IEnumerable)
             {
                 var model = src is IList ? src : ((dynamic)src).ToList();
