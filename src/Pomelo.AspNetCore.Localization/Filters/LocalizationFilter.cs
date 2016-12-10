@@ -28,15 +28,16 @@ namespace Pomelo.AspNetCore.Localization.Filters
             if (context.Result is ViewResult)
             {
                 var result = (ViewResult)context.Result;
-                HandleLocalization(result.Model, disabler, cache, translator, culture, context);
+                var visited = new List<int>();
+                HandleLocalization(result.Model, disabler, cache, translator, culture, context, visited);
                 foreach (var key in result.ViewData.Keys.ToList())
                 {
-                    result.ViewData[key] = HandleLocalization(result.ViewData[key], disabler, cache, translator, culture, context);
+                    result.ViewData[key] = HandleLocalization(result.ViewData[key], disabler, cache, translator, culture, context, visited);
                 }
             }
         }
 
-        private object HandleLocalization(object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context)
+        private object HandleLocalization(object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context, List<int> visited)
         {
             if (src == null)
                 return null;
@@ -49,21 +50,40 @@ namespace Pomelo.AspNetCore.Localization.Filters
             if (src is IEnumerable)
             {
                 var model = src is IList ? src : ((dynamic)src).ToList();
-                for (var i = 0; i < model.Count; i++)
+                if (!visited.Any(x => x == src.GetHashCode()))
                 {
-                    var tmp = model[i];
-                    HandleLocalizationForObject(ref tmp, disabler, cache, translator, culture, context);
-                    model[i] = tmp;
+                    for (var i = 0; i < model.Count; i++)
+                    {
+                        var tmp = model[i];
+                        var hc = (int)model[i].GetHashCode();
+                        if (!visited.Any(x => x == hc))
+                        {
+                            HandleLocalizationForObject(ref tmp, disabler, cache, translator, culture, context, visited);
+                            model[i] = tmp;
+                        }
+                    }
+                    return model;
                 }
-                return model;
+                else
+                {
+                    return model;
+                }
             }
             else
             {
-                return HandleLocalizationForObject(ref src, disabler, cache, translator, culture, context);
+                if (!visited.Any(x => x == src.GetHashCode()))
+                {
+                    visited.Add(src.GetHashCode());
+                    return HandleLocalizationForObject(ref src, disabler, cache, translator, culture, context, visited);
+                }
+                else
+                {
+                    return src;
+                }
             }
         }
 
-        private object HandleLocalizationForObject(ref object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context)
+        private object HandleLocalizationForObject(ref object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context, List<int> visited)
         {
             if (src == null)
                 return null;
@@ -115,7 +135,7 @@ namespace Pomelo.AspNetCore.Localization.Filters
                 }
                 else
                 {
-                    HandleLocalization(y.GetValue(src), disabler, cache, translator, culture, context);
+                    HandleLocalization(y.GetValue(src), disabler, cache, translator, culture, context, visited);
                 }
             }
             return src;
