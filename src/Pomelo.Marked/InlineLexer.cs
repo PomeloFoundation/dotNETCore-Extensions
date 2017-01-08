@@ -232,7 +232,7 @@ namespace Pomelo.Marked
 
             if (cap[0][0] != '!')
             {
-                return _options.Renderer.Link(href, title, cap[1][0] == '\\' ? StringHelper.Escape(cap[1]) : this.Output(cap[1]));
+                return _options.Renderer.Link(href, title, cap[1][0] == '\\' ? StringHelper.Escape(cap[1].Substring(1)) : this.Output(cap[1]));
             }
             else
             {
