@@ -230,9 +230,14 @@ namespace Pomelo.Marked
             string href = StringHelper.Escape(link.Href),
             title = !String.IsNullOrEmpty(link.Title) ? StringHelper.Escape(link.Title) : null;
 
-            return cap[0][0] != '!'
-                ? _options.Renderer.Link(href, title, this.Output(cap[1]))
-                : _options.Renderer.Image(href, title, StringHelper.Escape(cap[1]));
+            if (cap[0][0] != '!')
+            {
+                return _options.Renderer.Link(href, title, cap[1][0] == '\\' ? StringHelper.Escape(cap[1]) : this.Output(cap[1]));
+            }
+            else
+            {
+                return _options.Renderer.Image(href, title, StringHelper.Escape(cap[1]));
+            }
         }
 
         /// <summary>
