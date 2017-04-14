@@ -19,7 +19,7 @@
   "dependencies": {
     "Microsoft.AspNetCore.Mvc": "1.1.0-preview1-final",
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0-preview1-final",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
     "Pomelo.Marked": "1.1.0-*",
     "Pomelo.AspNetCore.AntiXSS": "1.1.0-*",
     "Pomelo.Net.Smtp": "1.1.0-*",
