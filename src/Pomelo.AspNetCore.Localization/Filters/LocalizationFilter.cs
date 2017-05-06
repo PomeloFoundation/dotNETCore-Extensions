@@ -39,106 +39,120 @@ namespace Pomelo.AspNetCore.Localization.Filters
 
         private object HandleLocalization(object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context, List<int> visited)
         {
-            if (src == null)
-                return null;
-            if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
-                return src;
-            if (src is IDictionary)
-                return src;
-            if (src is string)
-                return src;
-            if (src is IEnumerable)
+            try
             {
-                var model = src is IList ? src : ((dynamic)src).ToList();
-                if (!visited.Any(x => x == src.GetHashCode()))
+                if (src == null)
+                    return null;
+                if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
+                    return src;
+                if (src is IDictionary)
+                    return src;
+                if (src is string)
+                    return src;
+                if (src is IEnumerable)
                 {
-                    for (var i = 0; i < model.Count; i++)
+                    var model = src is IList ? src : ((dynamic)src).ToList();
+                    if (!visited.Any(x => x == src.GetHashCode()))
                     {
-                        var tmp = model[i];
-                        var hc = (int)model[i].GetHashCode();
-                        if (!visited.Any(x => x == hc))
+                        for (var i = 0; i < model.Count; i++)
                         {
-                            HandleLocalizationForObject(ref tmp, disabler, cache, translator, culture, context, visited);
-                            model[i] = tmp;
+                            var tmp = model[i];
+                            var hc = (int)model[i].GetHashCode();
+                            if (!visited.Any(x => x == hc))
+                            {
+                                HandleLocalizationForObject(ref tmp, disabler, cache, translator, culture, context, visited);
+                                model[i] = tmp;
+                            }
                         }
+                        return model;
                     }
-                    return model;
+                    else
+                    {
+                        return model;
+                    }
                 }
                 else
                 {
-                    return model;
+                    if (!visited.Any(x => x == src.GetHashCode()))
+                    {
+                        visited.Add(src.GetHashCode());
+                        return HandleLocalizationForObject(ref src, disabler, cache, translator, culture, context, visited);
+                    }
+                    else
+                    {
+                        return src;
+                    }
                 }
             }
-            else
+            catch
             {
-                if (!visited.Any(x => x == src.GetHashCode()))
-                {
-                    visited.Add(src.GetHashCode());
-                    return HandleLocalizationForObject(ref src, disabler, cache, translator, culture, context, visited);
-                }
-                else
-                {
-                    return src;
-                }
+                return src;
             }
         }
 
         private object HandleLocalizationForObject(ref object src, ITranslatorDisabler disabler, ITranslatedCaching cache, ITranslator translator, string culture, ResultExecutingContext context, List<int> visited)
         {
-            if (src == null)
-                return null;
-            if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
-                return src;
-            var type = src.GetType().GetTypeInfo();
-            var properties = type.DeclaredProperties;
-            foreach (var y in properties)
+            try
             {
-                if (y.PropertyType.GetTypeInfo().BaseType == typeof(ValueType))
+                if (src == null)
+                    return null;
+                if (src.GetType().GetTypeInfo().BaseType == typeof(ValueType))
+                    return src;
+                var type = src.GetType().GetTypeInfo();
+                var properties = type.DeclaredProperties;
+                foreach (var y in properties)
                 {
-                    continue;
-                }
-                else if (y.PropertyType == typeof(string))
-                {
-                    if (y.GetCustomAttribute<LocalizedAttribute>() != null)
+                    if (y.PropertyType.GetTypeInfo().BaseType == typeof(ValueType))
                     {
-                        var jsonStr = y.GetValue(src);
-                        var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
-                        if (json.ContainsKey(culture))
-                            y.SetValue(src, json[culture]);
-                        else
+                        continue;
+                    }
+                    else if (y.PropertyType == typeof(string))
+                    {
+                        if (y.GetCustomAttribute<LocalizedAttribute>() != null)
                         {
-                            var key = json.Keys.FirstOrDefault();
-                            if (key == null)
-                            {
-                                y.SetValue(src, "");
-                            }
+                            var jsonStr = y.GetValue(src);
+                            var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr.ToString());
+                            if (json.ContainsKey(culture))
+                                y.SetValue(src, json[culture]);
                             else
                             {
-                                if (disabler.IsDisabled())
-                                    y.SetValue(src, json[key]);
-                                (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
-                                var cachedString = cache.Get(json[key], culture);
-                                if (cachedString == null)
+                                var key = json.Keys.FirstOrDefault();
+                                if (key == null)
                                 {
-                                    var translateTask = translator.TranslateAsync(key, culture, json[key]);
-                                    translateTask.Wait();
-                                    cache.Set(json[key], culture, translateTask.Result);
-                                    y.SetValue(src, translateTask.Result);
+                                    y.SetValue(src, "");
                                 }
                                 else
                                 {
-                                    y.SetValue(src, cachedString);
+                                    if (disabler.IsDisabled())
+                                        y.SetValue(src, json[key]);
+                                    (context.Result as ViewResult).ViewData["__IsTranslated"] = true;
+                                    var cachedString = cache.Get(json[key], culture);
+                                    if (cachedString == null)
+                                    {
+                                        var translateTask = translator.TranslateAsync(key, culture, json[key]);
+                                        translateTask.Wait();
+                                        cache.Set(json[key], culture, translateTask.Result);
+                                        y.SetValue(src, translateTask.Result);
+                                    }
+                                    else
+                                    {
+                                        y.SetValue(src, cachedString);
+                                    }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        HandleLocalization(y.GetValue(src), disabler, cache, translator, culture, context, visited);
+                    }
                 }
-                else
-                {
-                    HandleLocalization(y.GetValue(src), disabler, cache, translator, culture, context, visited);
-                }
+                return src;
             }
-            return src;
+            catch
+            {
+                return src;
+            }
         }
     }
 }

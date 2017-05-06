@@ -29,9 +29,13 @@ namespace Microsoft.Extensions.DependencyInjection
             self.AddSingleton<ITranslatedCaching, MemoryTranslatedCaching>();
             self.AddScoped<ITranslatorDisabler, DefaultTranslatorDisabler>();
             self.AddScoped<IEntityStateListener, LocalizationEntityStateListener>();
-            self.Configure<MvcOptions>(x => x.Filters.Add(typeof(LocalizationFilter)));
             self.Configure<MvcOptions>(x => x.Filters.Add(typeof(DbContextModelBindingFilter)));
             return self;
+        }
+
+        public static IServiceCollection AddLocalizationViewDataFilter(this IServiceCollection self)
+        {
+            return self.Configure<MvcOptions>(x => x.Filters.Add(typeof(LocalizationFilter)));
         }
 
         public static IServiceCollection AddBaiduTranslator(this IServiceCollection self)
