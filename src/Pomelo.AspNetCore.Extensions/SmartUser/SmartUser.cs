@@ -34,8 +34,16 @@ namespace Microsoft.AspNetCore.Identity
                     if (!HttpContext.User.Identity.IsAuthenticated) return null;
                     var um = HttpContext.RequestServices.GetRequiredService<UserManager<TUser>>();
                     var Type = typeof(TUser);
-                    object tmp = um.GetUserId(HttpContext.User);
-                    TKey uid = (TKey)Convert.ChangeType(tmp, typeof(TKey));
+                    var tmp = um.GetUserId(HttpContext.User);
+                    TKey uid;
+                    if (typeof(TKey) == typeof(Guid))
+                    {
+                        uid = (dynamic)Guid.Parse(tmp);
+                    }
+                    else
+                    {
+                        uid = (TKey)Convert.ChangeType(tmp, typeof(TKey));
+                    }
                     try
                     {
                         _current = um.Users.Where(x => x.Id.Equals(uid)).Single();
