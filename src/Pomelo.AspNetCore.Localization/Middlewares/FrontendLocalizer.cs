@@ -34,8 +34,8 @@ function SR()
 	else
 	{
 		var ret = __dictionary[key] || key;
-		for (var i = 0; i < params.length; i++)
-			ret = __replaceAll(ret, '\\{' + i + '\\}', arguments[i + 1]);
+		for (var i = 1; i < arguments.length; i++)
+			ret = __replaceAll(ret, '\\{' + parseInt(i - 1) + '\\}', arguments[i]);
 		return ret;
 	}
 }");

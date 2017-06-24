@@ -20,13 +20,21 @@ namespace Pomelo.AspNetCore.Localization
             var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
             var actionContextAccessor = services.GetRequiredService<IActionContextAccessor>();
 
-            if (httpContextAccessor.HttpContext.Request.Cookies.ContainsKey("ASPNET_LANG"))
-                return httpContextAccessor.HttpContext.Request.Cookies["ASPNET_LANG"];
-            else if (actionContextAccessor.ActionContext.RouteData.Values.ContainsKey("culture"))
-                return actionContextAccessor.ActionContext.RouteData.Values["culture"].ToString();
-            else if (httpContextAccessor.HttpContext.Request.Query.ContainsKey("lang"))
-                return httpContextAccessor.HttpContext.Request.Query["lang"].ToString();
-            else
+            try 
+            {
+                if (httpContextAccessor.HttpContext.Request.Cookies.ContainsKey("ASPNET_LANG"))
+                    return httpContextAccessor.HttpContext.Request.Cookies["ASPNET_LANG"];
+                else if (actionContextAccessor.ActionContext.RouteData.Values.ContainsKey("culture"))
+                    return actionContextAccessor.ActionContext.RouteData.Values["culture"].ToString();
+                else if (httpContextAccessor.HttpContext.Request.Query.ContainsKey("lang"))
+                    return httpContextAccessor.HttpContext.Request.Query["lang"].ToString();
+                else
+                {
+                    var raw = httpContextAccessor.HttpContext.Request.Headers["Accept-Language"].ToString().Split(';')[0].Split(',').Select(x => x.Trim());
+                    return raw.FirstOrDefault();  
+                }
+            }
+            catch
             {
                 var raw = httpContextAccessor.HttpContext.Request.Headers["Accept-Language"].ToString().Split(';')[0].Split(',').Select(x => x.Trim());
                 return raw.FirstOrDefault();
