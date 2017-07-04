@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Pomelo.Extensions.RuntimeEnvironment.Sources</AssemblyName>
+    <PackageId>Pomelo.Extensions.RuntimeEnvironment.Sources</PackageId>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/19828814?v=3</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion>2.0.0-preview2-25401-01</NetStandardImplicitPackageVersion>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

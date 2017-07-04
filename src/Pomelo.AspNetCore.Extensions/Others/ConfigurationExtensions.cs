@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

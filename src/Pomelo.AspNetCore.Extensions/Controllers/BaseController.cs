@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Microsoft.AspNetCore.Mvc
 {

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Pomelo.HtmlAgilityPack</AssemblyName>
+    <PackageId>Pomelo.HtmlAgilityPack</PackageId>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/19828814?v=3</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>2.0.0-preview2-25401-01</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XPath" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

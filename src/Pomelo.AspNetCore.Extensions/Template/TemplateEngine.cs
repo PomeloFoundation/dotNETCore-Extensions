@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace Microsoft.AspNetCore.Mvc.Razor
 {
@@ -41,6 +42,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
         private readonly HtmlEncoder _htmlEncoder;
         private readonly ILogger _logger;
         private readonly RazorViewEngineOptions _options;
+        private readonly RazorProject _razorProject;
 
         public virtual IEnumerable<string> ViewLocationFormats { get; } = new[]
         {
@@ -67,17 +69,16 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             IRazorPageActivator pageActivator,
             HtmlEncoder htmlEncoder,
             IOptions<RazorViewEngineOptions> optionsAccessor,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+             RazorProject razorProject)
         {
             _options = optionsAccessor.Value;
             _pageFactory = pageFactory;
             _pageActivator = pageActivator;
             _htmlEncoder = htmlEncoder;
             _logger = loggerFactory.CreateLogger<RazorViewEngine>();
-            ViewLookupCache = new MemoryCache(new MemoryCacheOptions
-            {
-                CompactOnMemoryPressure = false
-            });
+            _razorProject = razorProject;
+            ViewLookupCache = new MemoryCache(new MemoryCacheOptions());
         }
 
         /// <summary>
@@ -276,6 +277,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
                 pageName,
                 controllerName,
                 areaName,
+                null,
                 isMainPage);
             Dictionary<string, string> expanderValues = null;
 
@@ -295,6 +297,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
                 expanderContext.ViewName,
                 expanderContext.ControllerName,
                 expanderContext.AreaName,
+                null,
                 expanderContext.IsMainPage,
                 expanderValues);
 
@@ -426,9 +429,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             HashSet<IChangeToken> expirationTokens)
         {
             var viewStartPages = new List<ViewLocationCacheItem>();
-            foreach (var viewStartPath in ViewHierarchyUtility.GetViewStartLocations(path))
+            foreach (var viewStartPath in _razorProject.FindHierarchicalItems(path, "_ViewStart.cshtml"))
             {
-                var result = _pageFactory.CreateFactory(viewStartPath);
+                var result = _pageFactory.CreateFactory(viewStartPath.Path);
                 if (result.ExpirationTokens != null)
                 {
                     for (var i = 0; i < result.ExpirationTokens.Count; i++)
@@ -442,7 +445,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
                     // Populate the viewStartPages list so that _ViewStarts appear in the order the need to be
                     // executed (closest last, furthest first). This is the reverse order in which
                     // ViewHierarchyUtility.GetViewStartLocations returns _ViewStarts.
-                    viewStartPages.Insert(0, new ViewLocationCacheItem(result.RazorPageFactory, viewStartPath));
+                    viewStartPages.Insert(0, new ViewLocationCacheItem(result.RazorPageFactory, viewStartPath.Path));
                 }
             }
 

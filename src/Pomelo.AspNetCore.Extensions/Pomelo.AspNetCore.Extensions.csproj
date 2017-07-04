@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Pomelo.AspNetCore.Extensions</AssemblyName>
+    <PackageId>Pomelo.AspNetCore.Extensions</PackageId>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/19828814?v=3</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>2.0.0-preview2-25401-01</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pomelo.Marked\Pomelo.Marked.csproj" />
+    <ProjectReference Include="..\Pomelo.AspNetCore.AntiXSS\Pomelo.AspNetCore.AntiXSS.csproj" />
+    <ProjectReference Include="..\Pomelo.Net.Smtp\Pomelo.Net.Smtp.csproj" />
+    <ProjectReference Include="..\Pomelo.AspNetCore.Common\Pomelo.AspNetCore.Common.csproj" />
+    <ProjectReference Include="..\Pomelo.Extensions.Common\Pomelo.Extensions.Common.csproj" />
+    <ProjectReference Include="..\Pomelo.AspNetCore.Localization\Pomelo.AspNetCore.Localization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0-preview2-final" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

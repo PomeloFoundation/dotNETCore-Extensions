@@ -1,76 +1,45 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26621.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Extensions", "src\Pomelo.AspNetCore.Extensions\Pomelo.AspNetCore.Extensions.xproj", "{1F0DC9F2-F875-48AE-A261-1040DDA742D3}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Extensions", "src\Pomelo.Extensions\Pomelo.Extensions.xproj", "{EC85425D-3DE9-450F-823F-C466AA45A46D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28A5A81D-4A37-4700-9EDF-0B37283BFDC8}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.Extensions", "src\Pomelo.AspNetCore.Extensions\Pomelo.AspNetCore.Extensions.csproj", "{1F0DC9F2-F875-48AE-A261-1040DDA742D3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSites", "WebSites", "{B515F797-42AC-45F7-9F23-812D7BA2588D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Extensions", "src\Pomelo.Extensions\Pomelo.Extensions.csproj", "{EC85425D-3DE9-450F-823F-C466AA45A46D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MultiTemplateSite", "test\WebSites\MultiTemplateSite\MultiTemplateSite.xproj", "{BFE83304-ED6A-4CD4-BF94-A6503671DACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Marked", "src\Pomelo.Marked\Pomelo.Marked.csproj", "{392BCACF-A74D-48D8-933B-83EFBE47A624}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Extensions.MultipleTemplateSiteTests", "test\Pomelo.AspNetCore.Extensions.MultipleTemplateSiteTests\Pomelo.AspNetCore.Extensions.MultipleTemplateSiteTests.xproj", "{D44CE25F-C803-43E4-BC71-3213DD1CB1ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.HtmlAgilityPack", "src\Pomelo.HtmlAgilityPack\Pomelo.HtmlAgilityPack.csproj", "{F6224349-9ABC-4E1C-8100-C5F007577F17}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Mvc.Testing", "src\Pomelo.AspNetCore.Mvc.Testing\Pomelo.AspNetCore.Mvc.Testing.xproj", "{B18AB021-2E3D-4306-96CF-132FA5F567DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AntiXss", "src\Pomelo.AntiXss\Pomelo.AntiXss.csproj", "{DC98679B-223F-4548-9432-873F4E83CC40}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Testing", "src\Pomelo.AspNetCore.Testing\Pomelo.AspNetCore.Testing.xproj", "{09BE5203-8042-4338-9713-E44169342E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.AntiXSS", "src\Pomelo.AspNetCore.AntiXSS\Pomelo.AspNetCore.AntiXSS.csproj", "{D7DC4D44-D948-4466-8CC0-18CB2F8B1E37}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Marked", "src\Pomelo.Marked\Pomelo.Marked.xproj", "{392BCACF-A74D-48D8-933B-83EFBE47A624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Net.Smtp", "src\Pomelo.Net.Smtp\Pomelo.Net.Smtp.csproj", "{E18AAD03-4464-4844-90B4-D9B78E2424F5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.HtmlAgilityPack", "src\Pomelo.HtmlAgilityPack\Pomelo.HtmlAgilityPack.xproj", "{F6224349-9ABC-4E1C-8100-C5F007577F17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Data.Excel", "src\Pomelo.Data.Excel\Pomelo.Data.Excel.csproj", "{785A8FDC-9BF5-462D-8560-200CDB84397B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AntiXSS", "src\Pomelo.AntiXss\Pomelo.AntiXSS.xproj", "{DC98679B-223F-4548-9432-873F4E83CC40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Algorithm.Geography", "src\Pomelo.Algorithm.Geography\Pomelo.Algorithm.Geography.csproj", "{CD0CC8E5-4E99-4187-9ED0-F29FFCED89E1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.AntiXSS", "src\Pomelo.AspNetCore.AntiXSS\Pomelo.AspNetCore.AntiXSS.xproj", "{D7DC4D44-D948-4466-8CC0-18CB2F8B1E37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.ReverseProxy", "src\Pomelo.AspNetCore.ReverseProxy\Pomelo.AspNetCore.ReverseProxy.csproj", "{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Net.Smtp", "src\Pomelo.Net.Smtp\Pomelo.Net.Smtp.xproj", "{E18AAD03-4464-4844-90B4-D9B78E2424F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.TimedJob", "src\Pomelo.AspNetCore.TimedJob\Pomelo.AspNetCore.TimedJob.csproj", "{343BDEB6-9852-481F-9617-00293FCCAF26}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Data.Excel", "src\Pomelo.Data.Excel\Pomelo.Data.Excel.xproj", "{785A8FDC-9BF5-462D-8560-200CDB84397B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.Statistics", "src\Pomelo.AspNetCore.Statistics\Pomelo.AspNetCore.Statistics.csproj", "{D843981D-1460-4AF0-87E7-A12B94C43A76}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Algorithm.Geography", "src\Pomelo.Algorithm.Geography\Pomelo.Algorithm.Geography.xproj", "{CD0CC8E5-4E99-4187-9ED0-F29FFCED89E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.Common", "src\Pomelo.AspNetCore.Common\Pomelo.AspNetCore.Common.csproj", "{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.ReverseProxy", "src\Pomelo.AspNetCore.ReverseProxy\Pomelo.AspNetCore.ReverseProxy.xproj", "{EDDDEBB6-19D6-45F5-AA84-2F38096E9263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Extensions.Common", "src\Pomelo.Extensions.Common\Pomelo.Extensions.Common.csproj", "{1911668D-54DF-408C-862A-4929F3A42ACC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.TimedJob", "src\Pomelo.AspNetCore.TimedJob\Pomelo.AspNetCore.TimedJob.xproj", "{343BDEB6-9852-481F-9617-00293FCCAF26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Extensions.RuntimeEnvironment.Sources", "src\Pomelo.Extensions.RuntimeEnvironment.Sources\Pomelo.Extensions.RuntimeEnvironment.Sources.csproj", "{40D95843-84A9-41A6-9E68-2B50BB255684}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TimedJobSite", "test\WebSites\TimedJobSite\TimedJobSite.xproj", "{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.Localization", "src\Pomelo.AspNetCore.Localization\Pomelo.AspNetCore.Localization.csproj", "{6AC39FFE-9302-4081-8484-DA01197509D4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Statistics", "src\Pomelo.AspNetCore.Statistics\Pomelo.AspNetCore.Statistics.xproj", "{D843981D-1460-4AF0-87E7-A12B94C43A76}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "JsonAntiXssSite", "test\WebSites\JsonAntiXssSite\JsonAntiXssSite.xproj", "{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Common", "src\Pomelo.AspNetCore.Common\Pomelo.AspNetCore.Common.xproj", "{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EFAntiXssSite", "test\WebSites\EFAntiXssSite\EFAntiXssSite.xproj", "{9CA8A8D4-3C61-4BD1-990C-F498C3894F68}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Extensions.Common", "src\Pomelo.Extensions.Common\Pomelo.Extensions.Common.xproj", "{1911668D-54DF-408C-862A-4929F3A42ACC}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SmtpSite", "test\WebSites\SmtpSite\SmtpSite.xproj", "{BABFA85D-8460-4FC9-A1BB-38CF938E2508}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Extensions.RuntimeEnvironment.Sources", "src\Pomelo.Extensions.RuntimeEnvironment.Sources\Pomelo.Extensions.RuntimeEnvironment.Sources.xproj", "{40D95843-84A9-41A6-9E68-2B50BB255684}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Localization", "src\Pomelo.AspNetCore.Localization\Pomelo.AspNetCore.Localization.xproj", "{6AC39FFE-9302-4081-8484-DA01197509D4}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LocalizationSite", "test\WebSites\LocalizationSite\LocalizationSite.xproj", "{548E9546-752E-459F-B678-024DEF47DF07}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.AspNetCore.Localization.TranslatorTests", "test\Pomelo.AspNetCore.Localization.TranslatorTests\Pomelo.AspNetCore.Localization.TranslatorTests.xproj", "{B2F428ED-135E-4CA2-9D5A-FBCC726F5121}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FileUploadSite", "test\WebSites\FileUploadSite\FileUploadSite.xproj", "{05873A1B-BA22-4889-B83E-0ADB70F1199D}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Data.Excel.Test", "test\Pomelo.Data.Excel.Test\Pomelo.Data.Excel.Test.xproj", "{38324C6A-C25B-4DF5-984E-5606083838D3}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pomelo.Extensions.Caching", "src\Pomelo.Extensions.Caching\Pomelo.Extensions.Caching.xproj", "{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Extensions.Caching", "src\Pomelo.Extensions.Caching\Pomelo.Extensions.Caching.csproj", "{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,22 +55,6 @@ Global
 		{EC85425D-3DE9-450F-823F-C466AA45A46D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC85425D-3DE9-450F-823F-C466AA45A46D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC85425D-3DE9-450F-823F-C466AA45A46D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFE83304-ED6A-4CD4-BF94-A6503671DACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFE83304-ED6A-4CD4-BF94-A6503671DACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFE83304-ED6A-4CD4-BF94-A6503671DACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFE83304-ED6A-4CD4-BF94-A6503671DACB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D44CE25F-C803-43E4-BC71-3213DD1CB1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D44CE25F-C803-43E4-BC71-3213DD1CB1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D44CE25F-C803-43E4-BC71-3213DD1CB1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D44CE25F-C803-43E4-BC71-3213DD1CB1ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B18AB021-2E3D-4306-96CF-132FA5F567DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B18AB021-2E3D-4306-96CF-132FA5F567DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B18AB021-2E3D-4306-96CF-132FA5F567DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B18AB021-2E3D-4306-96CF-132FA5F567DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09BE5203-8042-4338-9713-E44169342E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09BE5203-8042-4338-9713-E44169342E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09BE5203-8042-4338-9713-E44169342E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09BE5203-8042-4338-9713-E44169342E72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{392BCACF-A74D-48D8-933B-83EFBE47A624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{392BCACF-A74D-48D8-933B-83EFBE47A624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{392BCACF-A74D-48D8-933B-83EFBE47A624}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -138,34 +91,18 @@ Global
 		{343BDEB6-9852-481F-9617-00293FCCAF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{343BDEB6-9852-481F-9617-00293FCCAF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{343BDEB6-9852-481F-9617-00293FCCAF26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D843981D-1460-4AF0-87E7-A12B94C43A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D843981D-1460-4AF0-87E7-A12B94C43A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D843981D-1460-4AF0-87E7-A12B94C43A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D843981D-1460-4AF0-87E7-A12B94C43A76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC5D089-C25C-4B70-B98D-623DA7B48D7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CA8A8D4-3C61-4BD1-990C-F498C3894F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CA8A8D4-3C61-4BD1-990C-F498C3894F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CA8A8D4-3C61-4BD1-990C-F498C3894F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CA8A8D4-3C61-4BD1-990C-F498C3894F68}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1911668D-54DF-408C-862A-4929F3A42ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1911668D-54DF-408C-862A-4929F3A42ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1911668D-54DF-408C-862A-4929F3A42ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1911668D-54DF-408C-862A-4929F3A42ACC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BABFA85D-8460-4FC9-A1BB-38CF938E2508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BABFA85D-8460-4FC9-A1BB-38CF938E2508}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BABFA85D-8460-4FC9-A1BB-38CF938E2508}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BABFA85D-8460-4FC9-A1BB-38CF938E2508}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40D95843-84A9-41A6-9E68-2B50BB255684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40D95843-84A9-41A6-9E68-2B50BB255684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40D95843-84A9-41A6-9E68-2B50BB255684}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -174,22 +111,6 @@ Global
 		{6AC39FFE-9302-4081-8484-DA01197509D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AC39FFE-9302-4081-8484-DA01197509D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AC39FFE-9302-4081-8484-DA01197509D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{548E9546-752E-459F-B678-024DEF47DF07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{548E9546-752E-459F-B678-024DEF47DF07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{548E9546-752E-459F-B678-024DEF47DF07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{548E9546-752E-459F-B678-024DEF47DF07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05873A1B-BA22-4889-B83E-0ADB70F1199D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05873A1B-BA22-4889-B83E-0ADB70F1199D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05873A1B-BA22-4889-B83E-0ADB70F1199D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05873A1B-BA22-4889-B83E-0ADB70F1199D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38324C6A-C25B-4DF5-984E-5606083838D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38324C6A-C25B-4DF5-984E-5606083838D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38324C6A-C25B-4DF5-984E-5606083838D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38324C6A-C25B-4DF5-984E-5606083838D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -201,11 +122,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1F0DC9F2-F875-48AE-A261-1040DDA742D3} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{EC85425D-3DE9-450F-823F-C466AA45A46D} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{B515F797-42AC-45F7-9F23-812D7BA2588D} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
-		{BFE83304-ED6A-4CD4-BF94-A6503671DACB} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
-		{D44CE25F-C803-43E4-BC71-3213DD1CB1ED} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
-		{B18AB021-2E3D-4306-96CF-132FA5F567DE} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{09BE5203-8042-4338-9713-E44169342E72} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{392BCACF-A74D-48D8-933B-83EFBE47A624} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{F6224349-9ABC-4E1C-8100-C5F007577F17} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{DC98679B-223F-4548-9432-873F4E83CC40} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
@@ -215,19 +131,14 @@ Global
 		{CD0CC8E5-4E99-4187-9ED0-F29FFCED89E1} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{EDDDEBB6-19D6-45F5-AA84-2F38096E9263} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{343BDEB6-9852-481F-9617-00293FCCAF26} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{3A14B1C1-DB88-45B7-A2A0-BDD2D7C2DDFC} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 		{D843981D-1460-4AF0-87E7-A12B94C43A76} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{A32BBD35-9399-4AFF-A67D-75BA20FAB0A5} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 		{CAC5D089-C25C-4B70-B98D-623DA7B48D7D} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{9CA8A8D4-3C61-4BD1-990C-F498C3894F68} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 		{1911668D-54DF-408C-862A-4929F3A42ACC} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{BABFA85D-8460-4FC9-A1BB-38CF938E2508} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
 		{40D95843-84A9-41A6-9E68-2B50BB255684} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
 		{6AC39FFE-9302-4081-8484-DA01197509D4} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
-		{548E9546-752E-459F-B678-024DEF47DF07} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
-		{B2F428ED-135E-4CA2-9D5A-FBCC726F5121} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
-		{05873A1B-BA22-4889-B83E-0ADB70F1199D} = {B515F797-42AC-45F7-9F23-812D7BA2588D}
-		{38324C6A-C25B-4DF5-984E-5606083838D3} = {6BFBEE55-EB8D-4CC2-81D9-74DA67E7E548}
 		{63590828-99EA-4FFC-9FDE-327DE1B1F4D9} = {937EBA9B-A53D-45D8-B7CF-026DC4C63DD1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1403E506-A4C2-416F-A376-A6C02A7B49E2}
 	EndGlobalSection
 EndGlobal

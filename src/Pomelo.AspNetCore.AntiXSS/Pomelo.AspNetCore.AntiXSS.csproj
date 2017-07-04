@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Pomelo.AspNetCore.AntiXSS</AssemblyName>
+    <PackageId>Pomelo.AspNetCore.AntiXSS</PackageId>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/19828814?v=3</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/PomeloFoundation/dotNETCore-Extensions</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>2.0.0-preview2-25401-01</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pomelo.AntiXss\Pomelo.AntiXss.csproj" />
+    <ProjectReference Include="..\Pomelo.AspNetCore.Common\Pomelo.AspNetCore.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0-preview2-final" />
+  </ItemGroup>
+
+</Project>
