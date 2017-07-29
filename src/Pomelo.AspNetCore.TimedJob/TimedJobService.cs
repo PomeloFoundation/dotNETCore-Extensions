@@ -59,22 +59,31 @@ namespace Pomelo.AspNetCore.TimedJob
                         var invoke = y.GetCustomAttribute<InvokeAttribute>();
                         if (invoke != null && invoke.IsEnabled)
                         {
-                            int delta = 0;
+                            long delta = 0;
                             if (invoke._begin == default(DateTime))
                                 invoke._begin = DateTime.Now;
                             else
-                                delta = Convert.ToInt32((invoke._begin - DateTime.Now).TotalMilliseconds);
+                                delta = Convert.ToInt64((invoke._begin - DateTime.Now).TotalMilliseconds);
                             if (delta < 0)
                             {
-                                delta = delta % invoke.Interval;
+                                delta = delta % Convert.ToInt64(invoke.Interval);
                                 if (delta < 0)
-                                    delta += invoke.Interval;
+                                    delta += Convert.ToInt64(invoke.Interval);
                             }
-                            Task.Factory.StartNew(() =>
+
+                            Task.Factory.StartNew(async () =>
                             {
+                                if (delta > int.MaxValue)
+                                {
+                                    for (; delta > Int32.MaxValue; delta = delta - Int32.MaxValue)
+                                    {
+                                        await Task.Delay(Int32.MaxValue);
+                                    }
+                                }
+
                                 var timer = new Timer(t => {
                                     Execute(x.FullName + '.' + y.Name);
-                                }, null, delta, invoke.Interval);
+                                }, null, Convert.ToInt32(delta), invoke.Interval);
                                 JobTimers.Add(x.FullName + '.' + y.Name, timer);
                             });
                         }
@@ -96,18 +105,25 @@ namespace Pomelo.AspNetCore.TimedJob
                     JobTimers.Remove(x.Id);
                     JobStatus.Remove(x.Id);
                 }
-                int delta = Convert.ToInt32((x.Begin - DateTime.Now).TotalMilliseconds);
+                long delta = Convert.ToInt64((x.Begin - DateTime.Now).TotalMilliseconds);
                 if (delta < 0)
                 {
-                    delta = delta % x.Interval;
+                    delta = delta % Convert.ToInt64(x.Interval);
                     if (delta < 0)
-                        delta += x.Interval;
+                        delta += Convert.ToInt64(x.Interval);
                 }
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(async() =>
                 {
-                    var timer = new Timer(t => {
+                    if (delta > int.MaxValue)
+                    {
+                        for(; delta > Int32.MaxValue; delta = delta - Int32.MaxValue)
+                        {
+                            await Task.Delay(Int32.MaxValue);
+                        }
+                    }
+                   var timer = new Timer(t => {
                         Execute(x.Id);
-                    }, null, delta, x.Interval);
+                    }, null, Convert.ToInt32(delta), x.Interval);
                     JobTimers.Add(x.Id, timer);
                 });
             }
