@@ -43,6 +43,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor
         private readonly ILogger _logger;
         private readonly RazorViewEngineOptions _options;
         private readonly RazorProject _razorProject;
+        private readonly DiagnosticSource _diagnosticSource;
+
 
         public virtual IEnumerable<string> ViewLocationFormats { get; } = new[]
         {
@@ -70,7 +72,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             HtmlEncoder htmlEncoder,
             IOptions<RazorViewEngineOptions> optionsAccessor,
             ILoggerFactory loggerFactory,
-             RazorProject razorProject)
+             RazorProject razorProject,
+             DiagnosticSource diagnosticSource)
         {
             _options = optionsAccessor.Value;
             _pageFactory = pageFactory;
@@ -78,6 +81,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             _htmlEncoder = htmlEncoder;
             _logger = loggerFactory.CreateLogger<RazorViewEngine>();
             _razorProject = razorProject;
+            _diagnosticSource = diagnosticSource;
             ViewLookupCache = new MemoryCache(new MemoryCacheOptions());
         }
 
@@ -401,11 +405,12 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             bool isMainPage)
         {
             var factoryResult = _pageFactory.CreateFactory(relativePath);
-            if (factoryResult.ExpirationTokens != null)
+
+            if (factoryResult.ViewDescriptor != null && factoryResult.ViewDescriptor.ExpirationTokens != null)
             {
-                for (var i = 0; i < factoryResult.ExpirationTokens.Count; i++)
+                for (var i = 0; i < factoryResult.ViewDescriptor.ExpirationTokens.Count; i++)
                 {
-                    expirationTokens.Add(factoryResult.ExpirationTokens[i]);
+                    expirationTokens.Add(factoryResult.ViewDescriptor.ExpirationTokens[i]);
                 }
             }
 
@@ -431,12 +436,12 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var viewStartPages = new List<ViewLocationCacheItem>();
             foreach (var viewStartPath in _razorProject.FindHierarchicalItems(path, "_ViewStart.cshtml"))
             {
-                var result = _pageFactory.CreateFactory(viewStartPath.Path);
-                if (result.ExpirationTokens != null)
+                var result = _pageFactory.CreateFactory(viewStartPath.CombinedPath);
+                if (result.ViewDescriptor != null && result.ViewDescriptor.ExpirationTokens != null)
                 {
-                    for (var i = 0; i < result.ExpirationTokens.Count; i++)
+                    for (var i = 0; i < result.ViewDescriptor.ExpirationTokens.Count; i++)
                     {
-                        expirationTokens.Add(result.ExpirationTokens[i]);
+                        expirationTokens.Add(result.ViewDescriptor.ExpirationTokens[i]);
                     }
                 }
 
@@ -445,7 +450,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
                     // Populate the viewStartPages list so that _ViewStarts appear in the order the need to be
                     // executed (closest last, furthest first). This is the reverse order in which
                     // ViewHierarchyUtility.GetViewStartLocations returns _ViewStarts.
-                    viewStartPages.Insert(0, new ViewLocationCacheItem(result.RazorPageFactory, viewStartPath.Path));
+                    viewStartPages.Insert(0, new ViewLocationCacheItem(result.RazorPageFactory, viewStartPath.CombinedPath));
                 }
             }
 
@@ -468,7 +473,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
                 viewStarts[i] = viewStartItem.PageFactory();
             }
 
-            var view = new RazorView(this, _pageActivator, viewStarts, page, _htmlEncoder);
+            var view = new RazorView(this, _pageActivator, viewStarts, page, _htmlEncoder, _diagnosticSource);
             return ViewEngineResult.Found(viewName, view);
         }
 
