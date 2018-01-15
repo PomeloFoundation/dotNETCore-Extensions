@@ -150,44 +150,49 @@ namespace Pomelo.AspNetCore.TimedJob
             var typename = identifier.Substring(0, identifier.LastIndexOf('.'));
             var function = identifier.Substring(identifier.LastIndexOf('.') + 1);
             var type = JobTypeCollection.SingleOrDefault(x => x.FullName == typename);
+
             if (type == null)
             {
                 throw new NotImplementedException(typename + "." + function);
             }
-            var argtypes = type.GetConstructors()
-                .First()
-                .GetParameters()
-                .Select(x =>
+
+            using (var serviceScope = services.CreateScope())
+            {
+                var argtypes = type.GetConstructors()
+                    .First()
+                    .GetParameters()
+                    .Select(x =>
+                    {
+                        if (x.ParameterType == typeof(IServiceProvider))
+                            return serviceScope.ServiceProvider;
+                        else
+                            return serviceScope.ServiceProvider.GetService(x.ParameterType);
+                    })
+                    .ToArray();
+                var job = Activator.CreateInstance(type.AsType(), argtypes);
+                var method = type.GetMethod(function);
+                var paramtypes = method.GetParameters().Select(x => serviceScope.ServiceProvider.GetService(x.ParameterType)).ToArray();
+                var invokeAttr = method.GetCustomAttribute<InvokeAttribute>();
+                lock (this)
                 {
-                    if (x.ParameterType == typeof(IServiceProvider))
-                        return services;
-                    else
-                        return services.GetService(x.ParameterType);
-                })
-                .ToArray();
-            var job = Activator.CreateInstance(type.AsType(), argtypes);
-            var method = type.GetMethod(function);
-            var paramtypes = method.GetParameters().Select(x => services.GetService(x.ParameterType)).ToArray();
-            var invokeAttr = method.GetCustomAttribute<InvokeAttribute>();
-            lock (this)
-            {
-                if (invokeAttr != null && invokeAttr.SkipWhileExecuting && JobStatus[identifier])
-                    return false;
-                JobStatus[identifier] = true;
+                    if (invokeAttr != null && invokeAttr.SkipWhileExecuting && JobStatus[identifier])
+                        return false;
+                    JobStatus[identifier] = true;
+                }
+                try
+                {
+                    if (logger != null)
+                        logger.LogInformation("Invoking " + identifier + "...");
+                    method.Invoke(job, paramtypes);
+                }
+                catch (Exception ex)
+                {
+                    if (logger != null)
+                        logger.LogError(ex.ToString());
+                }
+                JobStatus[identifier] = false;
+                return true;
             }
-            try
-            {
-                if (logger != null)
-                    logger.LogInformation("Invoking " + identifier + "...");
-                method.Invoke(job, paramtypes);
-            }
-            catch (Exception ex)
-            {
-                if (logger != null)
-                    logger.LogError(ex.ToString());
-            }
-            JobStatus[identifier] = false;
-            return true;
         }
 
         public List<string> GetJobFunctions()
