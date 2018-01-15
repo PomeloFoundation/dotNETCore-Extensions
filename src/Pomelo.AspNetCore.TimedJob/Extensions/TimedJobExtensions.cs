@@ -24,7 +24,8 @@ namespace Microsoft.AspNetCore.Builder
     {
         public static IApplicationBuilder UseTimedJob(this IApplicationBuilder self)
         {
-            self.ApplicationServices.GetRequiredService<TimedJobService>();
+            var scope = self.ApplicationServices.CreateScope();
+            scope.ServiceProvider.GetRequiredService<TimedJobService>();
             return self;
         }
     }
