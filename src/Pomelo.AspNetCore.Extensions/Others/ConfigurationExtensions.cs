@@ -18,7 +18,9 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile($"{fileName}.json")
-                .AddJsonFile($"{fileName}.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"{fileName}.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
             var configuration = builder.Build();
             self.AddSingleton<IConfiguration>(configuration);
             config = configuration;
@@ -34,7 +36,9 @@ namespace Microsoft.Extensions.DependencyInjection
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile($"{fileName}.json")
-                .AddJsonFile($"{fileName}.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"{fileName}.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
             var configuration = builder.Build();
             self.AddSingleton<IConfiguration>(configuration);
 
